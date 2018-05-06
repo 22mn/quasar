@@ -1,0 +1,11 @@
+﻿<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>Quasar.RevitNodes</name>
+  </assembly>
+  <namespaces>
+    <namespace name="Quasar">
+      <category>Quasar</category>
+    </namespace>
+  </namespaces>
+</doc>

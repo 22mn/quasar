@@ -1,0 +1,204 @@
+<Workspace Version="1.3.2.2480" X="-146.4" Y="104.8" zoom="1" ScaleFactor="1" Name="ViewSelector" Description="Select views by check boxes " ID="ad75924a-af28-4e5d-b269-86408eecb907" Category="Quasar.RevitNodes">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="d66fe0fc-3d46-4518-afb5-cd9c2129a198" type="PythonNodeModels.PythonNode" nickname="UIViewSelector" x="250" y="4.01474229628934" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="true" inputcount="0">
+      <Script># dynamo version - 1.3
+# author - min.naung@mgjean https://twentytwopaths.wordpress.com/contact/
+
+import clr,sys
+sys.path.append(r"C:\Program Files (x86)\IronPython 2.7\Lib")
+import os, System
+
+version = ["2.0","1.3","1.2","1.1","1.0","0.9","0.8","0.7"]
+
+appdata = os.getenv("AppData");
+qpath = r"\Dynamo\Dynamo Revit\%s\packages\Quasar"
+
+for i in version:
+	if os.path.exists(os.path.join(appdata+qpath %i)):
+		ipath = os.path.join(appdata+qpath %i)
+
+clr.AddReference("System.Windows.Forms")
+clr.AddReference("System.Drawing")
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+
+from System.Collections.Generic import List
+from System.Windows.Forms import (Application, Button, ComboBox, CheckBox, Form as _Form,
+CheckedListBox,Padding,FormBorderStyle, SelectionMode,Label, MessageBox,MessageBoxButtons, MessageBoxIcon)
+from System.Drawing import (Font as _Font, Icon as _Icon, Point as _Point, Size as _Size,FontStyle)
+
+
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+result = [];
+
+class CheckedBoxListSelector(_Form):
+	"""Checked Box List Selector"""
+
+	def __init__(self):
+		
+		self.floors = []
+		self.ceilings = []
+		self.threeDs = []
+		self.elevations = []
+		self.sections = []
+		self.sheets = []
+		self.draftings = []
+		self.schedules = []
+		self.templates = []
+		self.legends = []
+		self.details = []
+		self.areas = []
+		
+		allViews = FilteredElementCollector(doc).OfClass(View).ToElements()
+		
+		# views separation by type
+		for i in allViews:
+			if i.ViewType == ViewType.FloorPlan:
+				self.floors.append(i)
+			if i.ViewType == ViewType.CeilingPlan:
+				self.ceilings.append(i)
+			if i.ViewType == ViewType.ThreeD:
+				self.threeDs.append(i)
+			if i.ViewType == ViewType.Elevation:
+				self.elevations.append(i)
+			if i.ViewType == ViewType.Section:
+				self.sections.append(i)
+			if i.ViewType == ViewType.DrawingSheet:
+				self.sheets.append(i)
+			if i.ViewType == ViewType.DraftingView:
+				self.draftings.append(i)
+			if i.ViewType == ViewType.Schedule:
+				self.schedules.append(i)
+			if i.IsTemplate:
+				self.templates.append(i)
+			if i.ViewType == ViewType.Legend:
+				self.legends.append(i)
+			if i.ViewType == ViewType.Detail:
+				self.details.append(i)
+			if i.ViewType == ViewType.AreaPlan:
+				self.areas.append(i)
+		
+		# view type[keys] and elements[value]
+		self.ClassDict = {"Floor Plan":self.floors,"Ceiling Plan":self.ceilings,"3D View":self.threeDs,"Elevation":self.elevations,"Section":self.sections,"Sheets":self.sheets,"Drafting View":self.draftings,"Schedule":self.schedules,"Views Templates": self.templates,"Legend View":self.legends,"Detail View":self.details,"Area Plan":self.areas}
+		
+		
+		self.Icon = _Icon(r"%s\extra\icon.ico" %ipath)
+		self.Size = _Size(360,430)
+		self.Text = "Quasar®"
+
+		# fonts
+		self.gsmt_11r = _Font("Georgia", 10)
+		self.gsmt_10r = _Font("Georgia",9)
+
+		# combo box
+		self.cbox = ComboBox()
+		self.cbox.Font = self.gsmt_11r
+		self.cbox.Location = _Point(30,10)
+		self.cbox.Size = _Size(280,28)
+		self.cbox.Items.AddRange(tuple(self.ClassDict.keys()))
+		self.cbox.SelectedItem = "Floor Plan";
+		self.Controls.Add(self.cbox)
+		
+		self.NameIdDict = {str(i.Name) : i.Id for i in self.ClassDict[self.cbox.SelectedItem]}
+		
+		# checklist box
+		self.lstbox = CheckedListBox()
+		self.lstbox.Items.AddRange(tuple(self.NameIdDict.keys()))
+		self.lstbox.Font = self.gsmt_10r
+		# padding
+		self.lstbox.Padding = Padding(30)
+		# select one click
+		self.lstbox.CheckOnClick = True
+
+		self.FormBorderStyle = FormBorderStyle.FixedDialog
+		self.MaximizeBox = False;
+		self.ManimizeBox = False;
+		self.lstbox.Location = _Point(30,45)
+		self.lstbox.Size = _Size(280,300)
+
+		# auto horizontal scrollbar
+		self.lstbox.HorizontalScrollbar = True
+		self.Controls.Add(self.lstbox)
+
+		# select all btn
+		self.btn_all = Button()
+		self.btn_all.Text = "Select All"
+		self.btn_all.Font = self.gsmt_10r
+		self.btn_all.Size = _Size(95,25)
+		self.btn_all.Location = _Point(30,340)
+		self.Controls.Add(self.btn_all)
+
+		# select none btn
+		self.btn_none = Button()
+		self.btn_none.Text = "Select None"
+		self.btn_none.Font = self.gsmt_10r
+		self.btn_none.Size = _Size(95,25)
+		self.btn_none.Location = _Point(215,340)
+		self.Controls.Add(self.btn_none)
+
+		# ok btn
+		self.btn = Button()
+		self.btn.Text = "OK"
+		self.btn.Font = self.gsmt_10r
+		self.btn.Size = _Size(80,25)
+		self.btn.Location = _Point(130,340)
+		self.Controls.Add(self.btn)
+
+		# events
+		self.btn_all.Click += self.click_all
+		self.btn_none.Click += self.click_none
+		self.btn.Click += self.click_ok 
+		self.cbox.SelectedValueChanged += self.on_class_change
+
+		# pop up from center
+		self.CenterToScreen()
+
+	def click_ok(self, sender, event):
+		global result
+	
+		if len(self.lstbox.CheckedItems) &lt; 1:
+			return MessageBox.Show("No element selected!", "Quasar® Info Box", MessageBoxButtons.OK, MessageBoxIcon.Asterisk)
+						
+		result = [doc.GetElement(self.NameIdDict[i]) for i in self.lstbox.CheckedItems]
+		
+		return self.Close()		
+
+	def click_all(self, sender, event):
+		for i in range(len(self.lstbox.Items)):
+			self.lstbox.SetItemChecked(i,True)
+
+	def click_none(self, sender, event):
+		for i in range(len(self.lstbox.Items)):
+			self.lstbox.SetItemChecked(i,False)
+	
+	def on_class_change(self, sender, event):
+		self.lstbox.Items.Clear();
+		self.collectors = self.ClassDict[self.cbox.SelectedItem]
+		self.NameIdDict = {str(i.Name) : i.Id for i in self.collectors}
+		self.lstbox.Items.AddRange(tuple(self.NameIdDict.keys()))
+		
+Application.Run(CheckedBoxListSelector());
+
+OUT = result
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="3d845733-2a8e-49c5-aaa5-74d8cdc4e120" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="384.215237525823" y="1.59999999999999" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Views;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="d66fe0fc-3d46-4518-afb5-cd9c2129a198" start_index="0" end="3d845733-2a8e-49c5-aaa5-74d8cdc4e120" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-7244.93212890625" eyeY="18900.62890625" eyeZ="11816.8408203125" lookX="5110.05810546875" lookY="-19437.9765625" lookZ="-11871.484375" upX="0.274650603532791" upY="0.719339787960052" upZ="-0.638057410717011" />
+  </Cameras>
+</Workspace>
