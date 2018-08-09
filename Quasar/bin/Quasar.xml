@@ -105,5 +105,61 @@
             <param name="Names">Parameter name or names (string)</param>
             <returns name = "NameList">Each list contains [0] ParameterName [1] BuiltIn ParameterName</returns>
         </member>
+        <member name="M:Quasar.RevitNodes.GetElementFromLinkDocument(Revit.Elements.Category,Autodesk.Revit.DB.Document)">
+            <summary>
+            Collect elements by category and document.
+            </summary>
+            <param name="Category">Category object</param>
+            <param name="Document">Document object</param>
+            <returns name = "Element">List of elements</returns>
+        </member>
+        <member name="M:Quasar.RevitNodes.GetAndSetParams(System.Collections.Generic.List{Revit.Elements.Element},System.Collections.Generic.List{Revit.Elements.Element},System.Collections.Generic.List{System.String})">
+            <summary>
+            Get parameter from first input and Set this value to second input
+            </summary>
+            <param name="FirstElements">Element to get</param>
+            <param name="SecondElements">Element to set</param>
+            <param name="ParamNames">Parameter names</param>
+            <returns>Parameter value and boolean(true is set , false can't set)</returns>
+        </member>
+        <member name="M:Quasar.RevitNodes.CreateWallSweep(System.Collections.Generic.List{Revit.Elements.Wall},Revit.Elements.Element,System.String,System.Boolean,System.Double)">
+            <summary>
+            Create WallSweep by wall.
+            </summary>
+            <param name="Walls">Wall Elements</param>
+            <param name="TypeElement">Wall sweep type element</param>
+            <param name="SweepOrReveal">String value "Sweep" or "Reveal"</param>
+            <param name="IsVertical">Is vertical true or false</param>
+            <param name="Offset">distance from wall base</param>
+            <returns name="WallSweeps">WallSweep Elements</returns>
+        </member>
+        <member name="M:Quasar.RevitNodes.WallPaintRemove(System.Collections.Generic.List{Revit.Elements.Element})">
+            <summary>
+            Remove paint from walls.
+            </summary>
+            <param name="Walls">Wall Elements</param>
+            <returns name="WallElements">Wall Elements</returns>
+        </member>
+        <member name="M:Quasar.RevitNodes.GetElementType(System.Collections.Generic.List{Revit.Elements.Element})">
+            <summary>
+            Get Type Element of input element.
+            </summary>
+            <param name="Elements">Element input</param>
+            <returns name="ElementTypes">Return Type Element of input Element</returns>
+        </member>
+        <member name="T:Quasar.DynamoNodes">
+            <summary>
+            Class contains dynamo nodes.
+            </summary>
+        </member>
+        <member name="M:Quasar.DynamoNodes.QuadPanel(Autodesk.DesignScript.Geometry.Surface,System.Double,System.Double)">
+            <summary>
+            Surface and U, V divisions 
+            </summary>
+            <param name="Surface">Surface</param>
+            <param name="Udivision">Number of division</param>
+            <param name="Vdivision">Number of division</param>
+            <returns>Returns Quad Panels and Polygons</returns>
+        </member>
     </members>
 </doc>
