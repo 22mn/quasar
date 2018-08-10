@@ -1,0 +1,45 @@
+<Workspace Version="1.3.0.875" X="-44.4638781842324" Y="218.200169438341" zoom="0.931811528498331" ScaleFactor="1" Name="FamilyInstanceByFamilyTypeName" Description="This node take single family type name or comma separated family type names as a string. Name must be exactly the same with family type name. And it return list of family instances.&#xD;&#xA;" ID="1593013b-b24f-46b0-8878-bae8ffda9ad8" Category="Quasar.Revit.FamilyInstance">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="11c27150-6d70-45c5-922d-9038a01b9d33" type="PythonNodeModels.PythonNode" nickname="Python Script" x="250" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script># dynamo version 1.3.0 
+# author - min.naung@mgjean 
+
+import clr
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+doc = DocumentManager.Instance.CurrentDBDocument
+
+result = [];
+names = IN[0].strip().split(',');
+instances = FilteredElementCollector(doc).OfClass(FamilyInstance).ToElements();
+for n in names:
+	sub = [];
+	for i in instances:
+		if i.Name == n:
+			 sub.append(i);
+	result.append(sub);
+OUT = result;</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="ecd0c5a1-aa7e-4d23-bde3-96a6756cf413" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-50" y="-1" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="FamilyTypeName:string" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="047f4a01-8cc4-4422-8e86-b35d65302b09" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="409" y="5" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="FamilyInstance" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="11c27150-6d70-45c5-922d-9038a01b9d33" start_index="0" end="047f4a01-8cc4-4422-8e86-b35d65302b09" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ecd0c5a1-aa7e-4d23-bde3-96a6756cf413" start_index="0" end="11c27150-6d70-45c5-922d-9038a01b9d33" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>

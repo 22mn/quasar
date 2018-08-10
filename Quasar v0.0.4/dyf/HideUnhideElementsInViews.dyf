@@ -1,0 +1,88 @@
+<Workspace Version="1.3.0.875" X="-23.8652130296876" Y="224.46708463591" zoom="0.931811528498331" ScaleFactor="1" Name="HideUnhideElementsInViews" Description="Element(s) hide / unhide in given views.&#xD;&#xA;True hide elements, False unhide elements.&#xD;&#xA;Default is True." ID="93e1e1f5-bbac-48f9-9e56-c4f2e29bd441" Category="Quasar.Revit.Visibility">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="d8ac4966-35db-40cc-8ee6-4259a5872d25" type="PythonNodeModels.PythonNode" nickname="Python Script" x="250" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <Script># dynamo version - 1.3.0
+# author - min.naung@mgjean
+
+import clr
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitNodes")
+clr.AddReference("RevitServices")
+clr.AddReference("System")
+
+import Autodesk, Revit, RevitServices
+
+from System.Collections.Generic import List
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument;
+message = ''; melem = ''; mview = '';
+def lst_unwrap(elems):
+	if not isinstance(elems,list):
+		elems = UnwrapElement([elems]);
+	else:
+		elems = UnwrapElement(elems);
+	return elems
+
+lstElemToHide = lst_unwrap(IN[0]);
+lstView = lst_unwrap(IN[1]);
+toggle = IN[2];
+lst = [i.Id for i in lstElemToHide];
+lstElemId = List[ElementId](lst); 
+
+TransactionManager.Instance.EnsureInTransaction(doc);
+
+for v in lstView:
+	if toggle:
+		h = "hide"
+		v.HideElements(lstElemId);
+	else:
+		h = "unhide";
+		v.UnhideElements(lstElemId);
+	
+	if (len(lstElemToHide)&gt;1): melem = "elements"
+	else: melem = "element"
+	
+	if (len(lstView)&gt;1): mview = "views"
+	else: mview = "view"
+	
+TransactionManager.Instance.TransactionTaskDone();
+message = "%s %s %s in %s %s." %(len(lstElemToHide),melem,h,len(lstView),mview);
+OUT = message;
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="2b1701d7-abfb-4791-acfe-e4e00a3c1890" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="0" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Elements" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="a9d148b0-92c0-4db3-9586-be2f7ed1af08" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="0.799999999999983" y="148.4" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Views" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="2bf07541-9313-446f-bade-7fa1602c5280" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-35.2" y="229.6" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="HideUnhide:bool=true" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="2385484c-0c48-4392-89ba-e8dac2abf450" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="449.8" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Message" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="d8ac4966-35db-40cc-8ee6-4259a5872d25" start_index="0" end="2385484c-0c48-4392-89ba-e8dac2abf450" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="2b1701d7-abfb-4791-acfe-e4e00a3c1890" start_index="0" end="d8ac4966-35db-40cc-8ee6-4259a5872d25" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a9d148b0-92c0-4db3-9586-be2f7ed1af08" start_index="0" end="d8ac4966-35db-40cc-8ee6-4259a5872d25" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="2bf07541-9313-446f-bade-7fa1602c5280" start_index="0" end="d8ac4966-35db-40cc-8ee6-4259a5872d25" end_index="2" portType="0" />
+  </Connectors>
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="73aaab21-d94f-492b-a793-1f0602a78a2c" text="IN[0] = Elements;&#xD;&#xA;IN[1] = Views;&#xD;&#xA;IN[2] = Hide/UnHide" x="231.2" y="-75.2" />
+  </Notes>
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="6701.7587890625" eyeY="26545.388671875" eyeZ="14399.9453125" lookX="1812.97717285156" lookY="-22062.453125" lookZ="-15938.5888671875" upX="0.0750361829996109" upY="0.747798085212708" upZ="-0.659672319889069" />
+  </Cameras>
+</Workspace>
