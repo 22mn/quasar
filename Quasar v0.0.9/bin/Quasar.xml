@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Quasar</name>
+    </assembly>
+    <members>
+        <member name="T:Quasar.Utility">
+            <summary>
+            Utility class for tools methods
+            </summary>
+        </member>
+        <member name="M:Quasar.Utility.crop_box(Autodesk.Revit.DB.BoundingBoxXYZ,System.Double)">
+            <summary>
+            Utility class tool
+            </summary>
+            <param name="bbox"></param>
+            <param name="offset"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Quasar.RevitNodes">
+            <summary>
+            Quasar RevitNodes Class
+            All Quaser Revit nodes will be under this class.
+            </summary>
+        </member>
+        <member name="M:Quasar.RevitNodes.ActiveView">
+            <summary>
+            Current Document Active View
+            </summary>
+            <returns name = "ActiveView">Return ActiveView</returns>
+        </member>
+        <member name="M:Quasar.RevitNodes.CopyPasteFilter(Revit.Elements.Views.View,System.Collections.Generic.List{Revit.Elements.Views.View})">
+            <summary>
+                Copy filters and override graphic settings from a view and paste its to views.
+            </summary>
+            <param name="ViewToCopy">
+                View to Copy
+            </param>
+            <param name="ViewToPaste">
+                Views to paste
+            </param>
+            <returns name="Views">Pasted Views</returns>
+        </member>
+        <member name="M:Quasar.RevitNodes.HideUnHideElement(System.Collections.Generic.List{Revit.Elements.Element},System.Collections.Generic.List{Revit.Elements.Element},System.Boolean)">
+            <summary>
+            Elements hide/unhide in given view. Default value is true(hide).
+            </summary>
+            <param name="Elements">Elements or Element</param>
+            <param name="Views">Views or View</param>
+            <param name="HideUnhide">true = hide , false = unhide</param>
+            <returns>Return message</returns>
+        </member>
+        <member name="M:Quasar.RevitNodes.FloorPlanViewByRoom(Revit.Elements.Element,System.Collections.Generic.List{Revit.Elements.Room},System.Collections.Generic.List{System.String},System.Double)">
+            <summary>
+            Create floor plan views by rooms, names and offset.
+            </summary>
+            <param name="Level">Level element</param>
+            <param name="Rooms"></param>
+            <param name="Names">List of names for new views</param>
+            <param name="Offset">Cropbox offset from room</param>
+            <returns name="FloorPlanView">Created Ceiling Views</returns>
+        </member>
+        <member name="M:Quasar.RevitNodes.ThreeDViewByRoom(System.Collections.Generic.List{Revit.Elements.Room},System.Collections.Generic.List{System.String},System.Double)">
+            <summary>
+            Create 3D Views for given room.
+            </summary>
+            <param name="Rooms">Rooms elements</param>
+            <param name="Names">Name for new views</param>
+            <param name="Offset">Offset value for section box. Default is 500.</param>
+            <returns name="ThreeDView">New 3D Views</returns>
+        </member>
+        <member name="M:Quasar.RevitNodes.CeilingViewByRoom(Revit.Elements.Element,System.Collections.Generic.List{Revit.Elements.Room},System.Collections.Generic.List{System.String},System.Double)">
+            <summary>
+            Create ceiling views by rooms, names and offset.
+            </summary>
+            <param name="Level">Level element</param>
+            <param name="Rooms"></param>
+            <param name="Names">List of names for new views</param>
+            <param name="Offset">Cropbox offset from room</param>
+            <returns name="CeilingView">Created Ceiling Views</returns>
+        </member>
+        <member name="M:Quasar.RevitNodes.ElevationInRoom(System.Collections.Generic.List{Revit.Elements.Room},Revit.Elements.Element,System.Double)">
+            <summary>
+            Create elevation views in room with crop offset by rooms , floorplan and offset.
+            Default naming is - "RoomName_RoomNumber - A", "RoomName_RoomNumber - B",
+            "RoomName_RoomNumber - C", "RoomName_RoomNumber - D".
+            </summary>
+            <param name="Rooms">Room elements and make sure all room are bounding</param>
+            <param name="FloorPlan">Floor plan view</param>
+            <param name="Offset">Offset from room , default is 500</param>
+            <returns name="ElevationView"> New Elevation Views</returns>
+        </member>
+        <member name="M:Quasar.RevitNodes.LinkLevelGrid(System.Boolean)">
+            <summary>
+            Hide/Unhide levels and grids from link documents.
+            </summary>
+            <param name="Hide"> Hide = true, Unhide = false</param>
+            <returns>return message</returns>
+        </member>
+        <member name="M:Quasar.RevitNodes.GetBuiltInParameterName(Revit.Elements.Element,System.Collections.Generic.List{System.String})">
+            <summary>
+            Built-In Parameter Name by element and parameter(s).
+            </summary>
+            <param name="Element">Element input</param>
+            <param name="Names">Parameter name or names (string)</param>
+            <returns name = "NameList">Each list contains [0] ParameterName [1] BuiltIn ParameterName</returns>
+        </member>
+        <member name="M:Quasar.RevitNodes.GetElementFromLinkDocument(Revit.Elements.Category,Autodesk.Revit.DB.Document)">
+            <summary>
+            Collect elements by category and document.
+            </summary>
+            <param name="Category">Category object</param>
+            <param name="Document">Document object</param>
+            <returns name = "Element">List of elements</returns>
+        </member>
+        <member name="M:Quasar.RevitNodes.GetAndSetParams(System.Collections.Generic.List{Revit.Elements.Element},System.Collections.Generic.List{Revit.Elements.Element},System.Collections.Generic.List{System.String})">
+            <summary>
+            Get parameter from first input and Set this value to second input
+            </summary>
+            <param name="FirstElements">Element to get</param>
+            <param name="SecondElements">Element to set</param>
+            <param name="ParamNames">Parameter names</param>
+            <returns>Parameter value and boolean(true is set , false can't set)</returns>
+        </member>
+        <member name="T:Quasar.DynamoNodes">
+            <summary>
+            Class contains dynamo nodes.
+            </summary>
+        </member>
+        <member name="M:Quasar.DynamoNodes.QuadPanel(Autodesk.DesignScript.Geometry.Surface,System.Double,System.Double)">
+            <summary>
+            Surface and U, V divisions 
+            </summary>
+            <param name="Surface">Surface</param>
+            <param name="Udivision">Number of division</param>
+            <param name="Vdivision">Number of division</param>
+            <returns>Returns Quad Panels and Polygons</returns>
+        </member>
+    </members>
+</doc>
