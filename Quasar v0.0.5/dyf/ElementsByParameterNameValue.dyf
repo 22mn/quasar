@@ -1,0 +1,93 @@
+<Workspace Version="1.3.2.2480" X="-90.8722956327601" Y="190.863244619663" zoom="0.915562285281227" ScaleFactor="1" Name="ElementsByParameterNameValue" Description="Collect and highlight elements by parameter name and value. Operator  has two type : string and numeric.&#xD;&#xA;String operators : &quot;begins with&quot;, &quot;contains&quot;, &quot;ends with&quot;, &quot;equals&quot;.&#xD;&#xA;Numeric operators : &quot;&gt;&quot;, &quot;=&gt;&quot;, &quot;&lt;&quot;, &quot;&lt;=&quot;, &quot;=&quot;." ID="f923dd95-7de7-4f6f-8e69-9fdea0b15e38" Category="Quasar.Revit.Elements">
+  <NamespaceResolutionMap />
+  <Elements>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="93e13912-3074-431f-8ae7-023e786416ee" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1113.21538419333" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Elements" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="0df3d3d6-15b1-4e9b-a8e3-56d603c89a29" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="98.1039481641902" y="-47.3379614240454" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Elements" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="d22f4376-85e9-4890-a76d-5d4a1bf5b6f4" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="150.362579382539" y="100.291298670199" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="ParameterName" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="2717dfae-bad7-4a9a-afda-aa78844b3abc" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="184.672914638586" y="186.868854726746" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Operator" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="52ae12ea-8f73-42e9-833d-4ba74d832cb6" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="297.043599029411" y="270.62745818763" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="ParameterValue" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <PythonNodeModels.PythonNode guid="53d70386-63dd-4682-b8e5-3e1439401cf7" type="PythonNodeModels.PythonNode" nickname="Python Script" x="841.965978749307" y="-40.2629566685793" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="4">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <Script># dynamo version - 1.3.0
+# author - min.naung@mgjean https://twentytwopaths.wordpress.com/contact/
+
+
+import clr
+clr.AddReference("RevitServices");
+clr.AddReference("RevitAPI");
+import System
+from System.Collections.Generic import List
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+uidoc = DocumentManager.Instance.CurrentUIApplication.ActiveUIDocument
+
+DictNumericRules = {"&gt;":FilterNumericGreater(),"&lt;":FilterNumericLess(),"&gt;=":FilterNumericGreaterOrEqual(),"&lt;=":FilterNumericLessOrEqual(),"=":FilterNumericEquals()}
+DictStringRules = {"begins with":FilterStringBeginsWith(),"contains":FilterStringContains(),"ends with":FilterStringEndsWith(),"equals":FilterStringEquals()}
+
+selected = uidoc.Selection
+prelist = [];
+highlight = [];
+elems = UnwrapElement(IN[0]);
+name = IN[1];
+
+builtInParams = [i for i in System.Enum.GetValues(BuiltInParameter)];
+bparamName = [i for i in builtInParams if elems[0].get_Parameter(i) and elems[0].get_Parameter(i).Definition.Name == name][0];
+
+bipname = eval("BuiltInParameter."+str(bparamName));
+
+pvp = ParameterValueProvider(ElementId(bipname));
+
+if isinstance(IN[3],int):
+	val = IN[3]/304.8;
+	eval_rule = DictNumericRules[IN[2]];
+	rule = FilterDoubleRule(pvp,eval_rule,val,1E-6);
+else:
+	val = IN[3];
+	eval_rule = DictStringRules[IN[2]];
+	rule = FilterStringRule(pvp,eval_rule,val,False);
+
+filter = ElementParameterFilter(rule);
+
+for i in elems:
+	prelist.append(i.Id);
+	Icollection = List[ElementId](prelist);
+	
+elements = FilteredElementCollector(doc,Icollection).WherePasses(filter).ToElements();
+for i in elements:
+	highlight.append(i.Id);
+	icoll = List[ElementId](highlight);
+	selected.SetElementIds(icoll);
+OUT = elements;</Script>
+    </PythonNodeModels.PythonNode>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="0df3d3d6-15b1-4e9b-a8e3-56d603c89a29" start_index="0" end="53d70386-63dd-4682-b8e5-3e1439401cf7" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d22f4376-85e9-4890-a76d-5d4a1bf5b6f4" start_index="0" end="53d70386-63dd-4682-b8e5-3e1439401cf7" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="2717dfae-bad7-4a9a-afda-aa78844b3abc" start_index="0" end="53d70386-63dd-4682-b8e5-3e1439401cf7" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="52ae12ea-8f73-42e9-833d-4ba74d832cb6" start_index="0" end="53d70386-63dd-4682-b8e5-3e1439401cf7" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="53d70386-63dd-4682-b8e5-3e1439401cf7" start_index="0" end="93e13912-3074-431f-8ae7-023e786416ee" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>

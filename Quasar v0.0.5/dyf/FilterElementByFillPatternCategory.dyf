@@ -1,0 +1,85 @@
+<Workspace Version="1.3.2.2480" X="-689.527174725027" Y="259.145373042186" zoom="1.02988563947099" ScaleFactor="1" Name="FilterElementByFillPatternCategory" Description="Create filter element with override graphics by color, fill pattern, category and name." ID="d397e8b2-8e08-45aa-9f8e-f95975317363" Category="Quasar.Revit.FilterElement">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="FillPatternElement" resolvedName="Revit.Elements.FillPatternElement" assemblyName="RevitNodes.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="4a63f51b-2d64-4f25-9737-da4ffa8f5d34" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="682.6" y="93.2" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Category" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="2d1929bf-d977-4c3f-91f4-41f38ec8aef4" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="557.8" y="20" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="FillPattern:FillPatternElement" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="b0493a5d-0651-4821-917c-30d883463cf3" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="667.4" y="162.4" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="FilterName" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <PythonNodeModels.PythonNode guid="71dc8123-2391-4acb-a248-f7551381aec8" type="PythonNodeModels.PythonNode" nickname="Python Script" x="917.4" y="21.6" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <Script># dynamo version - 1.3.0
+# author - min.naung@mgjean https://twentytwopaths.wordpress.com/contact/
+
+import clr
+clr.AddReference('RevitAPI')
+clr.AddReference("RevitServices")
+clr.AddReference("RevitAPIUI")
+
+import System
+
+from System.Collections.Generic import List
+from Autodesk.Revit.DB import *
+from Autodesk.Revit.UI import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+fp = UnwrapElement(IN[0]);
+category = UnwrapElement(IN[1]);
+fname = IN[2];
+try:
+	view = doc.ActiveView;
+	TransactionManager.Instance.EnsureInTransaction(doc);
+	params_filter = ParameterFilterElement.Create(doc,fname,List[ElementId]([category.Id]));
+
+	win = ColorSelectionDialog();
+	ColorSelectionDialog.Show(win);
+	color = win.SelectedColor;
+
+	ogset = OverrideGraphicSettings();
+	ogset.SetProjectionFillColor(color);
+	ogset.SetProjectionFillPatternId(fp.Id);
+	ogset.SetCutFillColor(color);
+	ogset.SetCutFillPatternId(fp.Id);
+
+	view.SetFilterOverrides(params_filter.Id,ogset);
+
+	TransactionManager.Instance.TransactionTaskDone();
+	OUT = [view,params_filter];
+except:
+	from sys import path as p
+	p.append(r"C:\Program Files (x86)\IronPython 2.7\Lib");
+	from traceback import format_exc
+	OUT = format_exc();
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="020d73c0-d8fb-48b8-8bb6-7c52e78fd554" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="1117.2" y="21.6" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Element" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="4a63f51b-2d64-4f25-9737-da4ffa8f5d34" start_index="0" end="71dc8123-2391-4acb-a248-f7551381aec8" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="2d1929bf-d977-4c3f-91f4-41f38ec8aef4" start_index="0" end="71dc8123-2391-4acb-a248-f7551381aec8" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b0493a5d-0651-4821-917c-30d883463cf3" start_index="0" end="71dc8123-2391-4acb-a248-f7551381aec8" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="71dc8123-2391-4acb-a248-f7551381aec8" start_index="0" end="020d73c0-d8fb-48b8-8bb6-7c52e78fd554" end_index="0" portType="0" />
+  </Connectors>
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="93488d59-f9bf-4270-b497-32190f2ca282" text="IN[0] = Fill Pattern&#xD;&#xA;IN[1] = Category&#xD;&#xA;IN[2] = Name" x="916.639169139467" y="-42.762017804154" />
+  </Notes>
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
