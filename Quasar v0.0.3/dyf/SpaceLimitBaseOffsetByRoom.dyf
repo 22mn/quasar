@@ -1,0 +1,70 @@
+<Workspace Version="1.3.0.875" X="-176.079575470301" Y="204.766836522207" zoom="0.822695359375" ScaleFactor="1" Name="SpaceLimitBaseOffsetByRoom" Description="Adjust space limit-offset and base-offset value  base on associate room values. Plus or minus offset are allowed. Default value is 0. Unit is millimeter. " ID="95ae59fe-1bf8-49fb-9726-18d279755ced" Category="Quasar.Revit.Space">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="58ae0f07-5ead-482c-8383-2eabb3559b50" type="PythonNodeModels.PythonNode" nickname="Python Script" x="517.325482785258" y="32.4866223550347" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <Script># dynamo version 1.3.0 
+# author - min.naung@mgjean 
+
+import clr
+clr.AddReference("RevitAPI")
+from Autodesk.Revit.DB import *
+clr.AddReference("RevitServices")
+import RevitServices
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+doc = DocumentManager.Instance.CurrentDBDocument
+
+rooms = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms);
+spaces = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_MEPSpaces);
+result = [];
+limit = IN[0]/304.8;
+base = IN[1]/304.8;
+run = IN[2];
+
+if run:
+	TransactionManager.Instance.EnsureInTransaction(doc);
+	
+	for i in rooms:
+		for j in spaces:
+			if (i.IsPointInRoom(j.Location.Point)):
+				j.LimitOffset = i.LimitOffset + limit;
+				j.BaseOffset = i.BaseOffset + base;
+				result.append([i,j]);				
+	
+	TransactionManager.Instance.TransactionTaskDone();
+	
+	OUT=result;
+else:
+	OUT="Run Forest Run";
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="b276f898-aab4-46f9-b947-c77680b65ffb" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="711.461127428733" y="44.022702405252" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="ListElement" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="22b46f5b-bbfb-4fdb-82ea-0d47eb165ce9" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="232" y="-7" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="LimitOffset:double=0;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="a7b125e1-c70c-4e6d-9f1a-cf4136711e11" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="246.215516762802" y="67" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="BaseOffset:double=0;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="31ada8a3-59da-4c3d-8fac-52436f3b9ad3" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="274.025935291243" y="139.2672208005" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="Run:bool=false;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="58ae0f07-5ead-482c-8383-2eabb3559b50" start_index="0" end="b276f898-aab4-46f9-b947-c77680b65ffb" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="22b46f5b-bbfb-4fdb-82ea-0d47eb165ce9" start_index="0" end="58ae0f07-5ead-482c-8383-2eabb3559b50" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a7b125e1-c70c-4e6d-9f1a-cf4136711e11" start_index="0" end="58ae0f07-5ead-482c-8383-2eabb3559b50" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="31ada8a3-59da-4c3d-8fac-52436f3b9ad3" start_index="0" end="58ae0f07-5ead-482c-8383-2eabb3559b50" end_index="2" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
