@@ -1,0 +1,46 @@
+<Workspace Version="1.3.2.2480" X="-255.380411339693" Y="338.753497197762" zoom="1.2198072017255" ScaleFactor="1" Name="GetElementFromLinkDocument" Description="Collect elements from link document by category and document." ID="fbd5515f-0607-49bc-9a5d-20ec9790f02c" Category="Quasar.RevitNodes">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="e1eff14f-b5a0-4391-8f6a-0f260493913b" type="PythonNodeModels.PythonNode" nickname="Python Script" x="500" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="2">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <Script># dynamo version - 1.3.0
+# author - min.naung@mgjean https://twentytwopaths.wordpress.com/contact/
+
+import clr
+clr.AddReference("RevitAPI")
+
+import System
+from Autodesk.Revit.DB import *
+cat = IN[0];
+
+obj = System.Enum.ToObject(BuiltInCategory, cat.Id);
+filter = ElementCategoryFilter(obj);
+collector = FilteredElementCollector(IN[1]).WherePasses(filter).WhereElementIsNotElementType().ToElements();
+
+OUT = collector;
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="0eb0152d-040a-4f03-b93f-8159774fe573" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="751.024971265538" y="7.78181116874225" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="// Return Elements&#xD;&#xA;Elements;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="e24f48a7-cfb4-4664-aacf-13108a41755a" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="272.8" y="-68.0000000000001" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//Category Input&#xD;&#xA;Category_;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="90bfc5d4-316b-4cef-ad9c-1034d747079e" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="243.2" y="33.5999999999999" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//Revit Link Document&#xD;&#xA;LinkDocument;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="e1eff14f-b5a0-4391-8f6a-0f260493913b" start_index="0" end="0eb0152d-040a-4f03-b93f-8159774fe573" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e24f48a7-cfb4-4664-aacf-13108a41755a" start_index="0" end="e1eff14f-b5a0-4391-8f6a-0f260493913b" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="90bfc5d4-316b-4cef-ad9c-1034d747079e" start_index="0" end="e1eff14f-b5a0-4391-8f6a-0f260493913b" end_index="1" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-7244.93212890625" eyeY="18900.62890625" eyeZ="11816.8408203125" lookX="5110.05810546875" lookY="-19437.9765625" lookZ="-11871.484375" upX="0.274650603532791" upY="0.719339787960052" upZ="-0.638057410717011" />
+  </Cameras>
+</Workspace>
