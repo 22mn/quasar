@@ -1,0 +1,181 @@
+<Workspace Version="1.3.2.2480" X="-83.5117574369879" Y="236.996442017159" zoom="0.864840461950701" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="Elements.View" resolvedName="Revit.Elements.Views.View" assemblyName="RevitNodes.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <PythonNodeModels.PythonNode guid="281175fa-ca77-44c6-bb97-9d84e68f60f3" type="PythonNodeModels.PythonNode" nickname="FiltersDelete" x="353.464808355027" y="-591.645386448443" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="true" isPinned="false" inputcount="0">
+      <Script># dynamo version - 1.3
+# author - min.naung
+
+import clr,sys
+sys.path.append(r"C:\Program Files (x86)\IronPython 2.7\Lib")
+import os, System
+
+version = ["2.0","1.3","1.2","1.1","1.0","0.9","0.8","0.7"]
+
+appdata = os.getenv("AppData");
+qpath = r"\Dynamo\Dynamo Revit\%s\packages\Quasar"
+
+for i in version:
+	if os.path.exists(os.path.join(appdata+qpath %i)):
+		ipath = os.path.join(appdata+qpath %i)
+
+clr.AddReference("System.Windows.Forms")
+clr.AddReference("System.Drawing")
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+
+from System.Collections.Generic import List
+from System.Windows.Forms import (Application, Button, ComboBox, CheckBox, Form as _Form,
+CheckedListBox,Padding,FormBorderStyle, SelectionMode,Label, MessageBox,MessageBoxButtons, MessageBoxIcon)
+from System.Drawing import (Font as _Font, Icon as _Icon, Point as _Point, Size as _Size,FontStyle)
+
+
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+result = []
+filters = FilteredElementCollector(doc).OfClass(FilterElement).ToElements()
+
+names = [i.Name.ToString() for i in filters]
+ids = [i.Id for i in filters]
+
+NameIdDict = {str(i.Name) : i.Id for i in filters}
+
+TransactionManager.Instance.EnsureInTransaction(doc);
+
+class CheckedBoxListSelector(_Form):
+	"""Checked Box List Selector"""
+
+	def __init__(self):
+		self.Icon = _Icon(r"%s\extra\icon.ico" %ipath)
+		self.Size = _Size(290,435)
+		self.Text = "Quasar®"
+
+		# fonts
+		self.gsmt_11r = _Font("Georgia", 10)
+		self.gsmt_10r = _Font("Georgia",9)
+
+		# label
+		self.label = Label()
+		self.label.Text = "Select Filters:"
+		self.label.Font = self.gsmt_11r
+		self.label.Location = _Point(30,10)
+		self.label.Size = _Size(220,28)
+		self.Controls.Add(self.label)
+
+		# checklist box
+		self.lstbox = CheckedListBox()
+		self.lstbox.Items.AddRange(tuple(names))
+		self.lstbox.Font = self.gsmt_10r
+		# padding
+		self.lstbox.Padding = Padding(30)
+		# select one click
+		self.lstbox.CheckOnClick = True
+
+		self.FormBorderStyle = FormBorderStyle.FixedDialog
+		self.MaximizeBox = False;
+		self.ManimizeBox = False;
+		self.lstbox.Location = _Point(30,40)
+		self.lstbox.Size = _Size(210,280)
+
+		# auto horizontal scrollbar
+		self.lstbox.HorizontalScrollbar = True
+		self.Controls.Add(self.lstbox)
+
+		# select all btn
+		self.btn_all = Button()
+		self.btn_all.Text = "Select All"
+		self.btn_all.Font = self.gsmt_10r
+		self.btn_all.Size = _Size(95,25)
+		self.btn_all.Location = _Point(30,315)
+		self.Controls.Add(self.btn_all)
+
+		# select none btn
+		self.btn_none = Button()
+		self.btn_none.Text = "Select None"
+		self.btn_none.Font = self.gsmt_10r
+		self.btn_none.Size = _Size(95,25)
+		self.btn_none.Location = _Point(145,315)
+		self.Controls.Add(self.btn_none)
+
+		# ok btn
+		self.btn = Button()
+		self.btn.Text = "OK"
+		self.btn.Font = self.gsmt_10r
+		self.btn.Size = _Size(80,25)
+		self.btn.Location = _Point(95,350)
+		self.Controls.Add(self.btn)
+
+		# events
+		self.btn_all.Click += self.click_all
+		self.btn_none.Click += self.click_none
+		self.btn.Click += self.click_ok 
+
+		# pop up from center
+		self.CenterToScreen()
+
+	def click_ok(self, sender, event):
+		global result
+		if len(self.lstbox.Items) &lt; 1:
+			self.Close()
+		if len(self.lstbox.CheckedItems) &lt; 1:
+			return MessageBox.Show("No element selected!", "Quasar® Info Box", MessageBoxButtons.OK, MessageBoxIcon.Asterisk)
+		
+		result = [doc.GetElement(NameIdDict[i]) for i in self.lstbox.CheckedItems]
+		
+		self.Close()
+
+	def click_all(self, sender, event):
+		for i in range(len(self.lstbox.Items)):
+			self.lstbox.SetItemChecked(i,True)
+
+	def click_none(self, sender, event):
+		for i in range(len(self.lstbox.Items)):
+			self.lstbox.SetItemChecked(i,False)
+
+TransactionManager.Instance.TransactionTaskDone()
+		
+Application.Run(CheckedBoxListSelector());
+OUT = result</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="3a924826-010d-42e2-9c6f-c4fbf2bd88ad" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="UIViewSelector" x="456.62028903393" y="-590.983108315172" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="True" IsFrozen="true" isPinned="false">
+      <ID value="51d88496-783c-4681-9694-eb47e3ede7f1" />
+      <Name value="UIViewSelector" />
+      <Description value="Select and collect views with check box interface" />
+      <Inputs />
+      <Outputs>
+        <Output value="Views" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <DSRevitNodesUI.Views guid="15f3ed9b-671d-4c85-a7cf-eab439c19db6" type="DSRevitNodesUI.Views" nickname="Views" x="322.361310368142" y="-167.036778151447" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="3:Level 2" />
+    <DSRevitNodesUI.Views guid="ddf98f18-6474-4b22-9d2b-a6b9e290b300" type="DSRevitNodesUI.Views" nickname="Views" x="297.928127524191" y="50.9823338417857" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="10:Architectural Plan" />
+    <DSRevitNodesUI.Views guid="701930ba-d7e1-4c54-a892-97228f1c1498" type="DSRevitNodesUI.Views" nickname="Views" x="279.381601491243" y="-46.3955834649278" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="13:Architectural Elevation" />
+    <CoreNodeModels.CreateList guid="bcd418b3-147b-42cc-9159-36f9f6fb12e8" type="CoreNodeModels.CreateList" nickname="List.Create" x="544.683502328736" y="17.128249560554" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+    </CoreNodeModels.CreateList>
+    <DSRevitNodesUI.Views guid="4ae3f551-adad-4f48-9775-a24fc65c8fda" type="DSRevitNodesUI.Views" nickname="Views" x="279.092795903404" y="149.006843504024" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="14:Architectural Section" />
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="1d70b60b-7d4c-47af-b6f2-46608d637d59" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="RevitNodes.CopyPasteFilter" x="712.581986450332" y="-71.9652558511334" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="..\..\..\..\..\AppData\Roaming\Dynamo\Dynamo Revit\1.3\packages\Quasar\bin\Quasar.dll" function="Quasar.RevitNodes.CopyPasteFilter@Revit.Elements.Views.View,Revit.Elements.Views.View[]">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="15f3ed9b-671d-4c85-a7cf-eab439c19db6" start_index="0" end="1d70b60b-7d4c-47af-b6f2-46608d637d59" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ddf98f18-6474-4b22-9d2b-a6b9e290b300" start_index="0" end="bcd418b3-147b-42cc-9159-36f9f6fb12e8" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="701930ba-d7e1-4c54-a892-97228f1c1498" start_index="0" end="bcd418b3-147b-42cc-9159-36f9f6fb12e8" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="bcd418b3-147b-42cc-9159-36f9f6fb12e8" start_index="0" end="1d70b60b-7d4c-47af-b6f2-46608d637d59" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="4ae3f551-adad-4f48-9775-a24fc65c8fda" start_index="0" end="bcd418b3-147b-42cc-9159-36f9f6fb12e8" end_index="2" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>

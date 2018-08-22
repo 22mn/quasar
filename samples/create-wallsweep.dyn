@@ -1,0 +1,36 @@
+<Workspace Version="1.3.2.2480" X="148.604775648568" Y="163.903631933799" zoom="0.775960161320019" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+  <NamespaceResolutionMap />
+  <Elements>
+    <Dynamo.Nodes.DSModelElementSelection guid="f2476e06-19da-4787-b647-a6f0d4a840a0" type="Dynamo.Nodes.DSModelElementSelection" nickname="Select Model Element" x="-120.43435906742" y="216.915794786756" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="4bfa3ab7-3f46-45db-bfa8-55d83d13b9ea" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="363.995944058782" y="335.922662288306" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="1000;" ShouldFocus="false" />
+    <Dynamo.Nodes.DSModelElementsSelection guid="813c0fa6-664e-469e-b276-b17014f3a562" type="Dynamo.Nodes.DSModelElementsSelection" nickname="Select Model Elements" x="88.284775434894" y="-164.56631518814" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <instance id="dd174400-457b-4ad2-8e8c-20248d060cfe-0003a8f9" />
+      <instance id="dd174400-457b-4ad2-8e8c-20248d060cfe-0003a8fa" />
+    </Dynamo.Nodes.DSModelElementsSelection>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="a5b10964-81c7-4f50-91b0-7441d6c5d188" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="302.111619821244" y="53.4567988085576" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;Reveal&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="85323dbc-f319-4a51-ae14-d4671cc3cce3" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="304" y="145.809025484422" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="false;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="a2b87527-32f2-4177-8a32-aa9a443cd934" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Elements.Type" x="98.7429350658317" y="233.655815004017" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="..\..\..\..\..\AppData\Roaming\Dynamo\Dynamo Revit\1.3\packages\archi-lab.net\bin\archilab.dll" function="archilab.Revit.Elements.Elements.Type@Revit.Elements.Element">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="20cbb6ad-73de-41cc-a5e5-426c4eeefc84" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="RevitNodes.CreateWallSweep" x="703.360670193376" y="163.928904494194" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="true" isPinned="true" assembly="..\..\..\..\..\AppData\Roaming\Dynamo\Dynamo Revit\1.3\packages\Quasar\bin\Quasar.dll" function="Quasar.RevitNodes.CreateWallSweep@Revit.Elements.Wall[],Revit.Elements.Element,string,bool,double">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <PortInfo index="4" default="True" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="f2476e06-19da-4787-b647-a6f0d4a840a0" start_index="0" end="a2b87527-32f2-4177-8a32-aa9a443cd934" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="4bfa3ab7-3f46-45db-bfa8-55d83d13b9ea" start_index="0" end="20cbb6ad-73de-41cc-a5e5-426c4eeefc84" end_index="4" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="813c0fa6-664e-469e-b276-b17014f3a562" start_index="0" end="20cbb6ad-73de-41cc-a5e5-426c4eeefc84" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a5b10964-81c7-4f50-91b0-7441d6c5d188" start_index="0" end="20cbb6ad-73de-41cc-a5e5-426c4eeefc84" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="85323dbc-f319-4a51-ae14-d4671cc3cce3" start_index="0" end="20cbb6ad-73de-41cc-a5e5-426c4eeefc84" end_index="3" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
