@@ -1,0 +1,107 @@
+<Workspace Version="1.3.2.2480" X="1344.97079876212" Y="-494.546847074852" zoom="0.747139541909803" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="1cd0c626-306c-410c-979c-48aeed666893" type="PythonNodeModels.PythonNode" nickname="Python Script" x="-1152.2247619765" y="1048.45319759445" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import clr
+clr.AddReference('ProtoGeometry')
+clr.AddReference('RevitAPI')
+clr.AddReference('RevitServices')
+clr.AddReference("RevitNodes")
+import Revit
+clr.ImportExtensions(Revit.Elements)
+clr.ImportExtensions(Revit.GeometryConversion)
+from Autodesk.DesignScript.Geometry import *
+from Autodesk.Revit.DB import FilteredElementCollector,ViewFamilyType,ViewFamily,View3D,BoundingBoxXYZ
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+# collect view type
+collector = FilteredElementCollector(doc).OfClass(ViewFamilyType);
+# get 3DViewType
+for i in collector:
+	if i.ViewFamily == ViewFamily.ThreeDimensional:
+		viewType = i;
+
+# create a function
+def SectionToIsometric(view):
+	mgr = view.GetCropRegionShapeManager()
+	# curves 
+	curve = mgr.GetCropShape()
+	# direction of section
+	vector = view.ViewDirection.ToVector().Reverse()
+	# view extend
+	offset = view.LookupParameter("Far Clip Offset").AsDouble()*304.8
+	points = []
+	for i in curve[0]:
+		# start point of each curve
+		start = i.GetEndPoint(0).ToPoint();
+		# make list
+		points.append(start)
+	# create polycurve
+	curves = PolyCurve.ByPoints(points,True)
+	# curve extrude by direction and distance , result as solid
+	solid = Curve.ExtrudeAsSolid(curves,vector,offset);
+	# create bbox
+	bbox = BoundingBox.ByGeometry(solid).ToRevitType();
+	# create 3dview
+	view3d = View3D.CreateIsometric(doc,viewType.Id);
+	# view name includes (3D)
+	view3d.ViewName = view.ViewName + " (3D)"
+	# set cropbox size to bbox size
+	view3d.CropBox = bbox
+	# set cropbox active
+	view3d.CropBoxActive = False
+	# cropbox visibility
+	view3d.CropBoxVisible = True
+	# set sectionbox to bbox
+	view3d.SetSectionBox(bbox)
+	# set view scale
+	view3d.Scale = 50
+	# return view
+	return view3d
+
+# input views
+views = IN[0]
+# output result
+result = []
+# check list 
+if not isinstance(views,list):
+	views = UnwrapElement([views])
+else:
+	views = UnwrapElement(views)
+# start transaction
+TransactionManager.Instance.EnsureInTransaction(doc)
+# loop views
+for view in views:
+	# call function with view is an argument
+	result.append(SectionToIsometric(view))
+# transaction end
+TransactionManager.Instance.TransactionTaskDone()
+# output result
+OUT = result
+
+
+
+
+
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="0989f96e-7447-4730-af49-675eaac488d2" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="View.GetByType" x="-1425.75055727863" y="1041.86981464963" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="..\..\..\..\AppData\Roaming\Dynamo\Dynamo Revit\1.3\packages\archi-lab.net\bin\Archi-lab_Grimshaw.dll" function="Archilab.Grimshaw.Views.View.GetByType@string">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <archilabUI.ViewTypesUi guid="a5a8f951-c797-4aaa-90b0-b582b86a4e82" type="archilabUI.ViewTypesUi" nickname="View Type" x="-1665.20327943064" y="999.791212875387" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="19:Section" />
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="0989f96e-7447-4730-af49-675eaac488d2" start_index="0" end="1cd0c626-306c-410c-979c-48aeed666893" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a5a8f951-c797-4aaa-90b0-b582b86a4e82" start_index="0" end="0989f96e-7447-4730-af49-675eaac488d2" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="25648.69921875" eyeY="15961.416015625" eyeZ="23499.84765625" lookX="-28249.521484375" lookY="-12105.78515625" lookZ="-14824.6474609375" upX="-0.129353567957878" upY="0.989272356033325" upZ="-0.0678815320134163" />
+  </Cameras>
+</Workspace>
