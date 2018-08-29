@@ -1,0 +1,81 @@
+<Workspace Version="1.3.2.2480" X="-29.1661131244656" Y="170.540932536819" zoom="0.666867678415087" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="6724be87-43c5-4721-982c-0612651df84a" type="PythonNodeModels.PythonNode" nickname="DeleteElements" x="396.156071632342" y="113.457057728747" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import clr
+clr.AddReference('RevitAPI')
+clr.AddReference("RevitServices")
+import System
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+# get current document 
+doc = DocumentManager.Instance.CurrentDBDocument
+
+# input category
+if isinstance(IN[0],list):
+	elements = UnwrapElement(IN[0])
+else:
+	elements = UnwrapElement([IN[0]])
+
+# output list
+res =[]
+
+
+# transaction start
+TransactionManager.Instance.EnsureInTransaction(doc)
+
+# loop elements
+for elem in elements:
+	try:
+		# delete from document
+		r = doc.Delete(elem.Id)
+		# deleted id append to output
+		# after deleted its return as a elementId list 
+		# what we want is elementId only, so use [0]
+		res.append(r[0])
+	except:
+		# error message append to output
+		res.append("ElementID %s can't delete." %elem.Id)
+		continue
+	
+# transaction end
+TransactionManager.Instance.TransactionTaskDone()
+# output result
+OUT = res
+</Script>
+    </PythonNodeModels.PythonNode>
+    <PythonNodeModels.PythonNode guid="e02f8e1d-b1b9-4970-8cbd-b87f42886853" type="PythonNodeModels.PythonNode" nickname="Python Script" x="213.09858619367" y="124.665738818777" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="0">
+      <Script>import clr
+clr.AddReference('RevitAPI')
+clr.AddReference("RevitServices")
+import System
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+# get current document 
+doc = DocumentManager.Instance.CurrentDBDocument
+
+
+
+# collect detail groups
+elements = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_IOSDetailGroups).ToElements()
+
+# output result
+OUT = elements
+</Script>
+    </PythonNodeModels.PythonNode>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="e02f8e1d-b1b9-4970-8cbd-b87f42886853" start_index="0" end="6724be87-43c5-4721-982c-0612651df84a" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
