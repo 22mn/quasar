@@ -1,0 +1,40 @@
+<Workspace Version="1.3.2.2480" X="-110.684076889287" Y="-250.760693477547" zoom="0.726212427826025" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="DSCore.List" resolvedName="DSCore.List" assemblyName="DSCoreNodes.dll" />
+    <ClassMap partialName="CSV" resolvedName="DSCore.IO.CSV" assemblyName="DSCoreNodes.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <DSRevitNodesUI.Levels guid="72e60999-5a5d-45af-9adf-0a956788aae6" type="DSRevitNodesUI.Levels" nickname="Levels" x="588.77562674473" y="552.130551414331" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="1:Level 1" />
+    <CoreNodeModels.Input.DoubleSlider guid="7e68e437-8adc-4bd6-9104-2fabf0e082e3" type="CoreNodeModels.Input.DoubleSlider" nickname="Number Slider" x="450.963275568426" y="841.159630499469" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <System.Double>600</System.Double>
+      <Range min="-1000" max="2000" step="10" />
+    </CoreNodeModels.Input.DoubleSlider>
+    <DSRevitNodesUI.Categories guid="61f14d9b-2b79-4e98-a0c7-e29d9791d4e7" type="DSRevitNodesUI.Categories" nickname="Categories" x="115.445377762657" y="680.629418318047" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="403:Rooms" />
+    <DSRevitNodesUI.ElementsOfCategory guid="c7a288d7-bcb0-4668-b59a-5c8273bb9cc8" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="351.745082367924" y="648.769419660347" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </DSRevitNodesUI.ElementsOfCategory>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="04db6c69-420c-4603-9630-12a2cee92d07" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Room.Name" x="582.775488598387" y="712.878935476882" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="RevitNodes.dll" function="Revit.Elements.Room.Name">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="9021e480-eab9-48f6-aab8-c0cf0834036d" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="RevitNodes.FloorPlanViewByRoom" x="926.502153632474" y="608.752735131387" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="..\AppData\Roaming\Dynamo\Dynamo Revit\1.3\packages\Quasar\bin\Quasar.dll" function="Quasar.RevitNodes.FloorPlanViewByRoom@Revit.Elements.Element,Revit.Elements.Room[],string[],double">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="True" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="72e60999-5a5d-45af-9adf-0a956788aae6" start_index="0" end="9021e480-eab9-48f6-aab8-c0cf0834036d" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="7e68e437-8adc-4bd6-9104-2fabf0e082e3" start_index="0" end="9021e480-eab9-48f6-aab8-c0cf0834036d" end_index="3" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="61f14d9b-2b79-4e98-a0c7-e29d9791d4e7" start_index="0" end="c7a288d7-bcb0-4668-b59a-5c8273bb9cc8" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="c7a288d7-bcb0-4668-b59a-5c8273bb9cc8" start_index="0" end="04db6c69-420c-4603-9630-12a2cee92d07" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="c7a288d7-bcb0-4668-b59a-5c8273bb9cc8" start_index="0" end="9021e480-eab9-48f6-aab8-c0cf0834036d" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="04db6c69-420c-4603-9630-12a2cee92d07" start_index="0" end="9021e480-eab9-48f6-aab8-c0cf0834036d" end_index="2" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-28403.26953125" eyeY="179886.34375" eyeZ="39464.9609375" lookX="29135.767578125" lookY="-129775.0390625" lookZ="-48702.8203125" upX="0.415334731340408" upY="0.587785303592682" upZ="-0.694266140460968" />
+  </Cameras>
+</Workspace>
