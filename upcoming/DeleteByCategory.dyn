@@ -35,17 +35,44 @@ TransactionManager.Instance.EnsureInTransaction(doc)
 
 # loop elements
 for elem in elements:
-	# delete from document
-	r = doc.Delete(elem.Id)
-	# deleted id append to output
-	# after deleted its return as a elementId list 
-	# what we want is elementId only, so use [0]
-	res.append(r[0])
+	try:
+		# delete from document
+		r = doc.Delete(elem.Id)
+		# deleted id append to output
+		# after deleted its return as a elementId list 
+		# what we want is elementId only, so use [0]
+		res.append(r[0])
+	except:
+		# error message append to output
+		res.append("ElementID %s can't delete." %elem.Id)
+		continue
 	
 # transaction end
 TransactionManager.Instance.TransactionTaskDone()
 # output result
 OUT = res
+</Script>
+    </PythonNodeModels.PythonNode>
+    <PythonNodeModels.PythonNode guid="e02f8e1d-b1b9-4970-8cbd-b87f42886853" type="PythonNodeModels.PythonNode" nickname="Python Script" x="259.884479422371" y="232.633184731164" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import clr
+clr.AddReference('RevitAPI')
+clr.AddReference("RevitServices")
+import System
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+# get current document 
+doc = DocumentManager.Instance.CurrentDBDocument
+
+
+
+# collect detail groups
+elements = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_IOSDetailGroups).ToElements()
+
+# output result
+OUT = elements
 </Script>
     </PythonNodeModels.PythonNode>
   </Elements>
