@@ -1,319 +1,97 @@
-<Workspace Version="1.3.2.2480" X="-60.1729245498282" Y="9.70733631340471" zoom="0.765829392851552" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="-23.7732403039141" Y="8.71136428292544" zoom="0.687429564313341" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
-    <PythonNodeModels.PythonNode guid="6c59117f-c9ed-4fb6-b84c-17a00590126f" type="PythonNodeModels.PythonNode" nickname="Python Script" x="376.083511239515" y="189.912264989662" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="false" inputcount="1">
+    <PythonNodeModels.PythonNode guid="6458dd9c-adff-46ca-9784-7427c736c919" type="PythonNodeModels.PythonNode" nickname="Python Script" x="461.611383078834" y="367.540483584002" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
       <PortInfo index="0" default="False" />
-      <Script>import clr,sys
-sys.path.append(r"C:\Program Files (x86)\IronPython 2.7\Lib")
-import os, System
+      <Script># dynamo version - 1.3.2
 
+# import common language runtime 
+import clr
+
+# clr.AddReference loads and imports .net assembly(dll)
+# load RevitAPI.dll and RevitServices.dll
 clr.AddReference("RevitAPI")
 clr.AddReference("RevitServices")
+
+# import all classes from Revit DB
 from Autodesk.Revit.DB import *
+# import document manager
 from RevitServices.Persistence import DocumentManager
-
-clr.AddReference("System.Windows.Forms")
-clr.AddReference("System.Drawing")
-
-
-from System.Collections.Generic import List
-from System.Windows.Forms import (Application, Button, ComboBox, CheckBox, Form as _Form,
-CheckedListBox,Padding,FormBorderStyle, SelectionMode,Label, MessageBox,MessageBoxButtons, MessageBoxIcon)
-from System.Drawing import (Font as _Font, Icon as _Icon, Point as _Point, Size as _Size,FontStyle)
-
-
-
-class ComboCheckboxListSelector(_Form):
-	"""Checked Box List Selector"""
-
-	def __init__(self,title,items):
-		
-		# icon
-		#self.Icon = _Icon(r"%s\extra\icon.ico" %ipath)
-		self.Size = _Size(360,430)
-		self.Text = "Quasar"
-		self.class2Result = [];
-		
-		self.title = title
-		self.items = items
-		# fonts
-		self.gsmt_11r = _Font("Georgia", 10)
-		self.gsmt_10r = _Font("Georgia",9)
-
-		# combo box
-		self.cbox = ComboBox()
-		self.cbox.Font = self.gsmt_11r
-		self.cbox.Location = _Point(30,10)
-		self.cbox.Size = _Size(280,28)
-		self.cbox.Items.AddRange(tuple(title))
-		self.cbox.SelectedIndex = 0;
-		self.Controls.Add(self.cbox)
-		
-		
-		
-		# checklist box
-		self.lstbox = CheckedListBox()
-		self.lstbox.Items.AddRange(tuple(self.items[self.cbox.SelectedIndex]))
-		self.lstbox.Font = self.gsmt_10r
-		# padding
-		self.lstbox.Padding = Padding(30)
-		# select one click
-		self.lstbox.CheckOnClick = True
-
-		self.FormBorderStyle = FormBorderStyle.FixedDialog
-		self.MaximizeBox = False;
-		self.ManimizeBox = False;
-		self.lstbox.Location = _Point(30,45)
-		self.lstbox.Size = _Size(280,300)
-
-		# auto horizontal scrollbar
-		self.lstbox.HorizontalScrollbar = True
-		self.Controls.Add(self.lstbox)
-
-		# select all btn
-		self.btn_all = Button()
-		self.btn_all.Text = "Select All"
-		self.btn_all.Font = self.gsmt_10r
-		self.btn_all.Size = _Size(95,25)
-		self.btn_all.Location = _Point(30,340)
-		self.Controls.Add(self.btn_all)
-
-		# select none btn
-		self.btn_none = Button()
-		self.btn_none.Text = "Select None"
-		self.btn_none.Font = self.gsmt_10r
-		self.btn_none.Size = _Size(95,25)
-		self.btn_none.Location = _Point(215,340)
-		self.Controls.Add(self.btn_none)
-
-		# ok btn
-		self.btn = Button()
-		self.btn.Text = "OK"
-		self.btn.Font = self.gsmt_10r
-		self.btn.Size = _Size(80,25)
-		self.btn.Location = _Point(130,340)
-		self.Controls.Add(self.btn)
-
-		# events
-		self.btn_all.Click += self.click_all
-		self.btn_none.Click += self.click_none
-		self.btn.Click += self.click_ok 
-		self.cbox.SelectedValueChanged += self.on_class_change
-
-		# pop up from center
-		self.CenterToScreen()
-
-	def click_ok(self, sender, event):	
-	
-		if len(self.lstbox.CheckedItems) &lt; 1:
-			return MessageBox.Show("No element selected!", "Quasar Info Box", MessageBoxButtons.OK, MessageBoxIcon.Asterisk)
-						
-		self.class2Result = self.lstbox.CheckedItems
-		
-		return self.Close()		
-
-	def click_all(self, sender, event):
-		for i in range(len(self.lstbox.Items)):
-			self.lstbox.SetItemChecked(i,True)
-
-	def click_none(self, sender, event):
-		for i in range(len(self.lstbox.Items)):
-			self.lstbox.SetItemChecked(i,False)
-	
-	def on_class_change(self, sender, event):
-		self.lstbox.Items.Clear();
-		self.lstbox.Items.AddRange(tuple(self.items[self.cbox.SelectedIndex]))
-
-
+# import transaction manager
+from RevitServices.Transactions import TransactionManager
+# instantiate current document
 doc = DocumentManager.Instance.CurrentDBDocument
 
-rooms = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms).ToElements()
+# if provided input[0]
+if IN[0]:
+	rooms = UnwrapElement(IN[0])
+	
+# if no input, collect all rooms
+else:
+	# collect all rooms 
+	rooms = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms).ToElements()
 
-normal,notplace,notenclosed,redundant = [],[],[],[]
-seg,loc = [],[]
+# room status list for output
+placed,notplaced,notenclosed,redundant = [],[],[],[]
+
+# loop rooms
 for r in rooms:
+	# get room boundary need one argument(opts)
 	s = r.GetBoundarySegments(SpatialElementBoundaryOptions())
+	# get location of room
 	l = r.Location
-	seg.append(s)
-	loc.append(l)
+	# if location is none
 	if l == None:
-		notplace.append(r)
+		# append to not placed
+		notplaced.append(r)
+	# elif no boundary segments
 	elif len(s)&lt;1:
+		# append to not enclosed
 		notenclosed.append(r)
+	# elif area zero
 	elif r.Area == 0:
+		# append to redundant
 		redundant.append(r)
+	# passed all conditions
 	else:
-		normal.append(r)
+		# append to placed
+		placed.append(r)
+
+OUT = placed,notplaced,notenclosed,redundant
 
 
-OUT = normal,notplace,notenclosed,redundant
+
+
+
 </Script>
     </PythonNodeModels.PythonNode>
-    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="94bbbc5a-26b6-475c-9e58-f93cc87bfb9f" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Element.Name" x="567.645880611735" y="210.641702111921" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true" assembly="RevitNodes.dll" function="Revit.Elements.Element.Name">
+    <DSRevitNodesUI.Categories guid="bec1fa33-6db7-4fe8-b82c-4ea90dcd83ca" type="DSRevitNodesUI.Categories" nickname="Categories" x="-358.002940657647" y="274.469479568589" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="403:Rooms" />
+    <DSRevitNodesUI.ElementsOfCategory guid="27ce2083-beb1-4ac2-a346-40348ee155cb" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="-160.060688691906" y="292.658767587063" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </DSRevitNodesUI.ElementsOfCategory>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="819180c6-1f87-48e7-a658-0ec255964fec" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="-9.19644368539326" y="416.079965106945" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" CodeText="i[2..4];" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="d39435fe-561b-454f-bef3-61732fbd4232" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Room.Name" x="666.263129560887" y="372.38462515604" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true" assembly="RevitNodes.dll" function="Revit.Elements.Room.Name">
       <PortInfo index="0" default="False" />
     </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
-    <PythonNodeModels.PythonNode guid="c0435390-ff88-4c3a-a8d7-933928038d1b" type="PythonNodeModels.PythonNode" nickname="Python Script" x="380.724503460602" y="382.046833439298" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
-      <PortInfo index="0" default="False" />
-      <Script>import clr,sys
-sys.path.append(r"C:\Program Files (x86)\IronPython 2.7\Lib")
-import os, System
-
-clr.AddReference("RevitAPI")
-clr.AddReference("RevitServices")
-from Autodesk.Revit.DB import *
-from RevitServices.Persistence import DocumentManager
-
-clr.AddReference("System.Windows.Forms")
-clr.AddReference("System.Drawing")
-
-
-from System.Collections.Generic import List
-from System.Windows.Forms import (Application, Button, ComboBox, CheckBox, Form as _Form,
-CheckedListBox,Padding,FormBorderStyle, SelectionMode,Label, MessageBox,MessageBoxButtons, MessageBoxIcon)
-from System.Drawing import (Font as _Font, Icon as _Icon, Point as _Point, Size as _Size,FontStyle)
-
-
-
-class ComboCheckboxListSelector(_Form):
-	"""Checked Box List Selector"""
-
-	def __init__(self,title,items):
-		
-		# icon
-		#self.Icon = _Icon(r"%s\extra\icon.ico" %ipath)
-		self.Size = _Size(360,330)
-		self.Text = "Quasar"
-		self.class2Result = [];
-		
-		self.title = title
-		self.items = items
-		# fonts
-		self.gsmt_11r = _Font("Georgia", 10)
-		self.gsmt_10r = _Font("Georgia",9)
-		
-		# title label
-		self.lab = Label()
-		self.lab.Text = "Select Room By Status"
-		self.lab.Location = _Point(30,15)
-		self.lab.Size = _Size(250,25)
-		self.lab.Font = _Font("Georgia",12)
-		self.Controls.Add(self.lab)
-		
-		# checklist box
-		self.lstbox = CheckedListBox()
-		self.lstbox.Items.AddRange(tuple(title))
-		self.lstbox.Font = self.gsmt_10r
-		# padding
-		self.lstbox.Padding = Padding(30)
-		# select one click
-		self.lstbox.CheckOnClick = True
-
-		self.FormBorderStyle = FormBorderStyle.FixedDialog
-		self.MaximizeBox = False;
-		self.ManimizeBox = False;
-		self.lstbox.Location = _Point(30,45)
-		self.lstbox.Size = _Size(280,200)
-
-		# auto horizontal scrollbar
-		self.lstbox.HorizontalScrollbar = True
-		self.Controls.Add(self.lstbox)
-
-		# select all btn
-		self.btn_all = Button()
-		self.btn_all.Text = "Select All"
-		self.btn_all.Font = self.gsmt_10r
-		self.btn_all.Size = _Size(95,25)
-		self.btn_all.Location = _Point(30,240)
-		self.Controls.Add(self.btn_all)
-
-		# select none btn
-		self.btn_none = Button()
-		self.btn_none.Text = "Select None"
-		self.btn_none.Font = self.gsmt_10r
-		self.btn_none.Size = _Size(95,25)
-		self.btn_none.Location = _Point(215,240)
-		self.Controls.Add(self.btn_none)
-
-		# ok btn
-		self.btn = Button()
-		self.btn.Text = "OK"
-		self.btn.Font = self.gsmt_10r
-		self.btn.Size = _Size(80,25)
-		self.btn.Location = _Point(130,240)
-		self.Controls.Add(self.btn)
-		
-		
-
-		# events
-		self.btn_all.Click += self.click_all
-		self.btn_none.Click += self.click_none
-		self.btn.Click += self.click_ok 
-
-		# pop up from center
-		self.CenterToScreen()
-
-	def click_ok(self, sender, event):	
-	
-		if len(self.lstbox.CheckedItems) &lt; 1:
-			return MessageBox.Show("No element selected!", "Quasar Info Box", MessageBoxButtons.OK, MessageBoxIcon.Asterisk)
-						
-		self.class2Result = self.lstbox.CheckedItems
-		
-		return self.Close()		
-
-	def click_all(self, sender, event):
-		for i in range(len(self.lstbox.Items)):
-			self.lstbox.SetItemChecked(i,True)
-
-	def click_none(self, sender, event):
-		for i in range(len(self.lstbox.Items)):
-			self.lstbox.SetItemChecked(i,False)
-
-
-doc = DocumentManager.Instance.CurrentDBDocument
-
-rooms = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms).ToElements()
-
-normal,notplace,notenclosed,redundant = [],[],[],[]
-seg,loc = [],[]
-for r in rooms:
-	s = r.GetBoundarySegments(SpatialElementBoundaryOptions())
-	l = r.Location
-	seg.append(s)
-	loc.append(l)
-	if l == None:
-		notplace.append(r)
-	elif len(s)&lt;1:
-		notenclosed.append(r)
-	elif r.Area == 0:
-		redundant.append(r)
-	else:
-		normal.append(r)
-
-titles = ["Rooms","Not Placed","Not Enclosed","Redundant"]
-items = [normal,notplace,notenclosed,redundant]
-ui = ComboCheckboxListSelector(titles,items)
-Application.Run(ui)
-res =[]
-selected = ui.class2Result
-for i in selected:
-	idx = titles.index(i)
-	res.append(items[idx])
-
-OUT = res
-
-
-
-
-
-</Script>
-    </PythonNodeModels.PythonNode>
   </Elements>
   <Connectors>
-    <Dynamo.Graph.Connectors.ConnectorModel start="6c59117f-c9ed-4fb6-b84c-17a00590126f" start_index="0" end="94bbbc5a-26b6-475c-9e58-f93cc87bfb9f" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="6458dd9c-adff-46ca-9784-7427c736c919" start_index="0" end="d39435fe-561b-454f-bef3-61732fbd4232" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="bec1fa33-6db7-4fe8-b82c-4ea90dcd83ca" start_index="0" end="27ce2083-beb1-4ac2-a346-40348ee155cb" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="27ce2083-beb1-4ac2-a346-40348ee155cb" start_index="0" end="819180c6-1f87-48e7-a658-0ec255964fec" end_index="0" portType="0" />
   </Connectors>
-  <Notes />
-  <Annotations />
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="73722908-1f32-460e-b6b0-c0b6e53922cd" text="**NOTE&#xD;&#xA;IN[0] accepted; if not IN[0]; collect all rooms;" x="394.553721192481" y="212.790598879038" />
+    <Dynamo.Graph.Notes.NoteModel guid="25f393e7-f6e4-465c-b35c-683ff450eebb" text="Returns;&#xD;&#xA;OUT[0] = Placed rooms;&#xD;&#xA;OUT[1] = Unplaced rooms;&#xD;&#xA;OUT[2] = Not Enclosed rooms;&#xD;&#xA;OUT[3] = Redundant rooms;" x="441.639216256922" y="271.123582549137" />
+  </Notes>
+  <Annotations>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="5fe20d84-f6c3-44aa-a671-9c6baec0945d" annotationText="RoomsCollector" left="384.553721192481" top="166.790598879038" width="283.412338113647" height="293.349884704964" fontSize="30" InitialTop="212.790598879038" InitialHeight="363.723841434873" TextblockHeight="36" backgrouund="#FFB9F9E1">
+      <Models ModelGuid="6458dd9c-adff-46ca-9784-7427c736c919" />
+      <Models ModelGuid="73722908-1f32-460e-b6b0-c0b6e53922cd" />
+      <Models ModelGuid="25f393e7-f6e4-465c-b35c-683ff450eebb" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+  </Annotations>
   <Presets />
   <Cameras>
     <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
