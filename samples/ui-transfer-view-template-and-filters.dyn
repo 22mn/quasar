@@ -1,0 +1,55 @@
+<Workspace Version="1.3.2.2480" X="697.405460627435" Y="-110.385933512323" zoom="0.657116514464583" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="c95e59e5-9ec8-4442-9945-9addc594df78" type="PythonNodeModels.PythonNode" nickname="Python Script" x="-772.052626313213" y="508.715716356846" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="0">
+      <Script># dynamo version - 1.3.0 
+# author - min.naung@mgjean https://twentytwopaths.wordpress.com/contact/
+
+
+import clr
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+
+doc = DocumentManager.Instance.CurrentDBDocument;
+link_docs = FilteredElementCollector(doc).OfClass(RevitLinkInstance);
+
+OUT = [[i.Name.split(":")[0],i.GetLinkDocument()] for i in link_docs];
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="ee17dcae-d970-49f8-913d-0b835458f105" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="-564.39977889387" y="516.922387496955" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="i[0][1];" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="c5f42489-5bbe-449e-8aeb-4a7eced54f43" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="TransferViewTempateAndFilterUI" x="-375.21041891531" y="510.806051318762" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <ID value="20846343-9989-4de1-b1d1-afd78f6ba152" />
+      <Name value="TransferViewTempateAndFilterUI" />
+      <Description value="Select view templates to transfer from link document  to current document with or without applied filters." />
+      <Inputs>
+        <Input value="LinkDocument" />
+      </Inputs>
+      <Outputs>
+        <Output value="TemplateNames" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="c95e59e5-9ec8-4442-9945-9addc594df78" start_index="0" end="ee17dcae-d970-49f8-913d-0b835458f105" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ee17dcae-d970-49f8-913d-0b835458f105" start_index="0" end="c5f42489-5bbe-449e-8aeb-4a7eced54f43" end_index="0" portType="0" />
+  </Connectors>
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="dd5b3fed-59e1-462f-a3c7-fa06b01cef53" text="Each list includes [DocumentName, Document]" x="-836.066827419221" y="464.895961741592" />
+  </Notes>
+  <Annotations>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="7e807de8-b665-499f-bf03-95e37d0e1746" annotationText="GetLinkDocument" left="-846.066827419221" top="418.895961741592" width="358.219132227325" height="182.419754615254" fontSize="30" InitialTop="464.895961741592" InitialHeight="166.419754615254" TextblockHeight="36" backgrouund="#FFFFFFFF">
+      <Models ModelGuid="c95e59e5-9ec8-4442-9945-9addc594df78" />
+      <Models ModelGuid="dd5b3fed-59e1-462f-a3c7-fa06b01cef53" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+  </Annotations>
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
