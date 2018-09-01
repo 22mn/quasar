@@ -1,0 +1,213 @@
+<Workspace Version="1.3.2.2480" X="-32.436" Y="153.574" zoom="1.1575" ScaleFactor="1" Name="TransferViewTempateAndFilterUI" Description="Select view templates to transfer from link document  to current document with or without applied filters." ID="20846343-9989-4de1-b1d1-afd78f6ba152" Category="Quasar.RevitNodes">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="b4afe283-dbc5-4b51-b61d-2ed7e50bf775" type="PythonNodeModels.PythonNode" nickname="Python Script" x="250" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script># dynamo version - 1.3.2
+# author - min.naung/mgjean https://twentytwo.space/contact
+
+import clr,sys
+sys.path.append(r"C:\Program Files (x86)\IronPython 2.7\Lib")
+import os, System
+
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+version = ["2.0","1.3","1.2","1.1","1.0","0.9","0.8","0.7"]
+
+appdata = os.getenv("AppData");
+qpath = r"\Dynamo\Dynamo Revit\%s\packages\Quasar"
+
+for i in version:
+	if os.path.exists(os.path.join(appdata+qpath %i)):
+		ipath = os.path.join(appdata+qpath %i)
+
+clr.AddReference("System.Windows.Forms")
+clr.AddReference("System.Drawing")
+
+
+from System.Collections.Generic import List
+from System.Windows.Forms import (Application, Button, ComboBox, CheckBox, Form as _Form,
+CheckedListBox,Padding,FormBorderStyle, SelectionMode,Label, MessageBox,MessageBoxButtons, MessageBoxIcon)
+from System.Drawing import (Font as _Font, Icon as _Icon, Point as _Point, Size as _Size,FontStyle)
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+linkdoc = IN[0]
+
+
+# collect view from link document
+collector = FilteredElementCollector(linkdoc).OfClass(View).ToElements()
+# collect view template
+views = [v for v in collector if v.IsTemplate]
+views_name = [v.Name for v in views]
+ids = [v.Id for v in views]
+views_ids_dict = {k:v for k,v in zip(views_name,ids)}
+
+
+class CheckedBoxListSelector(_Form):
+	"""Checked Box List Selector"""
+	
+	def __init__(self,inputList):
+		self.Icon = _Icon(r"%s\extra\icon.ico" %ipath)
+		self.Size = _Size(370,435)
+		self.Text = "Quasar"
+		self.class1Result = [];
+		self.filtersInclude = "";
+
+		# fonts
+		self.gsmt_11r = _Font("Georgia", 10)
+		self.gsmt_10r = _Font("Georgia",9)
+
+		# label
+		self.label = Label()
+		self.label.Text = "Select View Template: "
+		self.label.Font = self.gsmt_11r
+		self.label.Location = _Point(30,10)
+		self.label.Size = _Size(220,28)
+		self.Controls.Add(self.label)
+
+		# checklist box
+		self.lstbox = CheckedListBox()
+		self.lstbox.Items.AddRange(tuple(inputList))
+		self.lstbox.Font = self.gsmt_10r
+		# padding
+		self.lstbox.Padding = Padding(30)
+		# select one click
+		self.lstbox.CheckOnClick = True
+
+		self.FormBorderStyle = FormBorderStyle.FixedDialog
+		self.MaximizeBox = False;
+		self.ManimizeBox = False;
+		self.lstbox.Location = _Point(30,40)
+		self.lstbox.Size = _Size(290,280)
+
+		# auto horizontal scrollbar
+		self.lstbox.HorizontalScrollbar = True
+		self.Controls.Add(self.lstbox)
+		
+		# filter checkbox
+		self.filter_cb = CheckBox()
+		self.filter_cb.Text = "Including Filters"
+		self.filter_cb.Location = _Point(30,315)
+		self.filter_cb.Font = self.gsmt_10r
+		self.filter_cb.Size = _Size(200,30)
+		self.filter_cb.Checked = True
+		self.filter_cb.Enabled = False
+		self.Controls.Add(self.filter_cb)
+
+		# select all btn
+		self.btn_all = Button()
+		self.btn_all.Text = "Select All"
+		self.btn_all.Font = self.gsmt_10r
+		self.btn_all.Size = _Size(95,25)
+		self.btn_all.Location = _Point(30,350)
+		self.Controls.Add(self.btn_all)
+
+		# select none btn
+		self.btn_none = Button()
+		self.btn_none.Text = "Select None"
+		self.btn_none.Font = self.gsmt_10r
+		self.btn_none.Size = _Size(95,25)
+		self.btn_none.Location = _Point(225,350)
+		self.Controls.Add(self.btn_none)
+
+		# ok btn
+		self.btn = Button()
+		self.btn.Text = "OK"
+		self.btn.Font = self.gsmt_10r
+		self.btn.Size = _Size(80,25)
+		self.btn.Location = _Point(135,350)
+		self.Controls.Add(self.btn)
+
+		# events
+		self.lstbox.ItemCheck += self.lstbox_selected
+		self.btn_all.Click += self.click_all
+		self.btn_none.Click += self.click_none
+		self.btn.Click += self.click_ok 
+
+		# pop up from center
+		self.CenterToScreen()
+	
+	def lstbox_selected(self, sender,event):
+		if len(self.lstbox.Items) &gt; 1:
+			self.filter_cb.Enabled = True
+
+	def click_ok(self, sender, event):
+		#global res
+		if len(self.lstbox.Items) &lt; 1:
+			self.Close()
+		if len(self.lstbox.CheckedItems) &lt; 1:
+			return MessageBox.Show("No element selected!", "Quasar Info Box", MessageBoxButtons.OK, MessageBoxIcon.Asterisk)
+		
+		self.filtersInclude = self.filter_cb.CheckState
+		self.class1Result = self.lstbox.CheckedItems;
+		
+		return self.Close();			
+
+	def click_all(self, sender, event):
+		for i in range(len(self.lstbox.Items)):
+			self.lstbox.SetItemChecked(i,True)
+
+	def click_none(self, sender, event):
+		for i in range(len(self.lstbox.Items)):
+			self.lstbox.SetItemChecked(i,False);
+
+# instantiate class
+ui = CheckedBoxListSelector(views_name)
+# run class
+Application.Run(ui)
+# extract selected value
+selected = ui.class1Result
+# extract checkbox value
+filters = str(ui.filtersInclude) 
+
+# dot-net elementId list
+ids = List[ElementId]([views_ids_dict[i] for i in selected]);
+# transaction start
+TransactionManager.Instance.EnsureInTransaction(doc)
+#copy template from link-doc to current-doc
+transfer_views = ElementTransformUtils.CopyElements(linkdoc,ids,doc,Transform.Identity,CopyPasteOptions())
+
+# with or without filters (default is with filters)
+# if without filters 
+if filters == "Unchecked":
+	# loop template views
+	for v in transfer_views:
+		#get element(view) by elementId
+		view = doc.GetElement(v)
+		# get filters from templates
+		filters = view.GetFilters()
+		# loop filters
+		for f in filters:
+			# remove filter from view
+			view.RemoveFilter(f)
+# transaction done			
+TransactionManager.Instance.TransactionTaskDone()
+# names
+OUT = [doc.GetElement(v).Name for v in transfer_views]
+
+
+
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="4b62daea-5e00-44cd-84a0-9caa73964710" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-74.6436285097193" y="22.8077753779698" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//A link document&#xD;&#xA;LinkDocument" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="1c7bbbc6-d02b-4697-969f-941b3b2f1b22" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="370.318358531318" y="-31.1015118790497" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="//List of transfered template names&#xD;&#xA;TemplateNames;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="b4afe283-dbc5-4b51-b61d-2ed7e50bf775" start_index="0" end="1c7bbbc6-d02b-4697-969f-941b3b2f1b22" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="4b62daea-5e00-44cd-84a0-9caa73964710" start_index="0" end="b4afe283-dbc5-4b51-b61d-2ed7e50bf775" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+</Workspace>

@@ -1,0 +1,114 @@
+<Workspace Version="1.3.2.2480" X="89.7473856335652" Y="207.906098641604" zoom="0.954042924882813" ScaleFactor="1" Name="IsometricViewsBySectionViews" Description="This node performs like a Revit's feature &quot; Orient To View &quot;. It create isometric views based on provide sections or elevations views." ID="5b54fd55-3388-4662-8691-a43ba532f0ef" Category="Quasar.RevitNodes">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="c18d53fa-939b-445c-9b29-cb51518f3aa8" type="PythonNodeModels.PythonNode" nickname="Python Script" x="250" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script># dynamo version - 1.3.0
+# author - min.naung/mgjean https://twentytwo.space/contact/
+
+import clr
+clr.AddReference('ProtoGeometry')
+clr.AddReference('RevitAPI')
+clr.AddReference('RevitServices')
+clr.AddReference("RevitNodes")
+
+import Revit
+clr.ImportExtensions(Revit.Elements)
+clr.ImportExtensions(Revit.GeometryConversion)
+from Autodesk.DesignScript.Geometry import *
+from Autodesk.Revit.DB import FilteredElementCollector,ViewFamilyType,ViewFamily,View3D,BoundingBoxXYZ
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+# collect view type
+collector = FilteredElementCollector(doc).OfClass(ViewFamilyType);
+# get 3DViewType
+for i in collector:
+	if i.ViewFamily == ViewFamily.ThreeDimensional:
+		viewType = i;
+
+# create a function
+def SectionToIsometric(view):
+	mgr = view.GetCropRegionShapeManager()
+	# curves 
+	curve = mgr.GetCropShape()
+	# direction of section
+	vector = view.ViewDirection.ToVector().Reverse()
+	# view extend
+	offset = view.LookupParameter("Far Clip Offset").AsDouble()*304.8
+	points = []
+	for i in curve[0]:
+		# start point of each curve
+		start = i.GetEndPoint(0).ToPoint();
+		# make list
+		points.append(start)
+	# create polycurve
+	curves = PolyCurve.ByPoints(points,True)
+	# curve extrude by direction and distance , result as solid
+	solid = Curve.ExtrudeAsSolid(curves,vector,offset);
+	# create bbox
+	bbox = BoundingBox.ByGeometry(solid).ToRevitType();
+	# create 3dview
+	view3d = View3D.CreateIsometric(doc,viewType.Id);
+	# view name includes (3D)
+	view3d.ViewName = view.ViewName + " (3D)"
+	# set cropbox size to bbox size
+	view3d.CropBox = bbox
+	# set cropbox active
+	view3d.CropBoxActive = False
+	# cropbox visibility
+	view3d.CropBoxVisible = True
+	# set sectionbox to bbox
+	view3d.SetSectionBox(bbox)
+	# set view scale
+	view3d.Scale = 50
+	# return view
+	return view3d
+
+# input views
+views = IN[0]
+# output result
+result = []
+# check list 
+if not isinstance(views,list):
+	views = UnwrapElement([views])
+else:
+	views = UnwrapElement(views)
+# start transaction
+TransactionManager.Instance.EnsureInTransaction(doc)
+# loop views
+for view in views:
+	# call function with view is an argument
+	result.append(SectionToIsometric(view))
+# transaction end
+TransactionManager.Instance.TransactionTaskDone()
+# output result
+OUT = result
+
+
+
+
+
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="a91c2308-c326-48c9-a2d3-82e11f8454ec" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="449.8" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="//Output isometric views&#xD;&#xA;IsometricViews" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="f9b5eec5-f8a5-4714-8424-916301276047" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-30.3418063051209" y="95.6916077645142" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//section views&#xD;&#xA;SectionViews;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="c18d53fa-939b-445c-9b29-cb51518f3aa8" start_index="0" end="a91c2308-c326-48c9-a2d3-82e11f8454ec" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f9b5eec5-f8a5-4714-8424-916301276047" start_index="0" end="c18d53fa-939b-445c-9b29-cb51518f3aa8" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
