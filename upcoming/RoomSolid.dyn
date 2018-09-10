@@ -1,11 +1,11 @@
-<Workspace Version="1.3.2.2480" X="-199.908342874277" Y="-162.994409821843" zoom="0.587238834775111" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+<Workspace Version="1.3.2.2480" X="-596.861013142867" Y="-236.393268855001" zoom="0.833517200265029" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
   <NamespaceResolutionMap />
   <Elements>
     <DSRevitNodesUI.ElementsOfCategory guid="21ea2004-56a5-4d8c-aaef-e0969edc5f3e" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="661.952281843516" y="494.640735539064" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true">
       <PortInfo index="0" default="False" />
     </DSRevitNodesUI.ElementsOfCategory>
     <DSRevitNodesUI.Categories guid="3ca40edc-2633-4993-9d70-b25cc585dc1c" type="DSRevitNodesUI.Categories" nickname="Categories" x="424.741625013561" y="579.358827264048" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="403:Rooms" />
-    <PythonNodeModels.PythonNode guid="7a5dbd2b-cf5e-492d-bf23-c6b466945b2c" type="PythonNodeModels.PythonNode" nickname="Python Script" x="955.722627415969" y="516.173978110249" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="true" inputcount="1">
+    <PythonNodeModels.PythonNode guid="a0f591fc-5a05-477e-a84a-8da8f300e4f4" type="PythonNodeModels.PythonNode" nickname="Python Script" x="996.681551293513" y="499.727268297931" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script>import clr
 clr.AddReference('ProtoGeometry')
@@ -36,20 +36,14 @@ else:
 
 res = []
 
-TransactionManager.Instance.EnsureInTransaction(doc)
-
 for e in elems:
 	name = e.LookupParameter("Name").AsString()
 	number = e.LookupParameter("Number").AsString()
 	elem_name = number+"_"+name
 	geoelem = e.GetGeometryObjectFromReference(Reference(e))
 	geoobj = geoelem.GetEnumerator();
-	for obj in geoobj:	
-		shapeType = DirectShapeType.Create(doc,"ForRoom",objId)
-		shape = shapeType.SetShape(obj)
-		res.append(shape)
-		
-TransactionManager.Instance.TransactionTaskDone()
+	for obj in geoobj:			
+		res.append([elem_name,obj,obj.ToProtoType()])	
 
 OUT = res
 
@@ -74,30 +68,20 @@ OUT = res
 
 </Script>
     </PythonNodeModels.PythonNode>
-    <PythonNodeModels.PythonNode guid="334004d3-1e7d-48ac-8f99-5c7cc2c0f4f9" type="PythonNodeModels.PythonNode" nickname="BuiltInCategoryAndID" x="818.812171257072" y="656.618976716128" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="true" inputcount="1">
-      <PortInfo index="0" default="False" />
-      <Script>import clr,System
-clr.AddReference('RevitAPI')
-from Autodesk.Revit.DB import *
-
-builtInCategories = System.Enum.GetValues(BuiltInCategory)
-categories_Ids_Dict = {}
-
-categoryId = UnwrapElement(IN[0]).Id
-
-for bic in builtInCategories:
-	categories_Ids_Dict[ElementId(bic)] = bic
-OUT = categories_Ids_Dict[categoryId]</Script>
-    </PythonNodeModels.PythonNode>
-    <DSRevitNodesUI.Categories guid="615a717e-4bfe-41e1-bf96-796539d37ccc" type="DSRevitNodesUI.Categories" nickname="Categories" x="617.60400199841" y="657.982790476429" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="219:Grids" />
   </Elements>
   <Connectors>
-    <Dynamo.Graph.Connectors.ConnectorModel start="21ea2004-56a5-4d8c-aaef-e0969edc5f3e" start_index="0" end="7a5dbd2b-cf5e-492d-bf23-c6b466945b2c" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="21ea2004-56a5-4d8c-aaef-e0969edc5f3e" start_index="0" end="a0f591fc-5a05-477e-a84a-8da8f300e4f4" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="3ca40edc-2633-4993-9d70-b25cc585dc1c" start_index="0" end="21ea2004-56a5-4d8c-aaef-e0969edc5f3e" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="615a717e-4bfe-41e1-bf96-796539d37ccc" start_index="0" end="334004d3-1e7d-48ac-8f99-5c7cc2c0f4f9" end_index="0" portType="0" />
   </Connectors>
-  <Notes />
-  <Annotations />
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="bebe9749-2962-4285-99b2-8f04139bf4d9" text="[Name, RevitType, ProtoType]" x="967.0055847067" y="465.222845581949" />
+  </Notes>
+  <Annotations>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="f869529c-addc-4f19-91c9-75e4b3558f12" annotationText="RoomSolid" left="957.0055847067" top="419.222845581949" width="196.8" height="173.104422715982" fontSize="30" InitialTop="465.222845581949" InitialHeight="157.104422715982" TextblockHeight="36" backgrouund="#FFFFFFFF">
+      <Models ModelGuid="a0f591fc-5a05-477e-a84a-8da8f300e4f4" />
+      <Models ModelGuid="bebe9749-2962-4285-99b2-8f04139bf4d9" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+  </Annotations>
   <Presets />
   <Cameras>
     <Camera Name="Background Preview" eyeX="-17812.087890625" eyeY="38503.35546875" eyeZ="23717.98046875" lookX="17807.087890625" lookY="-38492.35546875" lookZ="-23725.98046875" upX="0.385847300291061" upY="0.766044437885284" upZ="-0.51409900188446" />

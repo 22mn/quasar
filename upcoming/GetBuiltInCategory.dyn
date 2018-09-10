@@ -1,0 +1,52 @@
+<Workspace Version="1.3.2.2480" X="-570.028898043632" Y="-696.989615532322" zoom="0.879349646824193" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap />
+  <Elements>
+    <DSRevitNodesUI.Categories guid="615a717e-4bfe-41e1-bf96-796539d37ccc" type="DSRevitNodesUI.Categories" nickname="Categories" x="594.052115676589" y="963.097297627497" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="233:Levels" />
+    <PythonNodeModels.PythonNode guid="334004d3-1e7d-48ac-8f99-5c7cc2c0f4f9" type="PythonNodeModels.PythonNode" nickname="BuiltInCategoryAndID" x="1054.94150742151" y="994.404336667209" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import clr,System
+clr.AddReference('RevitAPI')
+from Autodesk.Revit.DB import *
+
+builtInCategories = System.Enum.GetValues(BuiltInCategory)
+categories_Ids_Dict = {}
+
+categories = IN[0]
+
+if isinstance(categories,list):
+	categories = UnwrapElement(categories)
+else:
+	categories = UnwrapElement([categories])
+
+result = []
+
+# create dictionary {"id":"obj"}
+for bic in builtInCategories:
+	categories_Ids_Dict[ElementId(bic)] = bic
+# loop category
+for cate in categories:
+	# get id
+	id = cate.Id
+	# return [[obj, id], []..[]]
+	result.append([categories_Ids_Dict[id],id])
+
+OUT = result</Script>
+    </PythonNodeModels.PythonNode>
+    <DSRevitNodesUI.Categories guid="0f0df996-f808-4f01-8b2c-8c3101049467" type="DSRevitNodesUI.Categories" nickname="Categories" x="613.803920134536" y="1071.81100134054" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="219:Grids" />
+    <CoreNodeModels.CreateList guid="5dc35195-28f3-47d9-bd0b-251b1a975611" type="CoreNodeModels.CreateList" nickname="List.Create" x="845.103333961705" y="958.902938082324" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="2">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+    </CoreNodeModels.CreateList>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="615a717e-4bfe-41e1-bf96-796539d37ccc" start_index="0" end="5dc35195-28f3-47d9-bd0b-251b1a975611" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="615a717e-4bfe-41e1-bf96-796539d37ccc" start_index="0" end="334004d3-1e7d-48ac-8f99-5c7cc2c0f4f9" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="0f0df996-f808-4f01-8b2c-8c3101049467" start_index="0" end="5dc35195-28f3-47d9-bd0b-251b1a975611" end_index="1" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17812.087890625" eyeY="38503.35546875" eyeZ="23717.98046875" lookX="17807.087890625" lookY="-38492.35546875" lookZ="-23725.98046875" upX="0.385847300291061" upY="0.766044437885284" upZ="-0.51409900188446" />
+  </Cameras>
+</Workspace>
