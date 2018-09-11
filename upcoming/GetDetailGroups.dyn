@@ -1,7 +1,7 @@
-<Workspace Version="1.3.2.2480" X="-153.557095369161" Y="20.5181769668513" zoom="0.756889548913338" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="-221.949213381305" Y="-20.026531136851" zoom="0.878530757378055" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
-    <PythonNodeModels.PythonNode guid="4445e1b3-66a7-4494-9334-0485469f1a76" type="PythonNodeModels.PythonNode" nickname="Python Script" x="522.961497313611" y="199.437163564095" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+    <PythonNodeModels.PythonNode guid="4445e1b3-66a7-4494-9334-0485469f1a76" type="PythonNodeModels.PythonNode" nickname="DetailGroups" x="506.57049463207" y="306.889292254197" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script>import clr
 clr.AddReference('RevitAPI')
@@ -13,8 +13,6 @@ from RevitServices.Transactions import TransactionManager
 
 # get current document 
 doc = DocumentManager.Instance.CurrentDBDocument
-
-
 
 # collect detail groups
 elements = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_IOSDetailGroups).ToElements()

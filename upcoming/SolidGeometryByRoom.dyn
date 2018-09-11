@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="-596.861013142867" Y="-236.393268855001" zoom="0.833517200265029" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+<Workspace Version="1.3.2.2480" X="-452.861013142867" Y="-217.193268855001" zoom="0.833517200265029" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <DSRevitNodesUI.ElementsOfCategory guid="21ea2004-56a5-4d8c-aaef-e0969edc5f3e" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="661.952281843516" y="494.640735539064" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true">
