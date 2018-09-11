@@ -1,17 +1,17 @@
-<Workspace Version="1.3.2.2480" X="250.750489249555" Y="-27.6430071252477" zoom="0.884675423340454" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="-44.0593523936153" Y="-10.9480962980478" zoom="0.730986526468635" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
-    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="464f773a-b503-4186-a206-0e7b82f981cc" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Polygon.RegularPolygon" x="289.443343730678" y="55.2992601867985" isVisible="false" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true" assembly="ProtoGeometry.dll" function="Autodesk.DesignScript.Geometry.Polygon.RegularPolygon@Autodesk.DesignScript.Geometry.Circle,int">
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="464f773a-b503-4186-a206-0e7b82f981cc" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Polygon.RegularPolygon" x="161.136521360744" y="22.9617683699859" isVisible="false" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="ProtoGeometry.dll" function="Autodesk.DesignScript.Geometry.Polygon.RegularPolygon@Autodesk.DesignScript.Geometry.Circle,int">
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="True" />
     </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
-    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="2961f0d4-bddc-488b-adb8-113b540193a0" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Circle.ByCenterPointRadius" x="-104.522292852907" y="204.077425362794" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="ProtoGeometry.dll" function="Autodesk.DesignScript.Geometry.Circle.ByCenterPointRadius@Autodesk.DesignScript.Geometry.Point,double">
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="2961f0d4-bddc-488b-adb8-113b540193a0" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Circle.ByCenterPointRadius" x="-104.522292852907" y="204.077425362794" isVisible="false" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="ProtoGeometry.dll" function="Autodesk.DesignScript.Geometry.Circle.ByCenterPointRadius@Autodesk.DesignScript.Geometry.Point,double">
       <PortInfo index="0" default="True" />
       <PortInfo index="1" default="True" />
     </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
     <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="f666dcc6-8cf4-4cfb-9a20-f96aaca4ba35" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Point.Origin" x="-262.860335376587" y="193.738351182463" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="ProtoGeometry.dll" function="Autodesk.DesignScript.Geometry.Point.Origin" />
-    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="e2c9e35a-b6d0-4e0c-8484-0660c1e865e0" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="-5.35387887094657" y="341.825830545898" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="7;" ShouldFocus="false" />
-    <PythonNodeModels.PythonNode guid="27704de9-877d-4ec1-9aa8-f2a63b18c6f5" type="PythonNodeModels.PythonNode" nickname="Python Script" x="342.751978081295" y="333.2850023198" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="2">
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="e2c9e35a-b6d0-4e0c-8484-0660c1e865e0" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="-5.35387887094657" y="341.825830545898" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="8;" ShouldFocus="false" />
+    <PythonNodeModels.PythonNode guid="27704de9-877d-4ec1-9aa8-f2a63b18c6f5" type="PythonNodeModels.PythonNode" nickname="Python Script" x="558.439572925061" y="124.55866329619" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="false" inputcount="2">
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="False" />
       <Script>import clr
@@ -52,25 +52,69 @@ OUT = res
 
 </Script>
     </PythonNodeModels.PythonNode>
+    <PythonNodeModels.PythonNode guid="0741c44d-4bae-4f9c-ad6e-45ad67172a48" type="PythonNodeModels.PythonNode" nickname="Python Script" x="581.007071455248" y="382.073531036347" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="2">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <Script>import clr
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+
+curve = IN[0]
+side = float(IN[1])
+
+base = float(1/side)
+increment = 0
+points = []
+res = []
+increment_list = []
+
+for i in range(int(side)):
+	increment += base
+	increment_list.append(increment)
+	point = Curve.PointAtParameter(curve,increment)
+	points.append(point)
+
+for num,point in enumerate(points):
+	if num == len(points):
+		break;
+	if num == len(points)-1:
+		next = num + 1
+		line = Line.ByStartPointEndPoint(point,points[0])
+		
+	else:
+		next = num + 1
+		line = Line.ByStartPointEndPoint(point, points[next])
+	res.append(line);
+
+OUT = points
+
+
+
+
+
+</Script>
+    </PythonNodeModels.PythonNode>
   </Elements>
   <Connectors>
     <Dynamo.Graph.Connectors.ConnectorModel start="2961f0d4-bddc-488b-adb8-113b540193a0" start_index="0" end="464f773a-b503-4186-a206-0e7b82f981cc" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="2961f0d4-bddc-488b-adb8-113b540193a0" start_index="0" end="27704de9-877d-4ec1-9aa8-f2a63b18c6f5" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="2961f0d4-bddc-488b-adb8-113b540193a0" start_index="0" end="0741c44d-4bae-4f9c-ad6e-45ad67172a48" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="f666dcc6-8cf4-4cfb-9a20-f96aaca4ba35" start_index="0" end="2961f0d4-bddc-488b-adb8-113b540193a0" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="e2c9e35a-b6d0-4e0c-8484-0660c1e865e0" start_index="0" end="464f773a-b503-4186-a206-0e7b82f981cc" end_index="1" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="e2c9e35a-b6d0-4e0c-8484-0660c1e865e0" start_index="0" end="27704de9-877d-4ec1-9aa8-f2a63b18c6f5" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e2c9e35a-b6d0-4e0c-8484-0660c1e865e0" start_index="0" end="0741c44d-4bae-4f9c-ad6e-45ad67172a48" end_index="1" portType="0" />
   </Connectors>
   <Notes>
-    <Dynamo.Graph.Notes.NoteModel guid="877b5625-5e26-49a8-a0c1-31fae860c3cb" text="Polygon[Circle, Sides]" x="339.153498053662" y="300.484899034356" />
+    <Dynamo.Graph.Notes.NoteModel guid="877b5625-5e26-49a8-a0c1-31fae860c3cb" text="Polygon[Circle, Sides]" x="535.264738749171" y="86.6401950844663" />
   </Notes>
   <Annotations>
-    <Dynamo.Graph.Annotations.AnnotationModel guid="6c10df7f-6b09-4eb2-ba72-fb1d27416b43" annotationText="CreatePolygon" left="329.153498053662" top="254.484899034356" width="204.196666666667" height="197.000103285443" fontSize="30" InitialTop="300.484899034356" InitialHeight="181.000103285444" TextblockHeight="36" backgrouund="#FFFFFFFF">
+    <Dynamo.Graph.Annotations.AnnotationModel guid="6c10df7f-6b09-4eb2-ba72-fb1d27416b43" annotationText="CreatePolygon" left="525.264738749171" top="40.6401950844663" width="204.196666666667" height="202.118468211724" fontSize="30" InitialTop="86.6401950844663" InitialHeight="181.000103285444" TextblockHeight="36" backgrouund="#FFFFFFFF">
       <Models ModelGuid="27704de9-877d-4ec1-9aa8-f2a63b18c6f5" />
       <Models ModelGuid="877b5625-5e26-49a8-a0c1-31fae860c3cb" />
     </Dynamo.Graph.Annotations.AnnotationModel>
   </Annotations>
   <Presets />
   <Cameras>
-    <Camera Name="Background Preview" eyeX="2.94920590365184" eyeY="7.28723824609792" eyeZ="4.69826778408668" lookX="-1.30673643622015" lookY="-2.42492121048174" lookZ="-2.27150891079727" upX="-0.252333016747806" upY="0.862513669207255" upZ="-0.438632213921393" />
+    <Camera Name="Background Preview" eyeX="0.593986198125789" eyeY="4.89569663253956" eyeZ="1.68286862930931" lookX="-0.000604029283197804" lookY="-0.0241473903617333" lookZ="-0.00546193588403798" upX="-0.0994574406049954" upY="0.425779282554149" upZ="-0.899344322904743" />
   </Cameras>
 </Workspace>
