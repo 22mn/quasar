@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="-327.226393069677" Y="56.4322467115522" zoom="0.679653671190364" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="-43.7677079439723" Y="34.676007823802" zoom="0.818865791623838" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap>
     <ClassMap partialName="Math" resolvedName="DSCore.Math" assemblyName="DSCoreNodes.dll" />
   </NamespaceResolutionMap>
@@ -7,25 +7,7 @@
       <PortInfo index="0" default="False" />
     </DSRevitNodesUI.ElementsOfCategory>
     <DSRevitNodesUI.Categories guid="8a99590c-60a5-4488-bea4-c25db02b8482" type="DSRevitNodesUI.Categories" nickname="Categories" x="-20.8" y="199.2" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="403:Rooms" />
-    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="84177c39-9459-42d7-9eb3-c2d863f68f89" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Element.Geometry" x="383.371893888796" y="563.018670271967" isVisible="false" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="RevitNodes.dll" function="Revit.Elements.Element.Geometry">
-      <PortInfo index="0" default="False" />
-    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
-    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="4e727fd8-cac2-480b-b5a6-e659b53a45d0" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Solid.Centroid" x="768.056135769221" y="405.893802896905" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="ProtoGeometry.dll" function="Autodesk.DesignScript.Geometry.Solid.Centroid">
-      <PortInfo index="0" default="False" />
-    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
-    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="601fde33-a410-412c-98ef-18f3ccd90e39" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Geometry.Translate" x="1418.14142360689" y="318.03762127542" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true" assembly="ProtoGeometry.dll" function="Autodesk.DesignScript.Geometry.Geometry.Translate@Autodesk.DesignScript.Geometry.Vector,double">
-      <PortInfo index="0" default="False" />
-      <PortInfo index="1" default="False" />
-      <PortInfo index="2" default="False" />
-    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
-    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="564cd67d-125d-45c7-a654-6af2a129ae48" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Vector.ZAxis" x="1027.70970732326" y="312.15074481946" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="ProtoGeometry.dll" function="Autodesk.DesignScript.Geometry.Vector.ZAxis" />
-    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="454b8de7-587a-4a1a-a2d0-2a8cc62a9107" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Point.Z" x="745.319157689016" y="513.890623744253" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true" assembly="ProtoGeometry.dll" function="Autodesk.DesignScript.Geometry.Point.Z">
-      <PortInfo index="0" default="False" />
-    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
-    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="34b75043-b3eb-4702-9e08-31165a55f3b6" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="1103.36103071799" y="513.999744811801" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" CodeText="x&gt;1 ? -x: Math.Abs(x);" ShouldFocus="false">
-      <PortInfo index="0" default="False" />
-    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
-    <PythonNodeModels.PythonNode guid="2e4abb35-82a2-41a2-8555-1f6563109f98" type="PythonNodeModels.PythonNode" nickname="Python Script" x="991.56281129495" y="68.5829118207725" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+    <PythonNodeModels.PythonNode guid="2e4abb35-82a2-41a2-8555-1f6563109f98" type="PythonNodeModels.PythonNode" nickname="Python Script" x="567.79019711894" y="193.060396762322" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script>import clr
 clr.AddReference('ProtoGeometry')
@@ -36,7 +18,8 @@ clr.AddReference("RevitNodes")
 import System,Revit
 clr.ImportExtensions(Revit.Elements)
 clr.ImportExtensions(Revit.GeometryConversion)
-from Autodesk.DesignScript.Geometry import *
+from Autodesk.DesignScript.Geometry import (Geometry,
+Point as pt)
 from Autodesk.Revit.DB import *
 from RevitServices.Persistence import DocumentManager
 from RevitServices.Transactions import TransactionManager
@@ -45,10 +28,6 @@ doc = DocumentManager.Instance.CurrentDBDocument
 
 elems = IN[0];
 
-MassBICObj = System.Enum.ToObject(BuiltInCategory,BuiltInCategory.OST_Mass)
-
-objId = ElementId(MassBICObj)
-
 if not isinstance(elems,list):
 	elems = UnwrapElement([elem])
 else:
@@ -56,17 +35,20 @@ else:
 
 res = []
 
+#TransactionManager.Instance.EnsureInTransaction(doc)
+
 for e in elems:
-	name = e.LookupParameter("Name").AsString()
-	number = e.LookupParameter("Number").AsString()
-	elem_name = number+"_"+name
+	elevation = e.Level.Elevation * 304.8
 	geoelem = e.GetGeometryObjectFromReference(Reference(e))
 	geoobj = geoelem.GetEnumerator();
 	for obj in geoobj:
 		room_geometry = obj.ToProtoType()
-		centroid = room_geometry.Centroid()
-		zval = centroid.Z		
-		res.append([centroid,zval])	
+		point = room_geometry.Centroid()
+		newloc = pt.ByCoordinates(point.X,point.Y,elevation)
+		#e.Location.Move(newloc.ToRevitType())
+		res.append([point,newloc,newloc.ToRevitType()])
+
+#TransactionManager.Instance.TransactionTaskDone()
 
 OUT = res
 
@@ -93,20 +75,13 @@ OUT = res
     </PythonNodeModels.PythonNode>
   </Elements>
   <Connectors>
-    <Dynamo.Graph.Connectors.ConnectorModel start="eb1b0600-b12e-4710-b0e3-f617c4988717" start_index="0" end="84177c39-9459-42d7-9eb3-c2d863f68f89" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="eb1b0600-b12e-4710-b0e3-f617c4988717" start_index="0" end="2e4abb35-82a2-41a2-8555-1f6563109f98" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="8a99590c-60a5-4488-bea4-c25db02b8482" start_index="0" end="eb1b0600-b12e-4710-b0e3-f617c4988717" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="84177c39-9459-42d7-9eb3-c2d863f68f89" start_index="0" end="4e727fd8-cac2-480b-b5a6-e659b53a45d0" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="4e727fd8-cac2-480b-b5a6-e659b53a45d0" start_index="0" end="454b8de7-587a-4a1a-a2d0-2a8cc62a9107" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="4e727fd8-cac2-480b-b5a6-e659b53a45d0" start_index="0" end="601fde33-a410-412c-98ef-18f3ccd90e39" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="564cd67d-125d-45c7-a654-6af2a129ae48" start_index="0" end="601fde33-a410-412c-98ef-18f3ccd90e39" end_index="1" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="454b8de7-587a-4a1a-a2d0-2a8cc62a9107" start_index="0" end="34b75043-b3eb-4702-9e08-31165a55f3b6" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="34b75043-b3eb-4702-9e08-31165a55f3b6" start_index="0" end="601fde33-a410-412c-98ef-18f3ccd90e39" end_index="2" portType="0" />
   </Connectors>
   <Notes />
   <Annotations />
   <Presets />
   <Cameras>
-    <Camera Name="Background Preview" eyeX="-18459.17578125" eyeY="8390.7470703125" eyeZ="2515.826171875" lookX="15825.41015625" lookY="-8326.8837890625" lookZ="-5607.37646484375" upX="0.228030636906624" upY="0.97029572725296" upZ="-0.0807974860072136" />
+    <Camera Name="Background Preview" eyeX="-21197.515625" eyeY="-879.966125488281" eyeZ="2814.25512695313" lookX="18691.166015625" lookY="-1039.45764160156" lookZ="-884.928771972656" upX="-0.159702301025391" upY="0.987136244773865" upZ="0.00756108108907938" />
   </Cameras>
 </Workspace>
