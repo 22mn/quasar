@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="408.653250752074" Y="54.9270114235269" zoom="0.625317083466676" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="76.5999460602263" Y="-313.47962416388" zoom="1.06353959856905" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="2961f0d4-bddc-488b-adb8-113b540193a0" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Circle.ByCenterPointRadius" x="-110.678233917904" y="22.0823497910205" isVisible="false" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="ProtoGeometry.dll" function="Autodesk.DesignScript.Geometry.Circle.ByCenterPointRadius@Autodesk.DesignScript.Geometry.Point,double">
@@ -6,8 +6,8 @@
       <PortInfo index="1" default="True" />
     </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
     <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="f666dcc6-8cf4-4cfb-9a20-f96aaca4ba35" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Point.Origin" x="-354.142777165586" y="112.271225714862" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="ProtoGeometry.dll" function="Autodesk.DesignScript.Geometry.Point.Origin" />
-    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="e2c9e35a-b6d0-4e0c-8484-0660c1e865e0" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="152.310053050671" y="453.002337286233" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="8;" ShouldFocus="false" />
-    <PythonNodeModels.PythonNode guid="0741c44d-4bae-4f9c-ad6e-45ad67172a48" type="PythonNodeModels.PythonNode" nickname="Python Script" x="384.772174423807" y="438.882582058132" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="3">
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="e2c9e35a-b6d0-4e0c-8484-0660c1e865e0" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="152.310053050671" y="453.002337286233" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="7;" ShouldFocus="false" />
+    <PythonNodeModels.PythonNode guid="0741c44d-4bae-4f9c-ad6e-45ad67172a48" type="PythonNodeModels.PythonNode" nickname="Python Script" x="385.584050865808" y="455.120110898148" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="3">
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="False" />
       <PortInfo index="2" default="False" />
@@ -54,7 +54,7 @@ OUT = res,points,toprint
 </Script>
     </PythonNodeModels.PythonNode>
     <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="78901733-e629-4330-9004-075044d2bdd9" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="151.915088525478" y="535.268902448023" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="2;" ShouldFocus="false" />
-    <PythonNodeModels.PythonNode guid="761313c9-192c-408b-a317-f66819c25c4d" type="PythonNodeModels.PythonNode" nickname="FollowSide" x="426.316082162053" y="135.082390635434" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="false" inputcount="2">
+    <PythonNodeModels.PythonNode guid="761313c9-192c-408b-a317-f66819c25c4d" type="PythonNodeModels.PythonNode" nickname="FollowSide" x="247.703264921871" y="-37.8472915107418" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="false" inputcount="2">
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="False" />
       <Script>import clr,sys
