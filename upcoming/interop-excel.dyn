@@ -1,7 +1,7 @@
-<Workspace Version="1.3.2.2480" X="68.2760000000001" Y="110.268" zoom="0.8425" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="145.194142549717" Y="100.751015914957" zoom="0.803321593462597" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
-    <PythonNodeModels.PythonNode guid="c338c051-4ebd-442c-8919-765a475d871f" type="PythonNodeModels.PythonNode" nickname="excel" x="104.8" y="136.8" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+    <PythonNodeModels.PythonNode guid="c338c051-4ebd-442c-8919-765a475d871f" type="PythonNodeModels.PythonNode" nickname="excel" x="-69.6019200963027" y="123.171295456686" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script>import clr,System
 clr.AddReference('Microsoft.Office.Interop.Excel')
@@ -19,26 +19,39 @@ except:
 OUT = excel
 """
 
+
 # excel app
 excel = Excel.ApplicationClass()
+
+excel.Visible = False
+excel.DisplayAlerts = False
+excel.ScreenUpdating = False
+
 # open workbook
-workbook = excel.Workbooks.Open(r"C:\Users\min.naung\Desktop\wb1.xlsx")
+workbook = excel.Workbooks.Open(r"C:\Users\min.naung\Desktop\interop.xlsx")
 
-# adding a new worksheet
-#worksheet = workbook.Worksheets.Add()
+author = workbook.Author
+# collect sheets from workbook
+sheets = workbook.Worksheets
 
-OUT = workbook
+# get sheet from sheets
+sheet = sheets.Item("Sheet2")
+
+# data 
+data = sheet.Range["A1","F5"].Value2
+workbook.Close()
+
+OUT = data
+
+
+
+
 
 
 </Script>
     </PythonNodeModels.PythonNode>
-    <CoreNodeModels.Watch guid="e33b20aa-7614-42bc-a531-351127f3605c" type="CoreNodeModels.Watch" nickname="Watch" x="325.6" y="152" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
-      <PortInfo index="0" default="False" />
-    </CoreNodeModels.Watch>
   </Elements>
-  <Connectors>
-    <Dynamo.Graph.Connectors.ConnectorModel start="c338c051-4ebd-442c-8919-765a475d871f" start_index="0" end="e33b20aa-7614-42bc-a531-351127f3605c" end_index="0" portType="0" />
-  </Connectors>
+  <Connectors />
   <Notes />
   <Annotations />
   <Presets />
