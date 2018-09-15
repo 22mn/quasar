@@ -1,0 +1,62 @@
+<Workspace Version="1.3.2.2480" X="-196.676364651539" Y="176.733529503055" zoom="1.05429821501133" ScaleFactor="1" Name="GetBuiltInCategory" Description="Collect built-in category object and id by category" ID="8cdef8e6-1c8e-4797-b5ae-d8f467afc8f2" Category="Quasar.BuiltIns">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="50e41dec-9f3a-40b3-897c-916fc6be4fd5" type="PythonNodeModels.PythonNode" nickname="BuiltInCategoryAndID" x="250" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script># dynamo version - 1.3.2'
+# author - min.naung/mgjean @https://twentytwo.space/contact
+
+import clr,System
+clr.AddReference('RevitAPI')
+from Autodesk.Revit.DB import *
+
+builtInCategories = System.Enum.GetValues(BuiltInCategory)
+categories_Ids_Dict = {}
+
+categories = IN[0]
+
+if isinstance(categories,list):
+	categories = UnwrapElement(categories)
+else:
+	categories = UnwrapElement([categories])
+
+catObj,ids = [],[]
+
+# create dictionary {"id":"obj"}
+for bic in builtInCategories:
+	categories_Ids_Dict[ElementId(bic)] = bic
+# loop category
+for cate in categories:
+	# get id
+	id = cate.Id
+	# return [[obj, id], []..[]]
+	catObj.append(categories_Ids_Dict[id])
+	ids.append(id)
+
+OUT = catObj, ids</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="648f0c1e-d43c-44a5-8ffc-48851de68bd4" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="0" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// Category or Categories&#xD;&#xA;Category_" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="ba330e19-5514-4689-9529-580c5a4beb35" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="557.74850658564" y="-21.7871266464101" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="BuiltInCategoryObject" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="f5d6ce85-9572-47d2-ae7a-da597757f8aa" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="435.982231718235" y="-11.720582096689" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="i[0];&#xA;i[1];" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="091e3201-7c75-47c9-9986-866d8f1c50af" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="575.066342620062" y="64.7229188924214" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="Ids" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="50e41dec-9f3a-40b3-897c-916fc6be4fd5" start_index="0" end="f5d6ce85-9572-47d2-ae7a-da597757f8aa" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="648f0c1e-d43c-44a5-8ffc-48851de68bd4" start_index="0" end="50e41dec-9f3a-40b3-897c-916fc6be4fd5" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f5d6ce85-9572-47d2-ae7a-da597757f8aa" start_index="0" end="ba330e19-5514-4689-9529-580c5a4beb35" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f5d6ce85-9572-47d2-ae7a-da597757f8aa" start_index="1" end="091e3201-7c75-47c9-9986-866d8f1c50af" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+</Workspace>
