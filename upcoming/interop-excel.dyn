@@ -1,7 +1,7 @@
-<Workspace Version="1.3.2.2480" X="145.194142549717" Y="100.751015914957" zoom="0.803321593462597" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="276.379008048572" Y="178.771450686187" zoom="0.789161032924815" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
-    <PythonNodeModels.PythonNode guid="c338c051-4ebd-442c-8919-765a475d871f" type="PythonNodeModels.PythonNode" nickname="excel" x="-69.6019200963027" y="123.171295456686" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+    <PythonNodeModels.PythonNode guid="c338c051-4ebd-442c-8919-765a475d871f" type="PythonNodeModels.PythonNode" nickname="excel" x="-146.54993696543" y="25.0308747295174" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script>import clr,System
 clr.AddReference('Microsoft.Office.Interop.Excel')
@@ -28,7 +28,7 @@ excel.DisplayAlerts = False
 excel.ScreenUpdating = False
 
 # open workbook
-workbook = excel.Workbooks.Open(r"C:\Users\min.naung\Desktop\interop.xlsx")
+workbook = excel.Workbooks.Open(r"C:\Users\mrmin\OneDrive\Desktop\interop.xlsx")
 
 author = workbook.Author
 # collect sheets from workbook
@@ -38,11 +38,11 @@ sheets = workbook.Worksheets
 sheet = sheets.Item("Sheet2")
 
 # data 
-data = sheet.Range["A1","F5"].Value2
-workbook.Close()
+range = sheet.UsedRange
+columns = range.Columns.Count
+rows = range.Rows.Count
 
-OUT = data
-
+OUT = columns,rows
 
 
 

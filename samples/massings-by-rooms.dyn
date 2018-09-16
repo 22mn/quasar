@@ -1,0 +1,22 @@
+<Workspace Version="1.3.2.2480" X="89.2979097032641" Y="-78.8368917359052" zoom="0.70823125" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+  <NamespaceResolutionMap />
+  <Elements>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="55147ee3-3f93-4c29-8acb-76458f4f4a81" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="RoomUtility.MassingsByRooms" x="455.737670428974" y="423.016811246327" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true" assembly="C:\Users\mrmin\AppData\Roaming\Dynamo\Dynamo Revit\1.3\packages\Quasar\bin\Quasar.dll" function="Quasar.RoomUtility.MassingsByRooms@Revit.Elements.Element[]">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <DSRevitNodesUI.Categories guid="ef6a74b1-7693-4473-b7c5-2f2b03536b98" type="DSRevitNodesUI.Categories" nickname="Categories" x="13.6688427299703" y="306.846290801187" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="403:Rooms" />
+    <DSRevitNodesUI.ElementsOfCategory guid="3df719b9-0c30-4f65-8e3f-684c2963167d" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="171.730185258764" y="451.572335321812" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </DSRevitNodesUI.ElementsOfCategory>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="ef6a74b1-7693-4473-b7c5-2f2b03536b98" start_index="0" end="3df719b9-0c30-4f65-8e3f-684c2963167d" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="3df719b9-0c30-4f65-8e3f-684c2963167d" start_index="0" end="55147ee3-3f93-4c29-8acb-76458f4f4a81" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
