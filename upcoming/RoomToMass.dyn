@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="-196.833018290517" Y="-255.549955539078" zoom="0.819249338322784" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="-191.483105244665" Y="-211.067732920439" zoom="0.762603431411883" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <DSRevitNodesUI.ElementsOfCategory guid="21ea2004-56a5-4d8c-aaef-e0969edc5f3e" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="647.493532668721" y="529.724356113797" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
@@ -91,6 +91,22 @@ OUT = res
 
 </Script>
     </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="65337a0b-7c36-423c-9aa8-9ff0b736b42c" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="Springs.DirectShape.ByGeometry" x="638.540181720041" y="622.784453605915" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="True" />
+      <PortInfo index="2" default="False" />
+      <ID value="2416ec21-d9a2-4c67-a742-20d5cf82446e" />
+      <Name value="Springs.DirectShape.ByGeometry" />
+      <Description value="Convert the input geometry to DirectShape element inside the Revit document.  It supports solids or surfaces. It is based on an alternative process that uses a SAT import and can produce smooth surfaces. Each created DS will have a unique type. Make sure that each input geometry has a unique name. You can either feed a single category for all geometries or a unique category for each geometry - the node's lacing is set to longest by default. The default category is &#xD;&#xA;Generic Models." />
+      <Inputs>
+        <Input value="geometry" />
+        <Input value="category" />
+        <Input value="name" />
+      </Inputs>
+      <Outputs>
+        <Output value="DirectShape" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
   </Elements>
   <Connectors>
     <Dynamo.Graph.Connectors.ConnectorModel start="21ea2004-56a5-4d8c-aaef-e0969edc5f3e" start_index="0" end="7a5dbd2b-cf5e-492d-bf23-c6b466945b2c" end_index="0" portType="0" />
