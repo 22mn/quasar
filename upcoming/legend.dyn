@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="-996.343393175093" Y="-434.510936735015" zoom="0.926652175244367" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="-577.869660207128" Y="-318.699255200481" zoom="0.803698416152636" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <PythonNodeModels.PythonNode guid="a0efc28c-98d5-467c-bdc3-3bf7feadfe00" type="PythonNodeModels.PythonNode" nickname="Python Script" x="422.414201106008" y="504.619754615254" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="0">
@@ -204,7 +204,7 @@ doc = DocumentManager.Instance.CurrentDBDocument
 linkdoc = IN[0]
 link_legend = IN[1]
 doc_legend = IN[2]
-to_omit = []
+view_names = []
 
 result = []
 
@@ -213,7 +213,7 @@ TransactionManager.Instance.EnsureInTransaction(doc)
 for l, d in zip(link_legend,doc_legend):
 	view = linkdoc.GetElement(l)
 	view_copy = doc.GetElement(d)
-	to_omit.append(view_copy)
+	view_names.append(str(view_copy.ViewName))
 	
 	elements = FilteredElementCollector(linkdoc,l).ToElements()
 	element_ids = []
@@ -224,26 +224,25 @@ for l, d in zip(link_legend,doc_legend):
 			continue
 	elemIdList = List[ElementId](element_ids)
 	copy_element = ElementTransformUtils.CopyElements(view,elemIdList,view_copy,Transform.Identity,CopyPasteOptions())
+	doc.Delete(d)
 
 views = FilteredElementCollector(doc).OfClass(View).ToElements()
 legends = [v for v in views if v.ViewType == ViewType.Legend]
-pureList = [v for v in legends if not v in to_omit]
-
-for i in pureList:
-	for j in to_omit:
-		if j.ViewName in i.ViewName:
-			name = j.ViewName
-			doc.Delete(j.Id)
-			i.ViewName = name
+res = []
+for i in legends:
+	for j in view_names:
+		if j[:-1] == str(i.ViewName)[:-2]:
+			i.ViewName = j
+			res.append(i)
 			
 TransactionManager.Instance.TransactionTaskDone()
 
-OUT = legends
+OUT = res
 
 
 </Script>
     </PythonNodeModels.PythonNode>
-    <PythonNodeModels.PythonNode guid="764b7e3b-a567-48f6-84ee-482d057408d2" type="PythonNodeModels.PythonNode" nickname="Python Script" x="767.211935353184" y="671.4222542562" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+    <PythonNodeModels.PythonNode guid="764b7e3b-a567-48f6-84ee-482d057408d2" type="PythonNodeModels.PythonNode" nickname="Python Script" x="767.211935353184" y="671.4222542562" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script>import clr
 clr.AddReference('RevitAPI')
@@ -284,15 +283,29 @@ OUT = views_ids,copy_views
     <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="d5fcb435-c5e9-442e-921f-89f05ad3714d" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="962.335252874202" y="758.974767030838" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="i[0];&#xA;i[1];" ShouldFocus="false">
       <PortInfo index="0" default="False" />
     </Dynamo.Graph.Nodes.CodeBlockNodeModel>
-    <Dynamo.Graph.Nodes.CustomNodes.Function guid="6a8a01d1-07e9-4096-a29e-64a54b3d6e45" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="ViewSelector" x="1345.3298319936" y="774.754696903922" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="True" IsFrozen="true" isPinned="false">
-      <ID value="ad75924a-af28-4e5d-b269-86408eecb907" />
-      <Name value="ViewSelector" />
-      <Description value="Select views by check boxes " />
-      <Inputs />
-      <Outputs>
-        <Output value="Views" />
-      </Outputs>
-    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <PythonNodeModels.PythonNode guid="4c46c506-590c-4e45-9a87-9daacbc8e65b" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1246.83311051275" y="947.307862707871" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="true" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <Script>import clr
+clr.AddReference('RevitAPI')
+clr.AddReference("RevitServices")
+import System
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+from System.Collections.Generic import List
+# get current document 
+doc = DocumentManager.Instance.CurrentDBDocument
+
+views = FilteredElementCollector(doc).OfClass(View).ToElements()
+legends = [v for v in views if v.ViewType == ViewType.Legend]
+
+OUT = [v.ViewName[:-1] for v in legends]
+
+
+</Script>
+    </PythonNodeModels.PythonNode>
   </Elements>
   <Connectors>
     <Dynamo.Graph.Connectors.ConnectorModel start="a0efc28c-98d5-467c-bdc3-3bf7feadfe00" start_index="0" end="b4e46980-fe6e-429b-a53b-7a40b8491676" end_index="0" portType="0" />
