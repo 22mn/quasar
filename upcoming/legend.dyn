@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="-147.257070667238" Y="-94.2373778467372" zoom="0.531549210232449" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="-996.343393175093" Y="-434.510936735015" zoom="0.926652175244367" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <PythonNodeModels.PythonNode guid="a0efc28c-98d5-467c-bdc3-3bf7feadfe00" type="PythonNodeModels.PythonNode" nickname="Python Script" x="422.414201106008" y="504.619754615254" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="0">
@@ -204,6 +204,7 @@ doc = DocumentManager.Instance.CurrentDBDocument
 linkdoc = IN[0]
 link_legend = IN[1]
 doc_legend = IN[2]
+to_omit = []
 
 result = []
 
@@ -212,6 +213,8 @@ TransactionManager.Instance.EnsureInTransaction(doc)
 for l, d in zip(link_legend,doc_legend):
 	view = linkdoc.GetElement(l)
 	view_copy = doc.GetElement(d)
+	to_omit.append(view_copy)
+	
 	elements = FilteredElementCollector(linkdoc,l).ToElements()
 	element_ids = []
 	for e in elements:
@@ -221,12 +224,21 @@ for l, d in zip(link_legend,doc_legend):
 			continue
 	elemIdList = List[ElementId](element_ids)
 	copy_element = ElementTransformUtils.CopyElements(view,elemIdList,view_copy,Transform.Identity,CopyPasteOptions())
-	
-	result.append(view_copy)
-	
+
+views = FilteredElementCollector(doc).OfClass(View).ToElements()
+legends = [v for v in views if v.ViewType == ViewType.Legend]
+pureList = [v for v in legends if not v in to_omit]
+
+for i in pureList:
+	for j in to_omit:
+		if j.ViewName in i.ViewName:
+			name = j.ViewName
+			doc.Delete(j.Id)
+			i.ViewName = name
+			
 TransactionManager.Instance.TransactionTaskDone()
 
-OUT = result
+OUT = legends
 
 
 </Script>
@@ -272,6 +284,15 @@ OUT = views_ids,copy_views
     <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="d5fcb435-c5e9-442e-921f-89f05ad3714d" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="962.335252874202" y="758.974767030838" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="i[0];&#xA;i[1];" ShouldFocus="false">
       <PortInfo index="0" default="False" />
     </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="6a8a01d1-07e9-4096-a29e-64a54b3d6e45" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="ViewSelector" x="1345.3298319936" y="774.754696903922" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="True" IsFrozen="true" isPinned="false">
+      <ID value="ad75924a-af28-4e5d-b269-86408eecb907" />
+      <Name value="ViewSelector" />
+      <Description value="Select views by check boxes " />
+      <Inputs />
+      <Outputs>
+        <Output value="Views" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
   </Elements>
   <Connectors>
     <Dynamo.Graph.Connectors.ConnectorModel start="a0efc28c-98d5-467c-bdc3-3bf7feadfe00" start_index="0" end="b4e46980-fe6e-429b-a53b-7a40b8491676" end_index="0" portType="0" />
