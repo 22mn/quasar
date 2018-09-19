@@ -1,7 +1,7 @@
-<Workspace Version="1.3.2.2480" X="-577.869660207128" Y="-318.699255200481" zoom="0.803698416152636" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="-369.991367473949" Y="-285.950673173412" zoom="0.789531730130973" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
-    <PythonNodeModels.PythonNode guid="a0efc28c-98d5-467c-bdc3-3bf7feadfe00" type="PythonNodeModels.PythonNode" nickname="Python Script" x="422.414201106008" y="504.619754615254" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="0">
+    <PythonNodeModels.PythonNode guid="a0efc28c-98d5-467c-bdc3-3bf7feadfe00" type="PythonNodeModels.PythonNode" nickname="Python Script" x="422.414201106008" y="504.619754615254" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="0">
       <Script># dynamo version - 1.3.0 
 # author - min.naung@mgjean https://twentytwopaths.wordpress.com/contact/
 
@@ -22,7 +22,7 @@ OUT = [[i.Name.split(":")[0],i.GetLinkDocument()] for i in link_docs];
     <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="b4e46980-fe6e-429b-a53b-7a40b8491676" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="609.313182518532" y="522.354391458" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="i[1][1];" ShouldFocus="false">
       <PortInfo index="0" default="False" />
     </Dynamo.Graph.Nodes.CodeBlockNodeModel>
-    <PythonNodeModels.PythonNode guid="cd95b9ae-9ecf-48a5-9c00-9cb055a92cf8" type="PythonNodeModels.PythonNode" nickname="TransferLegend" x="934.778898974604" y="540.909938209262" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="false" inputcount="1">
+    <PythonNodeModels.PythonNode guid="cd95b9ae-9ecf-48a5-9c00-9cb055a92cf8" type="PythonNodeModels.PythonNode" nickname="TransferLegend" x="781.981846831837" y="702.848694326383" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script># dynamo version - 1.3.2
 # author - min.naung/mgjean https://twentytwo.space/contact
@@ -170,16 +170,24 @@ selected = ui.class1Result
 
 
 # dot-net elementId list
-ids = List[ElementId]([views_ids_dict[i] for i in selected]);
+dotList = List[ElementId]([views_ids_dict[i] for i in selected]);
+# view_ids
+views_ids = [views_ids_dict[i] for i in selected]
 # transaction start
 TransactionManager.Instance.EnsureInTransaction(doc)
-#copy template from link-doc to current-doc
-transfer_views = ElementTransformUtils.CopyElements(linkdoc,ids,doc,Transform.Identity,CopyPasteOptions())
 
-# transaction done			
+
+copy_views = ElementTransformUtils.CopyElements(linkdoc,dotList,doc,Transform.Identity,CopyPasteOptions())
+
+	
 TransactionManager.Instance.TransactionTaskDone()
-# names
-OUT = [doc.GetElement(v) for v in transfer_views]
+
+OUT = views_ids,copy_views
+
+
+
+
+
 
 
 
@@ -242,7 +250,7 @@ OUT = res
 
 </Script>
     </PythonNodeModels.PythonNode>
-    <PythonNodeModels.PythonNode guid="764b7e3b-a567-48f6-84ee-482d057408d2" type="PythonNodeModels.PythonNode" nickname="Python Script" x="767.211935353184" y="671.4222542562" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+    <PythonNodeModels.PythonNode guid="764b7e3b-a567-48f6-84ee-482d057408d2" type="PythonNodeModels.PythonNode" nickname="Python Script" x="528.221674309369" y="676.646085098688" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="false" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script>import clr
 clr.AddReference('RevitAPI')
@@ -283,36 +291,13 @@ OUT = views_ids,copy_views
     <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="d5fcb435-c5e9-442e-921f-89f05ad3714d" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="962.335252874202" y="758.974767030838" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="i[0];&#xA;i[1];" ShouldFocus="false">
       <PortInfo index="0" default="False" />
     </Dynamo.Graph.Nodes.CodeBlockNodeModel>
-    <PythonNodeModels.PythonNode guid="4c46c506-590c-4e45-9a87-9daacbc8e65b" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1246.83311051275" y="947.307862707871" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="true" inputcount="3">
-      <PortInfo index="0" default="False" />
-      <PortInfo index="1" default="False" />
-      <PortInfo index="2" default="False" />
-      <Script>import clr
-clr.AddReference('RevitAPI')
-clr.AddReference("RevitServices")
-import System
-from Autodesk.Revit.DB import *
-from RevitServices.Persistence import DocumentManager
-from RevitServices.Transactions import TransactionManager
-from System.Collections.Generic import List
-# get current document 
-doc = DocumentManager.Instance.CurrentDBDocument
-
-views = FilteredElementCollector(doc).OfClass(View).ToElements()
-legends = [v for v in views if v.ViewType == ViewType.Legend]
-
-OUT = [v.ViewName[:-1] for v in legends]
-
-
-</Script>
-    </PythonNodeModels.PythonNode>
   </Elements>
   <Connectors>
     <Dynamo.Graph.Connectors.ConnectorModel start="a0efc28c-98d5-467c-bdc3-3bf7feadfe00" start_index="0" end="b4e46980-fe6e-429b-a53b-7a40b8491676" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="b4e46980-fe6e-429b-a53b-7a40b8491676" start_index="0" end="cd95b9ae-9ecf-48a5-9c00-9cb055a92cf8" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="b4e46980-fe6e-429b-a53b-7a40b8491676" start_index="0" end="764b7e3b-a567-48f6-84ee-482d057408d2" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="b4e46980-fe6e-429b-a53b-7a40b8491676" start_index="0" end="280a3e10-6b19-4395-bc70-fac8161c429e" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="764b7e3b-a567-48f6-84ee-482d057408d2" start_index="0" end="d5fcb435-c5e9-442e-921f-89f05ad3714d" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="cd95b9ae-9ecf-48a5-9c00-9cb055a92cf8" start_index="0" end="d5fcb435-c5e9-442e-921f-89f05ad3714d" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="d5fcb435-c5e9-442e-921f-89f05ad3714d" start_index="0" end="280a3e10-6b19-4395-bc70-fac8161c429e" end_index="1" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="d5fcb435-c5e9-442e-921f-89f05ad3714d" start_index="1" end="280a3e10-6b19-4395-bc70-fac8161c429e" end_index="2" portType="0" />
   </Connectors>

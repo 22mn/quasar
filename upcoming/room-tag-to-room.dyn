@@ -1,0 +1,81 @@
+<Workspace Version="1.3.2.2480" X="50.1781950905522" Y="118.166900130215" zoom="0.684832420747587" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="Math" resolvedName="DSCore.Math" assemblyName="DSCoreNodes.dll" />
+    <ClassMap partialName="Autodesk.Point" resolvedName="Autodesk.DesignScript.Geometry.Point" assemblyName="ProtoGeometry.dll" />
+    <ClassMap partialName="Autodesk.DesignScript.Geometry.Point" resolvedName="Autodesk.DesignScript.Geometry.Point" assemblyName="ProtoGeometry.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <DSRevitNodesUI.ElementsOfCategory guid="eb1b0600-b12e-4710-b0e3-f617c4988717" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="192.970547930377" y="23.2897265760421" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </DSRevitNodesUI.ElementsOfCategory>
+    <DSRevitNodesUI.Categories guid="8a99590c-60a5-4488-bea4-c25db02b8482" type="DSRevitNodesUI.Categories" nickname="Categories" x="-20.8" y="199.2" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="402:RoomTags" />
+    <PythonNodeModels.PythonNode guid="251f12d7-6702-4848-8c49-861b5e9cdfcf" type="PythonNodeModels.PythonNode" nickname="CenterRoomTag" x="387.978600256725" y="248.210044783992" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script># dynamo version - 1.3.2
+# author - min.naung/mgjean https://twentytwo.space/contact/
+
+import clr
+
+#clr.AddReference('RevitAPI')
+clr.AddReference('RevitServices')
+
+#from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+elems = IN[0];
+
+if not isinstance(elems,list):
+	elems = UnwrapElement([elem])
+else:
+	elems = UnwrapElement(elems)
+
+#room_tags = FilteredElementCollector(doc).OfClass(SpatialElementTag).ToElements()
+
+
+TransactionManager.Instance.EnsureInTransaction(doc)
+
+for i in elems:
+	room_loc = i.Room.Location.Point
+	new_loc = room_loc - i.Location.Point
+	i.Location.Move(new_loc)
+
+TransactionManager.Instance.TransactionTaskDone()
+
+OUT = elems
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</Script>
+    </PythonNodeModels.PythonNode>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="eb1b0600-b12e-4710-b0e3-f617c4988717" start_index="0" end="251f12d7-6702-4848-8c49-861b5e9cdfcf" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="8a99590c-60a5-4488-bea4-c25db02b8482" start_index="0" end="eb1b0600-b12e-4710-b0e3-f617c4988717" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-14706.494140625" eyeY="10518.173828125" eyeZ="8834.8251953125" lookX="12200.14453125" lookY="-12437.59765625" lookZ="-6905.49853515625" upX="0.424566835165024" upY="0.87292206287384" upZ="-0.240312352776527" />
+  </Cameras>
+</Workspace>
