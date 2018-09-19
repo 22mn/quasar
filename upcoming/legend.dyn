@@ -239,14 +239,11 @@ legends = [v for v in views if v.ViewType == ViewType.Legend]
 res = []
 for i in legends:
 	for j in view_names:
-		try:
-			val = int(j[-1])
+		if j[-1].isdigit():
 			if j[:-1] == str(i.ViewName)[:-1]:
 				i.ViewName = j
-				res.append(i)
-				
-		except ValueError:
-			
+				res.append(i)				
+		else:			
 			if j[:-1] == str(i.ViewName)[:-2]:
 				i.ViewName = j
 				res.append(i)
