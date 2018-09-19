@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="-369.991367473949" Y="-285.950673173412" zoom="0.789531730130973" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="-281.645330450835" Y="-177.494337614045" zoom="0.663075799936655" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <PythonNodeModels.PythonNode guid="a0efc28c-98d5-467c-bdc3-3bf7feadfe00" type="PythonNodeModels.PythonNode" nickname="Python Script" x="422.414201106008" y="504.619754615254" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="0">
@@ -239,9 +239,17 @@ legends = [v for v in views if v.ViewType == ViewType.Legend]
 res = []
 for i in legends:
 	for j in view_names:
-		if j[:-1] == str(i.ViewName)[:-2]:
-			i.ViewName = j
-			res.append(i)
+		try:
+			val = int(j[-1])
+			if j[:-1] == str(i.ViewName)[:-1]:
+				i.ViewName = j
+				res.append(i)
+				
+		except ValueError:
+			
+			if j[:-1] == str(i.ViewName)[:-2]:
+				i.ViewName = j
+				res.append(i)
 			
 TransactionManager.Instance.TransactionTaskDone()
 
