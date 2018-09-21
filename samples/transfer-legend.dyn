@@ -1,0 +1,50 @@
+<Workspace Version="1.3.2.2480" X="-125.761287758373" Y="-294.714967995424" zoom="0.748398488023637" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="a0efc28c-98d5-467c-bdc3-3bf7feadfe00" type="PythonNodeModels.PythonNode" nickname="Python Script" x="280.642623575869" y="588.796628773774" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="0">
+      <Script># dynamo version - 1.3.0 
+# author - min.naung@mgjean https://twentytwopaths.wordpress.com/contact/
+
+
+import clr
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+
+doc = DocumentManager.Instance.CurrentDBDocument;
+link_docs = FilteredElementCollector(doc).OfClass(RevitLinkInstance);
+
+OUT = [[i.Name.split(":")[0],i.GetLinkDocument()] for i in link_docs];
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="b4e46980-fe6e-429b-a53b-7a40b8491676" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="473.448754052149" y="624.252712807787" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="i[0][1];" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="4b103d81-b0ac-4ee4-a409-33f65cc6c378" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="TransferLegend" x="703.222850451064" y="623.341727189788" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <ID value="87517726-2423-475c-9a56-afcc51de404c" />
+      <Name value="TransferLegend" />
+      <Description value="Select and copy legend views from a link document file." />
+      <Inputs>
+        <Input value="LinkDocument_" />
+      </Inputs>
+      <Outputs>
+        <Output value="LegendViews" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="a0efc28c-98d5-467c-bdc3-3bf7feadfe00" start_index="0" end="b4e46980-fe6e-429b-a53b-7a40b8491676" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b4e46980-fe6e-429b-a53b-7a40b8491676" start_index="0" end="4b103d81-b0ac-4ee4-a409-33f65cc6c378" end_index="0" portType="0" />
+  </Connectors>
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="04efa11b-e655-4db8-bbcf-c5070e2b4531" text="Each list includes [DocumentName, Document]" x="184.161272788833" y="543.109091995459" />
+  </Notes>
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="4515.37646484375" eyeY="3164.48828125" eyeZ="3077.32080078125" lookX="1058.88610839844" lookY="-3469.67993164063" lookZ="-5117.94970703125" upX="0.0732671618461609" upY="0.932323813438416" upZ="-0.354124635457993" />
+  </Cameras>
+</Workspace>
