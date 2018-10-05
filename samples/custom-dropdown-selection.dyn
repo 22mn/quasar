@@ -1,8 +1,8 @@
-<Workspace Version="1.3.2.2480" X="305.321982179646" Y="-374.974952739016" zoom="1" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="470.921982179646" Y="-214.974952739016" zoom="1" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="1219eb80-db74-4ae5-83d8-93f9a346e3b5" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="-235.8" y="384.4" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="{&quot;Alphabet&quot;,&quot;Number&quot;};" ShouldFocus="false" />
-    <Dynamo.Graph.Nodes.CustomNodes.Function guid="9de82ad5-441b-46e5-a564-a1d84305f9a6" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="CustomDropdownSelection" x="64.2780178203539" y="434.974952739016" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="9de82ad5-441b-46e5-a564-a1d84305f9a6" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="CustomDropdownSelection" x="64.2780178203539" y="434.974952739016" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="False" />
       <ID value="36dc4328-cc7c-4b75-ae14-84f76bf51887" />
