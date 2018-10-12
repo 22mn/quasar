@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="697.405460627435" Y="-110.385933512323" zoom="0.657116514464583" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="559.805460627435" Y="-22.385933512323" zoom="0.657116514464583" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <PythonNodeModels.PythonNode guid="c95e59e5-9ec8-4442-9945-9addc594df78" type="PythonNodeModels.PythonNode" nickname="Python Script" x="-772.052626313213" y="508.715716356846" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="0">
@@ -19,7 +19,7 @@ link_docs = FilteredElementCollector(doc).OfClass(RevitLinkInstance);
 OUT = [[i.Name.split(":")[0],i.GetLinkDocument()] for i in link_docs];
 </Script>
     </PythonNodeModels.PythonNode>
-    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="ee17dcae-d970-49f8-913d-0b835458f105" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="-564.39977889387" y="516.922387496955" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="i[0][1];" ShouldFocus="false">
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="ee17dcae-d970-49f8-913d-0b835458f105" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="-564.39977889387" y="516.922387496955" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="i[13][1];" ShouldFocus="false">
       <PortInfo index="0" default="False" />
     </Dynamo.Graph.Nodes.CodeBlockNodeModel>
     <Dynamo.Graph.Nodes.CustomNodes.Function guid="c5f42489-5bbe-449e-8aeb-4a7eced54f43" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="TransferViewTempateAndFilterUI" x="-375.21041891531" y="510.806051318762" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
@@ -28,7 +28,7 @@ OUT = [[i.Name.split(":")[0],i.GetLinkDocument()] for i in link_docs];
       <Name value="TransferViewTempateAndFilterUI" />
       <Description value="Select view templates to transfer from link document  to current document with or without applied filters." />
       <Inputs>
-        <Input value="LinkDocument" />
+        <Input value="LinkDocument_" />
       </Inputs>
       <Outputs>
         <Output value="TemplateNames" />
