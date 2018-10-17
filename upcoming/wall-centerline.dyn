@@ -1,0 +1,123 @@
+{
+  "Uuid": "3c9d0464-8643-5ffe-96e5-ab1769818209",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "wall-centerline",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\nclr.AddReference('RevitAPI')\nclr.AddReference('RevitNodes')\n\n# for geometry conversion\nimport Revit\nclr.ImportExtensions(Revit.GeometryConversion)\nfrom Autodesk.Revit.DB import *\n\n# wall input\nwalls = IN[0]\n\n# make list\nif isinstance(walls,list):\n\twalls = UnwrapElement(walls)\nelse:\n\twalls = UnwrapElement([walls])\n\n#output\ncenterLines = []\n\n# loop wall\nfor wall in walls:\n\t# collect center line\n\tcenterLines.append(wall.Location.Curve.ToProtoType(True))\n\t\nOUT = centerLines \n",
+      "VariableInputPorts": true,
+      "Id": "54527a630c454773b46fb23a26eeff48",
+      "Inputs": [
+        {
+          "Id": "6bb53ed747ec4308ab748a42ba0f489a",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "2aec3128d4ad48969988dd447a77c35f",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Nodes.DSModelElementsSelection, DSRevitNodesUI",
+      "NodeType": "ExtensionNode",
+      "InstanceId": [
+        "7089d85e-cd8b-413b-81bf-cb81e54993a6-0003a933",
+        "7089d85e-cd8b-413b-81bf-cb81e54993a6-0003ad73"
+      ],
+      "Id": "7fba5de1e63a44749de47819fd230b86",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "cfc69a57ecbd4e4488fbd27eb35a4e9a",
+          "Name": "Elements",
+          "Description": "The selected elements.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "cfc69a57ecbd4e4488fbd27eb35a4e9a",
+      "End": "6bb53ed747ec4308ab748a42ba0f489a",
+      "Id": "0f581a209df54b3885b264937aa17bf9"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.1.5055",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "54527a630c454773b46fb23a26eeff48",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 388.3931061283069,
+        "Y": 241.36551953854877
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Select Model Elements",
+        "Id": "7fba5de1e63a44749de47819fd230b86",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 36.400022205971879,
+        "Y": 239.24827930782325
+      }
+    ],
+    "Annotations": [],
+    "X": 38.538262057962129,
+    "Y": 94.124384017139647,
+    "Zoom": 0.822695359375
+  }
+}
