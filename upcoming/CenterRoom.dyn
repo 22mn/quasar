@@ -1,15 +1,15 @@
-<Workspace Version="1.3.2.2480" X="121.383101183411" Y="225.214495807705" zoom="0.772331578657367" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="314.381635919459" Y="243.817492183886" zoom="0.854758703882727" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
   <NamespaceResolutionMap>
     <ClassMap partialName="Math" resolvedName="DSCore.Math" assemblyName="DSCoreNodes.dll" />
     <ClassMap partialName="Autodesk.Point" resolvedName="Autodesk.DesignScript.Geometry.Point" assemblyName="ProtoGeometry.dll" />
     <ClassMap partialName="Autodesk.DesignScript.Geometry.Point" resolvedName="Autodesk.DesignScript.Geometry.Point" assemblyName="ProtoGeometry.dll" />
   </NamespaceResolutionMap>
   <Elements>
-    <DSRevitNodesUI.ElementsOfCategory guid="eb1b0600-b12e-4710-b0e3-f617c4988717" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="192.970547930377" y="23.2897265760421" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+    <DSRevitNodesUI.ElementsOfCategory guid="eb1b0600-b12e-4710-b0e3-f617c4988717" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="153.609215518141" y="-0.534237778732617" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
       <PortInfo index="0" default="False" />
     </DSRevitNodesUI.ElementsOfCategory>
-    <DSRevitNodesUI.Categories guid="8a99590c-60a5-4488-bea4-c25db02b8482" type="DSRevitNodesUI.Categories" nickname="Categories" x="-18.7283509256718" y="52.1129157226952" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="403:Rooms" />
-    <PythonNodeModels.PythonNode guid="2e4abb35-82a2-41a2-8555-1f6563109f98" type="PythonNodeModels.PythonNode" nickname="CenterRoom" x="421.340420648954" y="23.1167864254963" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+    <DSRevitNodesUI.Categories guid="8a99590c-60a5-4488-bea4-c25db02b8482" type="DSRevitNodesUI.Categories" nickname="Categories" x="-81.913647692683" y="2.39333793881756" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="403:Rooms" />
+    <PythonNodeModels.PythonNode guid="2e4abb35-82a2-41a2-8555-1f6563109f98" type="PythonNodeModels.PythonNode" nickname="CenterRoom" x="375.764141013733" y="-0.707177929278359" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script># dynamo version - 1.3.2
 # author - min.naung/mgjean https://twentytwo.space/contact/
@@ -33,28 +33,44 @@ doc = DocumentManager.Instance.CurrentDBDocument
 
 elems = IN[0];
 
+# make list
 if not isinstance(elems,list):
 	elems = UnwrapElement([elem])
 else:
 	elems = UnwrapElement(elems)
 
+# output
 res = []
+# start transaction
 TransactionManager.Instance.EnsureInTransaction(doc)
 
+# loop elements
 for e in elems:
+	# level elevation - unit millimeter 
 	elevation = e.Level.Elevation * 304.8
+	# get geo-objects of the element
 	geoelem = e.GetGeometryObjectFromReference(Reference(e))
-	geoobj = geoelem.GetEnumerator();
+	# get enumerator to loop geo-objects
+	geoobj = geoelem.GetEnumerator()
+	# loop geo-objector
 	for obj in geoobj:
+		# convert to dynamo type
 		room_geometry = obj.ToProtoType()
+		# get the centroid of the element
 		point = room_geometry.Centroid()
+		# create location point with level elevation
 		center = pt.ByCoordinates(point.X,point.Y,elevation)
+		# current element location
 		current = e.Location.Point
+		# point convert to revit and minus from current location
 		newloc = center.ToXyz() - current
+		# move to new location
 		e.Location.Move(newloc)
-		
+
+# transaction done
 TransactionManager.Instance.TransactionTaskDone()
 
+# output
 OUT = elems
 
 
