@@ -1,0 +1,126 @@
+<Workspace Version="1.3.2.2480" X="487.199837323608" Y="-277.569217218698" zoom="0.633740254441553" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="DSCore.List" resolvedName="DSCore.List" assemblyName="DSCoreNodes.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <CoreNodeModels.Input.DoubleSlider guid="d5e5cb85-1767-4017-b37d-a30cdef946e3" type="CoreNodeModels.Input.DoubleSlider" nickname="Number Slider" x="-733.096806385563" y="995.127340881004" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <System.Double>100</System.Double>
+      <Range min="100" max="300" step="10" />
+    </CoreNodeModels.Input.DoubleSlider>
+    <PythonNodeModels.PythonNode guid="90b97645-d763-4364-8f7d-1afcf143d6e2" type="PythonNodeModels.PythonNode" nickname="Python Scripts" x="-312.916663419629" y="931.345972249301" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="2">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <Script># dynamo version - 1.3.0
+# author - mgjean
+import clr
+import System
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+
+import RevitServices
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+from Autodesk.Revit.DB import *
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+
+# input category
+cat = IN[0]
+# offset from section box (mm)
+offset = IN[1]/304.8
+
+# output list
+result =[]
+
+# get category object
+obj = System.Enum.ToObject(BuiltInCategory, cat.Id)
+
+# create category filter by category object
+filter = ElementCategoryFilter(obj)
+
+# collect filtered elements by category
+elements = FilteredElementCollector(doc,doc.ActiveView.Id).WherePasses(filter).WhereElementIsNotElementType().ToElements()
+"""
+
+
+
+def crop_box(bbox, offset):
+	# modify x,y,z point of bbox
+	minX = bbox.Min.X - offset
+	minY = bbox.Min.Y - offset
+	minZ = bbox.Min.Z - offset
+	maxX = bbox.Max.X + offset
+	maxY = bbox.Max.Y + offset
+	maxZ = bbox.Max.Z + offset
+	# create new bbox
+	newbox = BoundingBoxXYZ()
+	newbox.Min = XYZ(minX,minY, minZ)
+	newbox.Max = XYZ(maxX, maxY, maxZ)
+	return newbox
+
+# collect view type in document
+viewTypes = FilteredElementCollector(doc).OfClass(ViewFamilyType)
+#loop view types
+for i in viewTypes:
+	# floor plane view type
+	if i.ViewFamily == ViewFamily.ThreeDimensional:
+		# get type id
+		viewTypeId = i.Id
+		break
+
+# start Transaction
+TransactionManager.Instance.EnsureInTransaction(doc)
+increment = 1
+for elem in elements:
+	viewName = elem.Symbol.LookupParameter("Type Name").AsString()
+
+	# create new bbox by current bbox and offset
+	bbox = crop_box(elem.BoundingBox[doc.ActiveView],offset)
+	
+	# create 3D View
+	view = View3D.CreateIsometric(doc, viewTypeId)
+	try:
+		# set view name
+		view.Name = viewName
+	except:
+		view.Name = viewName +" ("+ str(increment)+")"
+		increment+=1
+	# set sectionbox to bbox
+	view.SetSectionBox(bbox)
+	# set cropbox active
+	view.CropBoxActive = True
+	# set cropbox visibility
+	view.CropBoxVisible = True
+	# set view scale
+	view.Scale = 50
+	# set detail level to fine
+	view.DetailLevel = ViewDetailLevel.Fine
+	# set detail style to realistic
+	view.DisplayStyle = DisplayStyle.Realistic
+
+	# append it to results
+	result.append(view)
+	
+# end Transaction
+TransactionManager.Instance.TransactionTaskDone()
+# output results
+"""
+
+OUT = elements</Script>
+    </PythonNodeModels.PythonNode>
+    <DSRevitNodesUI.Categories guid="8fb93312-fcb4-44d9-a150-0a4035bbb27a" type="DSRevitNodesUI.Categories" nickname="Categories" x="-652.300767689507" y="758.540233073617" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="208:Furniture" />
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="d5e5cb85-1767-4017-b37d-a30cdef946e3" start_index="0" end="90b97645-d763-4364-8f7d-1afcf143d6e2" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="8fb93312-fcb4-44d9-a150-0a4035bbb27a" start_index="0" end="90b97645-d763-4364-8f7d-1afcf143d6e2" end_index="0" portType="0" />
+  </Connectors>
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="b2ee9cb5-efb5-4d1a-91a7-55cf4c53a428" text="IN[0] = Category;&#xD;&#xA;IN[1] = Offset from element bounding box ( Unit : millimeters)" x="-363.060767292673" y="877.086856007576" />
+  </Notes>
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
