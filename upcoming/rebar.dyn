@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="71.6423032792124" Y="466.952414878289" zoom="0.647174757064285" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="-202.635432669057" Y="120.972944136453" zoom="1.03131074066255" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
   <NamespaceResolutionMap />
   <Elements>
     <PythonNodeModels.PythonNode guid="029c5f80-30b8-4087-ad41-8471a7b92832" type="PythonNodeModels.PythonNode" nickname="CreateRebarCoverType" x="-7.97149386639269" y="-173.086941530031" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="2">
@@ -68,10 +68,7 @@ TransactionManager.Instance.TransactionTaskDone()
 OUT = framings
 </Script>
     </PythonNodeModels.PythonNode>
-    <Dynamo.Nodes.DSModelElementsSelection guid="50b9c9f9-f417-4f07-87d5-6e40744a5ce0" type="Dynamo.Nodes.DSModelElementsSelection" nickname="Select Model Elements" x="-89.8846333101976" y="-395.497966958531" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <instance id="ea528e8a-eb10-4176-8ea9-9aa166510847-00054391" />
-      <instance id="ea528e8a-eb10-4176-8ea9-9aa166510847-000543a4" />
-    </Dynamo.Nodes.DSModelElementsSelection>
+    <Dynamo.Nodes.DSModelElementsSelection guid="50b9c9f9-f417-4f07-87d5-6e40744a5ce0" type="Dynamo.Nodes.DSModelElementsSelection" nickname="Select Model Elements" x="-89.8846333101976" y="-395.497966958531" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" />
     <PythonNodeModels.PythonNode guid="c7bec32b-5ea4-4b43-a11c-db9300097e53" type="PythonNodeModels.PythonNode" nickname="GetFramingRebarCoverType" x="633.253850722682" y="-611.593798227963" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script>import clr
@@ -111,11 +108,120 @@ for framing in framings:
 OUT = top, btm, others
 </Script>
     </PythonNodeModels.PythonNode>
+    <PythonNodeModels.PythonNode guid="935ccb13-6c32-4657-9234-5e5f6f9dd47a" type="PythonNodeModels.PythonNode" nickname="RebarFromShape" x="852.929420835059" y="41.9557808465425" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <Script>import clr
+
+clr.AddReference('RevitAPI')
+clr.AddReference("RevitServices")
+
+from Autodesk.Revit.DB import *
+from Autodesk.Revit.DB.Structure import *
+
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+framings = UnwrapElement(IN[0])
+shape = UnwrapElement(IN[1])
+type = UnwrapElement(IN[2])
+
+"""
+if isinstance(framings, list):
+	framings = UnwrapElement(framings)
+else:
+	framings = UnwrapElement([framings])
+"""
+
+TransactionManager.Instance.EnsureInTransaction(doc)
+
+curve = framings.Location.Curve
+loc = curve.Origin
+vec = curve.Direction.Normalize()
+vecX = XYZ(vec.X,0,0)
+vecY = XYZ(0,vec.Y,0)
+
+rebar = Rebar.CreateFromRebarShape(doc, shape, type,framings,loc,vec,vec)
+
+TransactionManager.Instance.TransactionTaskDone()
+
+
+OUT = rebar</Script>
+    </PythonNodeModels.PythonNode>
+    <DSRevitNodesUI.ElementTypes guid="0cc0540c-3454-4b50-95d2-ac34a13c231d" type="DSRevitNodesUI.ElementTypes" nickname="Element Types" x="-68.1869891211757" y="-22.7463825899571" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="252:RebarShape" />
+    <PythonNodeModels.PythonNode guid="7e1a451b-0791-415e-89af-cdf224b412db" type="PythonNodeModels.PythonNode" nickname="RebarShapeByTypeName" x="474.230517021411" y="6.47979646584845" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script># dynamo version 1.3.0 
+# author - min.naung/mgjean https://twentytwo.space/contact/
+
+import clr
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+from Autodesk.Revit.DB import *
+from Autodesk.Revit.DB.Structure import RebarShape
+from RevitServices.Persistence import DocumentManager
+doc = DocumentManager.Instance.CurrentDBDocument
+
+result = [];
+names = IN[0]
+if not isinstance(names,list):
+	names = [IN[0]]
+
+instances = FilteredElementCollector(doc).OfClass(RebarShape).ToElements();
+for n in names:	
+	for i in instances:
+		typename = i.LookupParameter("Type Name").AsString()
+		if typename == n:
+			result.append(i);
+OUT = result;</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="d0bae6cc-700b-4563-bbce-303b8d87ab03" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="347.036901315019" y="15.4008925152442" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;51&quot;;" ShouldFocus="false" />
+    <PythonNodeModels.PythonNode guid="b9892ff2-479e-4401-9daf-84eca292484f" type="PythonNodeModels.PythonNode" nickname="RebarBarTypeByTypeName" x="469.707578381315" y="278.750080155206" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script># dynamo version 1.3.0 
+# author - min.naung/mgjean https://twentytwo.space/contact/
+
+import clr
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+from Autodesk.Revit.DB import *
+from Autodesk.Revit.DB.Structure import RebarBarType
+from RevitServices.Persistence import DocumentManager
+doc = DocumentManager.Instance.CurrentDBDocument
+
+result = [];
+names = IN[0]
+if not isinstance(names,list):
+	names = [IN[0]]
+
+instances = FilteredElementCollector(doc).OfClass(RebarBarType).ToElements();
+for n in names:	
+	for i in instances:
+		typename = i.LookupParameter("Type Name").AsString()
+		if typename == n:
+			result.append(i);
+OUT = result;</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="03b0ca4f-59a9-4df4-a5f2-67044b0d330e" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="315.460076199779" y="277.742807122038" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;H20&quot;;" ShouldFocus="false" />
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="611125a3-205a-4bab-bc8f-2ecaa2478ef3" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="709.254412519159" y="90.1671300598005" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="i[0];&#xA;a[0];" ShouldFocus="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+    </Dynamo.Graph.Nodes.CodeBlockNodeModel>
   </Elements>
   <Connectors>
     <Dynamo.Graph.Connectors.ConnectorModel start="029c5f80-30b8-4087-ad41-8471a7b92832" start_index="0" end="784f91d7-f6dc-4004-b070-79a95e1f188c" end_index="1" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="50b9c9f9-f417-4f07-87d5-6e40744a5ce0" start_index="0" end="784f91d7-f6dc-4004-b070-79a95e1f188c" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="50b9c9f9-f417-4f07-87d5-6e40744a5ce0" start_index="0" end="c7bec32b-5ea4-4b43-a11c-db9300097e53" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="50b9c9f9-f417-4f07-87d5-6e40744a5ce0" start_index="0" end="935ccb13-6c32-4657-9234-5e5f6f9dd47a" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="7e1a451b-0791-415e-89af-cdf224b412db" start_index="0" end="611125a3-205a-4bab-bc8f-2ecaa2478ef3" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="d0bae6cc-700b-4563-bbce-303b8d87ab03" start_index="0" end="7e1a451b-0791-415e-89af-cdf224b412db" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b9892ff2-479e-4401-9daf-84eca292484f" start_index="0" end="611125a3-205a-4bab-bc8f-2ecaa2478ef3" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="03b0ca4f-59a9-4df4-a5f2-67044b0d330e" start_index="0" end="b9892ff2-479e-4401-9daf-84eca292484f" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="611125a3-205a-4bab-bc8f-2ecaa2478ef3" start_index="0" end="935ccb13-6c32-4657-9234-5e5f6f9dd47a" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="611125a3-205a-4bab-bc8f-2ecaa2478ef3" start_index="1" end="935ccb13-6c32-4657-9234-5e5f6f9dd47a" end_index="2" portType="0" />
   </Connectors>
   <Notes>
     <Dynamo.Graph.Notes.NoteModel guid="f43ac86e-27ed-4e0a-8b01-a774fc87ad13" text="IN[0] = Description&#xD;&#xA;IN[0] = Setting (mm)" x="4.40212359004909" y="-227.817466562221" />

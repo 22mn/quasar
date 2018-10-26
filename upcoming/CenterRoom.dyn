@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="314.381635919459" Y="243.817492183886" zoom="0.854758703882727" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+<Workspace Version="1.3.2.2480" X="314.381635919459" Y="243.817492183886" zoom="0.854758703882727" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap>
     <ClassMap partialName="Math" resolvedName="DSCore.Math" assemblyName="DSCoreNodes.dll" />
     <ClassMap partialName="Autodesk.Point" resolvedName="Autodesk.DesignScript.Geometry.Point" assemblyName="ProtoGeometry.dll" />
@@ -20,8 +20,9 @@ clr.AddReference('RevitAPI')
 clr.AddReference('RevitServices')
 clr.AddReference("RevitNodes")
 
-import System,Revit
-clr.ImportExtensions(Revit.Elements)
+import System
+import Revit
+#clr.ImportExtensions(Revit.Elements)
 clr.ImportExtensions(Revit.GeometryConversion)
 from Autodesk.DesignScript.Geometry import (Geometry,
 Point as pt)
