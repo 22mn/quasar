@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="-202.635432669057" Y="120.972944136453" zoom="1.03131074066255" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+<Workspace Version="1.3.2.2480" X="-105.247201171956" Y="113.91138704255" zoom="0.795098510139565" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <PythonNodeModels.PythonNode guid="029c5f80-30b8-4087-ad41-8471a7b92832" type="PythonNodeModels.PythonNode" nickname="CreateRebarCoverType" x="-7.97149386639269" y="-173.086941530031" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="2">
@@ -68,7 +68,10 @@ TransactionManager.Instance.TransactionTaskDone()
 OUT = framings
 </Script>
     </PythonNodeModels.PythonNode>
-    <Dynamo.Nodes.DSModelElementsSelection guid="50b9c9f9-f417-4f07-87d5-6e40744a5ce0" type="Dynamo.Nodes.DSModelElementsSelection" nickname="Select Model Elements" x="-89.8846333101976" y="-395.497966958531" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" />
+    <Dynamo.Nodes.DSModelElementsSelection guid="50b9c9f9-f417-4f07-87d5-6e40744a5ce0" type="Dynamo.Nodes.DSModelElementsSelection" nickname="Select Model Elements" x="-89.8846333101976" y="-395.497966958531" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <instance id="da5175d9-f427-4291-ae3a-e4d64d75020d-0005438c" />
+      <instance id="da5175d9-f427-4291-ae3a-e4d64d75020d-0005439d" />
+    </Dynamo.Nodes.DSModelElementsSelection>
     <PythonNodeModels.PythonNode guid="c7bec32b-5ea4-4b43-a11c-db9300097e53" type="PythonNodeModels.PythonNode" nickname="GetFramingRebarCoverType" x="633.253850722682" y="-611.593798227963" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script>import clr
@@ -125,34 +128,35 @@ from RevitServices.Transactions import TransactionManager
 
 doc = DocumentManager.Instance.CurrentDBDocument
 
-framings = UnwrapElement(IN[0])
+framings = IN[0]
 shape = UnwrapElement(IN[1])
 type = UnwrapElement(IN[2])
+result=[]
 
-"""
 if isinstance(framings, list):
 	framings = UnwrapElement(framings)
 else:
 	framings = UnwrapElement([framings])
-"""
+
 
 TransactionManager.Instance.EnsureInTransaction(doc)
+for framing in framings:
+	curve = framing.Location.Curve
+	loc = curve.Origin
+	vec = curve.Direction.Normalize()
+	vecX = XYZ(vec.X,0,0)
+	vecY = XYZ(0,vec.Y,0)
 
-curve = framings.Location.Curve
-loc = curve.Origin
-vec = curve.Direction.Normalize()
-vecX = XYZ(vec.X,0,0)
-vecY = XYZ(0,vec.Y,0)
-
-rebar = Rebar.CreateFromRebarShape(doc, shape, type,framings,loc,vec,vec)
+	rebar = Rebar.CreateFromRebarShape(doc, shape, type,framing,loc,vecX,vecY)
+	result.append(rebar)
 
 TransactionManager.Instance.TransactionTaskDone()
 
 
-OUT = rebar</Script>
+OUT = result</Script>
     </PythonNodeModels.PythonNode>
     <DSRevitNodesUI.ElementTypes guid="0cc0540c-3454-4b50-95d2-ac34a13c231d" type="DSRevitNodesUI.ElementTypes" nickname="Element Types" x="-68.1869891211757" y="-22.7463825899571" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="252:RebarShape" />
-    <PythonNodeModels.PythonNode guid="7e1a451b-0791-415e-89af-cdf224b412db" type="PythonNodeModels.PythonNode" nickname="RebarShapeByTypeName" x="474.230517021411" y="6.47979646584845" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+    <PythonNodeModels.PythonNode guid="7e1a451b-0791-415e-89af-cdf224b412db" type="PythonNodeModels.PythonNode" nickname="RebarShapeByTypeName" x="474.230517021411" y="6.47979646584845" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script># dynamo version 1.3.0 
 # author - min.naung/mgjean https://twentytwo.space/contact/
@@ -179,7 +183,7 @@ for n in names:
 OUT = result;</Script>
     </PythonNodeModels.PythonNode>
     <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="d0bae6cc-700b-4563-bbce-303b8d87ab03" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="347.036901315019" y="15.4008925152442" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;51&quot;;" ShouldFocus="false" />
-    <PythonNodeModels.PythonNode guid="b9892ff2-479e-4401-9daf-84eca292484f" type="PythonNodeModels.PythonNode" nickname="RebarBarTypeByTypeName" x="469.707578381315" y="278.750080155206" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+    <PythonNodeModels.PythonNode guid="b9892ff2-479e-4401-9daf-84eca292484f" type="PythonNodeModels.PythonNode" nickname="RebarBarTypeByTypeName" x="469.707578381315" y="278.750080155206" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script># dynamo version 1.3.0 
 # author - min.naung/mgjean https://twentytwo.space/contact/
