@@ -4,7 +4,7 @@
     <ClassMap partialName="DSCore.List" resolvedName="DSCore.List" assemblyName="DSCoreNodes.dll" />
   </NamespaceResolutionMap>
   <Elements>
-    <PythonNodeModels.PythonNode guid="5e971840-0b44-42b0-bf80-3871b6561435" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1473.23246023916" y="286.429257975588" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="4">
+    <PythonNodeModels.PythonNode guid="5e971840-0b44-42b0-bf80-3871b6561435" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1467.71932770614" y="284.224004962378" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="4">
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="False" />
       <PortInfo index="2" default="False" />
@@ -13,10 +13,7 @@
 import clr
 clr.AddReference('RevitAPI')
 clr.AddReference("RevitServices")
-clr.AddReference("RevitNodes")
-import RevitServices
-import Revit
-import Autodesk
+
 from Autodesk.Revit.DB import *
 
 from RevitServices.Persistence import DocumentManager
@@ -70,7 +67,7 @@ OUT = out</Script>
     </PythonNodeModels.PythonNode>
     <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="cf25176e-4d1f-4156-b3fa-550ece30b198" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="1089.21362834309" y="363.782214457822" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="{&quot;A001&quot;,&quot;A002&quot;};" ShouldFocus="false" />
     <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="a21e6a03-a427-433f-8880-3709a75e00bf" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="998.826834038433" y="268.28107849288" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="{&quot;DB ROOM A&quot;, &quot;DB ROOM B&quot;};" ShouldFocus="false" />
-    <DSRevitNodesUI.FamilyTypes guid="634f67a3-13ad-41ee-8dd2-ded5bc46eb1c" type="DSRevitNodesUI.FamilyTypes" nickname="Family Types" x="1033.96558812347" y="471.468998023318" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="0:A1 metric:A1 metric" />
+    <DSRevitNodesUI.FamilyTypes guid="634f67a3-13ad-41ee-8dd2-ded5bc46eb1c" type="DSRevitNodesUI.FamilyTypes" nickname="Family Types" x="1033.96558812347" y="471.468998023318" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="6:A1 metric:A1 metric" />
     <PythonNodeModels.PythonNode guid="075e0467-d331-4063-ba09-22119da05e75" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1097.12895220807" y="121.946277556291" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="0">
       <Script># dynamo version - 1.3.2
 # author - min.naung/mgjean https://twentytwo.space/contact
@@ -235,7 +232,7 @@ OUT = [sheets_nums_dict[i] for i in selected]
     <Dynamo.Graph.Notes.NoteModel guid="f7b62274-0c10-478f-9c84-32e0613ac199" text="SelectSheetByNumber" x="1072.1211573106" y="88.3479089464524" />
   </Notes>
   <Annotations>
-    <Dynamo.Graph.Annotations.AnnotationModel guid="d79a57d2-b9bc-46df-b5ca-ab453186fcb8" annotationText="" left="1407.79781563203" top="160.993815354176" width="247.2" height="294.835442621412" fontSize="30" InitialTop="206.993815354176" InitialHeight="278.835442621412" TextblockHeight="36" backgrouund="#FFFFFFFF">
+    <Dynamo.Graph.Annotations.AnnotationModel guid="d79a57d2-b9bc-46df-b5ca-ab453186fcb8" annotationText="" left="1407.79781563203" top="160.993815354176" width="247.2" height="292.630189608202" fontSize="30" InitialTop="206.993815354176" InitialHeight="278.835442621412" TextblockHeight="36" backgrouund="#FFFFFFFF">
       <Models ModelGuid="5e971840-0b44-42b0-bf80-3871b6561435" />
       <Models ModelGuid="6b35e0a0-9dd6-4115-9c0a-121d535a16fb" />
     </Dynamo.Graph.Annotations.AnnotationModel>
