@@ -1,12 +1,12 @@
-<Workspace Version="1.3.2.2480" X="-118.327423568465" Y="45.7036854637584" zoom="0.397696046784057" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="-840.97919203578" Y="-426.972677171459" zoom="0.933542267248575" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <DSRevitNodesUI.Categories guid="2718ca18-b38a-410d-a1dd-b5843c186e4b" type="DSRevitNodesUI.Categories" nickname="Categories" x="436.8" y="252" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="574:Walls" />
     <DSRevitNodesUI.ElementsOfCategory guid="22f95931-e9e6-436d-9df0-11094fb25be3" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="679.2" y="257.6" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
       <PortInfo index="0" default="False" />
     </DSRevitNodesUI.ElementsOfCategory>
-    <DSRevitNodesUI.Categories guid="7d333efb-cdd7-442e-88fd-dbc75953f1e6" type="DSRevitNodesUI.Categories" nickname="Categories" x="466.158781108659" y="524.593006201434" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="331:PipeCurves" />
-    <DSRevitNodesUI.ElementsOfCategory guid="8547be3b-2a1c-4183-b206-f42716a48e1c" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="708.558781108659" y="530.193006201434" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true">
+    <DSRevitNodesUI.Categories guid="7d333efb-cdd7-442e-88fd-dbc75953f1e6" type="DSRevitNodesUI.Categories" nickname="Categories" x="337.21376484452" y="677.46596362799" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="331:PipeCurves" />
+    <DSRevitNodesUI.ElementsOfCategory guid="8547be3b-2a1c-4183-b206-f42716a48e1c" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="586.123479054437" y="665.733346663985" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true">
       <PortInfo index="0" default="False" />
     </DSRevitNodesUI.ElementsOfCategory>
     <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="04b28173-4d5a-4f80-a617-55b737dff4a3" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Element.Geometry" x="950.901209344984" y="256.292370598365" isVisible="false" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="RevitNodes.dll" function="Revit.Elements.Element.Geometry">
@@ -51,27 +51,7 @@ OUT = intersections</Script>
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="False" />
     </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
-    <PythonNodeModels.PythonNode guid="28c1dd82-9800-4c8d-8016-1e40903dbe85" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1609.24788687708" y="360.278041670993" isVisible="false" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="false" inputcount="2">
-      <PortInfo index="0" default="False" />
-      <PortInfo index="1" default="False" />
-      <Script>import clr
-clr.AddReference('ProtoGeometry')
-from Autodesk.DesignScript.Geometry import *
-
-walls = IN[0]
-pipes = IN[1]
-intersections = []
-
-for wall in walls:
-	for pipe in pipes:
-		intersect = Geometry.Intersect(wall, pipe)
-		if intersect:
-			intersections.append(intersect)
-			
-
-OUT = intersections</Script>
-    </PythonNodeModels.PythonNode>
-    <PythonNodeModels.PythonNode guid="0129e25e-cac9-4be7-93d2-ed886b363f09" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1169.79015594997" y="733.294817429015" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="2">
+    <PythonNodeModels.PythonNode guid="0129e25e-cac9-4be7-93d2-ed886b363f09" type="PythonNodeModels.PythonNode" nickname="GetIntersectionGeometry" x="841.470769130723" y="781.949274669055" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="true" inputcount="2">
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="False" />
       <Script>import clr
@@ -86,12 +66,79 @@ clr.ImportExtensions(Revit.GeometryConversion)
 from Autodesk.DesignScript.Geometry import *
 from Autodesk.Revit.DB import *
 
-walls = UnwrapElement(IN[0])
-pipes = UnwrapElement(IN[1])
-intersections = []
+elems = UnwrapElement(IN[0])
+others = UnwrapElement(IN[1])
+
+others_geometries = []
+elems_geometries = []
+intersects_geometries = []
 
 
-def geo_con(e):
+def dyn_geo(e):
+	# get geo-objects of the element
+	geoelem = e.GetGeometryObjectFromReference(Reference(e))
+	# get enumerator to loop geo-objects
+	geoobj = geoelem.GetEnumerator()
+	# loop geo-objector
+	for obj in geoobj:
+		# convert to dynamo type
+		geo = obj.ToProtoType()
+	# return geometry
+	return geo
+# elems loop
+for elem in elems:
+	# convert dyn-geo, append to geo list
+	elems_geometries.append(dyn_geo(elem))
+	
+# other elems loop
+for other in others:
+	# convert dyn-geo, append to geo list
+	others_geometries.append(dyn_geo(other))
+
+# to collect intersets
+# loop elems geo
+for elem_geo in elems_geometries:
+	# loop others geo
+	for other_geo in others_geometries:
+		# find intersect geo
+		intersect = Geometry.Intersect(elem_geo, other_geo)
+		# if intersection occur
+		if intersect:
+			# append intersection geometry 
+			intersects_geometries.append(intersect)
+
+OUT = intersects_geometries
+
+
+
+
+
+</Script>
+    </PythonNodeModels.PythonNode>
+    <PythonNodeModels.PythonNode guid="a44b8b3e-c0c9-4434-8409-f1e1a4dc34af" type="PythonNodeModels.PythonNode" nickname="Python Script" x="1279.72456391487" y="822.088854908416" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="2">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <Script>import clr
+clr.AddReference('ProtoGeometry')
+clr.AddReference('RevitNodes')
+clr.AddReference('RevitAPI')
+
+import Revit
+clr.ImportExtensions(Revit.Elements)
+clr.ImportExtensions(Revit.GeometryConversion)
+
+from Autodesk.DesignScript.Geometry import *
+from Autodesk.Revit.DB import *
+
+elems = UnwrapElement(IN[0])
+others = UnwrapElement(IN[1])
+
+
+intersects_geometries = []
+centroids = []
+sizes = []
+
+def dyn_geo(e):
 	# get geo-objects of the element
 	geoelem = e.GetGeometryObjectFromReference(Reference(e))
 	# get enumerator to loop geo-objects
@@ -103,94 +150,23 @@ def geo_con(e):
 	# return geometry
 	return geo
 
+# to collect intersets
+# loop elems
+for elem in elems:
+	# loop others
+	for other in others:
+		# find intersect geo
+		elem_geo = dyn_geo(elem)
+		other_geo = dyn_geo(other)
+		intersect = Geometry.Intersect(elem_geo, other_geo)
+		# if intersection occur
+		if intersect:
+			# append intersection geometry 
+			intersects_geometries.append(intersect)
+			# pipe diameter 
+			sizes(elem.LookupParameter("Diameter").AsDobule())
 
-for wall in walls:
-	intersections.append(geo_con(wall))
-
-
-	
-
-OUT = intersections</Script>
-    </PythonNodeModels.PythonNode>
-    <PythonNodeModels.PythonNode guid="c6eb87db-5782-454f-941c-96cdd6affc06" type="PythonNodeModels.PythonNode" nickname="CenterRoom" x="1603.963140029" y="643.197303745636" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="true" inputcount="1">
-      <PortInfo index="0" default="False" />
-      <Script># dynamo version - 1.3.2
-# author - min.naung/mgjean https://twentytwo.space/contact/
-
-import clr
-clr.AddReference('ProtoGeometry')
-clr.AddReference('RevitAPI')
-clr.AddReference('RevitServices')
-clr.AddReference("RevitNodes")
-
-import System
-import Revit
-#clr.ImportExtensions(Revit.Elements)
-clr.ImportExtensions(Revit.GeometryConversion)
-from Autodesk.DesignScript.Geometry import (Geometry,
-Point as pt)
-from Autodesk.Revit.DB import *
-from RevitServices.Persistence import DocumentManager
-from RevitServices.Transactions import TransactionManager
-
-doc = DocumentManager.Instance.CurrentDBDocument
-
-elems = IN[0];
-
-# make list
-if not isinstance(elems,list):
-	elems = UnwrapElement([elem])
-else:
-	elems = UnwrapElement(elems)
-
-# output
-res = []
-# start transaction
-TransactionManager.Instance.EnsureInTransaction(doc)
-
-# loop elements
-for e in elems:
-	# level elevation - unit millimeter 
-	elevation = e.Level.Elevation * 304.8
-	# get geo-objects of the element
-	geoelem = e.GetGeometryObjectFromReference(Reference(e))
-	# get enumerator to loop geo-objects
-	geoobj = geoelem.GetEnumerator()
-	# loop geo-objector
-	for obj in geoobj:
-		# convert to dynamo type
-		room_geometry = obj.ToProtoType()
-		# get the centroid of the element
-		point = room_geometry.Centroid()
-		# create location point with level elevation
-		center = pt.ByCoordinates(point.X,point.Y,elevation)
-		# current element location
-		current = e.Location.Point
-		# point convert to revit and minus from current location
-		newloc = center.ToXyz() - current
-		# move to new location
-		e.Location.Move(newloc)
-
-# transaction done
-TransactionManager.Instance.TransactionTaskDone()
-
-# output
-OUT = elems
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+OUT = intersects_geometries, centroids, sizes
 
 
 
@@ -203,15 +179,15 @@ OUT = elems
     <Dynamo.Graph.Connectors.ConnectorModel start="2718ca18-b38a-410d-a1dd-b5843c186e4b" start_index="0" end="22f95931-e9e6-436d-9df0-11094fb25be3" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="22f95931-e9e6-436d-9df0-11094fb25be3" start_index="0" end="04b28173-4d5a-4f80-a617-55b737dff4a3" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="22f95931-e9e6-436d-9df0-11094fb25be3" start_index="0" end="0129e25e-cac9-4be7-93d2-ed886b363f09" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="22f95931-e9e6-436d-9df0-11094fb25be3" start_index="0" end="a44b8b3e-c0c9-4434-8409-f1e1a4dc34af" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="7d333efb-cdd7-442e-88fd-dbc75953f1e6" start_index="0" end="8547be3b-2a1c-4183-b206-f42716a48e1c" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="8547be3b-2a1c-4183-b206-f42716a48e1c" start_index="0" end="d1ee5a87-ab40-4ca7-9df4-3bb073288728" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="8547be3b-2a1c-4183-b206-f42716a48e1c" start_index="0" end="0129e25e-cac9-4be7-93d2-ed886b363f09" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="8547be3b-2a1c-4183-b206-f42716a48e1c" start_index="0" end="a44b8b3e-c0c9-4434-8409-f1e1a4dc34af" end_index="1" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="04b28173-4d5a-4f80-a617-55b737dff4a3" start_index="0" end="4ba5c370-6095-4efc-bad7-d75d732588a8" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="d1ee5a87-ab40-4ca7-9df4-3bb073288728" start_index="0" end="dc67a561-7217-41f3-ae96-4f4d4953b4af" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="dc67a561-7217-41f3-ae96-4f4d4953b4af" start_index="0" end="03202a79-3bc0-4b84-9b48-1b1402bd949f" end_index="1" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="dc67a561-7217-41f3-ae96-4f4d4953b4af" start_index="0" end="28c1dd82-9800-4c8d-8016-1e40903dbe85" end_index="1" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="4ba5c370-6095-4efc-bad7-d75d732588a8" start_index="0" end="03202a79-3bc0-4b84-9b48-1b1402bd949f" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="4ba5c370-6095-4efc-bad7-d75d732588a8" start_index="0" end="28c1dd82-9800-4c8d-8016-1e40903dbe85" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="03202a79-3bc0-4b84-9b48-1b1402bd949f" start_index="0" end="47eb96e8-42d3-4a03-84ac-712909c5e6b0" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="5a84e236-15b5-467d-af3a-30bad320dab4" start_index="0" end="ad5b6f76-00d3-4078-bf9f-44eac6e857cd" end_index="1" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="47eb96e8-42d3-4a03-84ac-712909c5e6b0" start_index="0" end="5a84e236-15b5-467d-af3a-30bad320dab4" end_index="0" portType="0" />
@@ -229,6 +205,6 @@ OUT = elems
   </Annotations>
   <Presets />
   <Cameras>
-    <Camera Name="Background Preview" eyeX="-14152.7086314476" eyeY="18055.5190739183" eyeZ="7502.78729672994" lookX="13140.8590220726" lookY="-18162.0276188402" lookZ="-8569.89264340963" upX="0.501752578757503" upY="0.800731363173167" upZ="-0.327221057179431" />
+    <Camera Name="Background Preview" eyeX="-5593.36474609375" eyeY="7360.44873046875" eyeZ="3343.42236328125" lookX="4581.51513671875" lookY="-7466.95654296875" lookZ="-4410.52783203125" upX="0.435566753149033" upY="0.79652988910675" upZ="-0.419310957193375" />
   </Cameras>
 </Workspace>
