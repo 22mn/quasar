@@ -1,9 +1,14 @@
 # Quasar
-## Revit-Dynamo Package
+## Revit-Dynamo Package 
 
 - All released versions are available here.
 
-- The most latest [version](https://github.com/mgjean/quasar/tree/master/Quasar%20v0.1.3) released on __22 September 2018__.
+- The most latest [version](https://github.com/mgjean/quasar/tree/master/Quasar%20v0.2.0) released on __24 November 2018__.
 
 - __Zerotouch__ codes are available [in this repository](https://github.com/mgjean/quasar.twotouch).
 
+### Quasar Wiki
+- Quasar includes 40+ nodes, simple usability and substantial enhancement to productivity.
+
+### Quasar Usage
+- [Usage or Modification](https://twentytwo.space/2018/04/01/quasar)
