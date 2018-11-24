@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="253.500674717353" Y="138.377994846335" zoom="0.82770257044119" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+<Workspace Version="1.3.2.2480" X="253.500674717353" Y="138.377994846335" zoom="0.82770257044119" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <PythonNodeModels.PythonNode guid="5ff82996-ddbc-4db6-94d4-bdcfacd996f9" type="PythonNodeModels.PythonNode" nickname="Python Script" x="168.890609149767" y="100.724991764821" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
@@ -135,41 +135,8 @@ TransactionManager.Instance.TransactionTaskDone()
 # output
 OUT = 'DONE!'</Script>
     </PythonNodeModels.PythonNode>
-    <PythonNodeModels.PythonNode guid="29b71305-183a-46a2-a703-2f6c0ea2cfb6" type="PythonNodeModels.PythonNode" nickname="Python Script" x="248.700288766004" y="284.00542730765" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="false" inputcount="1">
-      <PortInfo index="0" default="False" />
-      <Script># import common language runtime 
-import clr
-
-# clr.AddReference loads and imports .net assembly(dll) as module
-# load RevitAPI.dll and RevitServices.dll
-clr.AddReference("RevitAPI")
-clr.AddReference("RevitServices")
-
-# import system for dotnet List
-import System
-from System.Collections.Generic import List
-
-# import all classes from Revit DB
-from Autodesk.Revit.DB import *
-# import document manager
-from RevitServices.Persistence import DocumentManager
-# import transaction manager
-from RevitServices.Transactions import TransactionManager
-# instantiate current document
-doc = DocumentManager.Instance.CurrentDBDocument
-
-# collect floor plans and ceiling plans views
-plans_views = FilteredElementCollector(doc).OfClass(ViewPlan).ToElements()
-# collect elevations and sections views
-sects_elevs_views = FilteredElementCollector(doc).OfClass(ViewSection).ToElements()
-# combine list two view list
-views = list(plans_views)
-views.extend(sects_elevs_views)
-
-OUT = views</Script>
-    </PythonNodeModels.PythonNode>
     <CoreNodeModels.Input.BoolSelector guid="b8c66d17-ec1b-4138-96c4-5e5f039845d4" type="CoreNodeModels.Input.BoolSelector" nickname="Boolean" x="-45.0388871070647" y="108.577863939012" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <System.Boolean>True</System.Boolean>
+      <System.Boolean>False</System.Boolean>
     </CoreNodeModels.Input.BoolSelector>
   </Elements>
   <Connectors>
