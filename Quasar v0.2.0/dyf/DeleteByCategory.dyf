@@ -1,0 +1,74 @@
+<Workspace Version="1.3.2.2480" X="53.1356244829377" Y="162.775453336906" zoom="1.130842140625" ScaleFactor="1" Name="DeleteByCategory" Description="All elements under provided category will be removed." ID="317db93b-f4ff-44de-916d-6da773e639ae" Category="Quasar.ElementUtility">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="2ee64dc8-3a2c-4744-9ea2-de6c5bdf89ae" type="PythonNodeModels.PythonNode" nickname="Python Script" x="250" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script># dynamo version - 1.3.2
+# author - min.naung/mgjean https://twentytwo.space/contact/
+
+
+import clr
+clr.AddReference('RevitAPI')
+clr.AddReference("RevitServices")
+import System
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+# get current document 
+doc = DocumentManager.Instance.CurrentDBDocument
+
+# input category
+cat = IN[0]
+
+# output list
+res =[]
+
+# get category object
+obj = System.Enum.ToObject(BuiltInCategory, cat.Id)
+
+# create category filter by category object
+filter = ElementCategoryFilter(obj)
+
+# collect filtered elements by category
+elements = FilteredElementCollector(doc).WherePasses(filter).WhereElementIsNotElementType().ToElements()
+
+# transaction start
+TransactionManager.Instance.EnsureInTransaction(doc)
+
+# loop elements
+for elem in elements:
+	try:
+		# delete from document
+		r = doc.Delete(elem.Id)
+		# deleted id append to output
+		# after deleted its return as a elementId list 
+		# what we want is elementId only, so use [0]
+		res.append(r[0])
+	except:
+		# error message append to output
+		res.append("ElementID %s can't delete." %elem.Id)
+		continue
+	
+# transaction end
+TransactionManager.Instance.TransactionTaskDone()
+# output result
+OUT = res
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="ad817528-abe6-4504-86d4-114ef9850111" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-56.5949903181253" y="4.95206165283597" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// Category&#xD;&#xA;Category_" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="4cdc6643-c6b3-4eb4-9867-e918cfadde74" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="449.8" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="// Deleted elementId&#xD;&#xA;Result" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="2ee64dc8-3a2c-4744-9ea2-de6c5bdf89ae" start_index="0" end="4cdc6643-c6b3-4eb4-9867-e918cfadde74" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="ad817528-abe6-4504-86d4-114ef9850111" start_index="0" end="2ee64dc8-3a2c-4744-9ea2-de6c5bdf89ae" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+</Workspace>
