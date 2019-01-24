@@ -1,0 +1,158 @@
+<Workspace Version="1.3.2.2480" X="423.240707743857" Y="-197.995135319098" zoom="0.712932409321909" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="1e9641f2-179f-4231-9e28-fe44d426642c" type="PythonNodeModels.PythonNode" nickname="Python Script" x="237.374275247223" y="-475.142908500233" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import clr
+
+clr.AddReference('RevitAPI')
+clr.AddReference("RevitServices")
+
+from Autodesk.Revit.DB import *
+from Autodesk.Revit.DB.Structure import *
+
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+elements = IN[0]
+todelete = []
+
+if not isinstance(elements, list):
+	elements = [elements]
+"""
+class_filter = ElementClassFilter(SharedParameterElement,True)
+
+parameters = FilteredElementCollector(doc).OfClass(ParameterElement).WherePasses(class_filter).ToElements()
+"""
+
+parameters = FilteredElementCollector(doc).OfClass(ParameterElement).ToElements()
+
+for elem in elements:
+	for param in parameters:
+		if param.Name == elem:
+			todelete.append(param.Id)
+
+TransactionManager.Instance.EnsureInTransaction(doc)
+
+res = [doc.Delete(i) for i in todelete]
+				
+
+TransactionManager.Instance.TransactionTaskDone()
+
+
+OUT = res</Script>
+    </PythonNodeModels.PythonNode>
+    <PythonNodeModels.PythonNode guid="fc0e36ff-039d-4dc3-9b02-40ffa915f933" type="PythonNodeModels.PythonNode" nickname="RemoveParams" x="-319.251308676167" y="342.597025392728" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script># dynamo version - 1.3.2
+#(should be fine with 1.3.x or 2.x.x versions too)
+
+import clr
+
+clr.AddReference('RevitAPI')
+clr.AddReference("RevitServices")
+
+from Autodesk.Revit.DB import *
+from Autodesk.Revit.DB.Structure import *
+
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+# params id
+todelete = []
+
+filter = ElementClassFilter(ParameterElement)
+	
+# collect parameters
+parameters = FilteredElementCollector(doc).OfClass(ParameterElement).WherePasses(filter).ToElements()
+
+
+# loop existing params
+for param in parameters:
+		
+	todelete.append(param.Name)
+
+
+OUT = todelete</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="7eddf99a-3e77-4cda-9de5-df192c2d9aa8" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="CustomCheckboxSelection" x="-346.595849455427" y="511.94307014155" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <ID value="6870c156-3008-4030-bd79-d60619e037b1" />
+      <Name value="CustomCheckboxSelection" />
+      <Description value="Create checkboxes  with input list and select items." />
+      <Inputs>
+        <Input value="AList" />
+      </Inputs>
+      <Outputs>
+        <Output value="Selection" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <PythonNodeModels.PythonNode guid="e38ae956-1041-4471-93c4-e3dc80b63ddc" type="PythonNodeModels.PythonNode" nickname="RemoveParams" x="38.3018751370723" y="703.595756354324" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script># dynamo version - 1.3.2
+#(should be fine with 1.3.x or 2.x.x versions too)
+
+import clr
+
+clr.AddReference('RevitAPI')
+clr.AddReference("RevitServices")
+
+from Autodesk.Revit.DB import *
+from Autodesk.Revit.DB.Structure import *
+
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+# input[0]
+elements = IN[0]
+# params id
+todelete = []
+res = []
+
+# check/make list
+if not isinstance(elements, list):
+	elements = [elements]
+	
+# collect parameters
+parameters = FilteredElementCollector(doc).OfClass(ParameterElement).ToElements()
+
+# loop input params
+for elem in elements:
+	# loop existing params
+	for param in parameters:
+		# if name found
+		if param.Name == elem:
+			# append id to delete list
+			todelete.append(param.Id)
+
+# start transaction
+TransactionManager.Instance.EnsureInTransaction(doc)
+# delete from document
+for t in todelete:
+	try:
+		res.append(doc.Delete(t))
+	except:
+		res.append("Can't Remove")
+# end transaction				
+TransactionManager.Instance.TransactionTaskDone()
+
+OUT = res</Script>
+    </PythonNodeModels.PythonNode>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="fc0e36ff-039d-4dc3-9b02-40ffa915f933" start_index="0" end="7eddf99a-3e77-4cda-9de5-df192c2d9aa8" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="7eddf99a-3e77-4cda-9de5-df192c2d9aa8" start_index="0" end="e38ae956-1041-4471-93c4-e3dc80b63ddc" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-7244.93212890625" eyeY="18900.62890625" eyeZ="11816.8408203125" lookX="5110.05810546875" lookY="-19437.9765625" lookZ="-11871.484375" upX="0.274650603532791" upY="0.719339787960052" upZ="-0.638057410717011" />
+  </Cameras>
+</Workspace>
