@@ -1,0 +1,14 @@
+﻿<Window x:Class="QuasarExtension.QuasarWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QuasarExtension"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600" Width="450" Height="450">
+    <Grid Name="MainGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <TextBlock Background="Ivory" HorizontalAlignment="Stretch" Text="{Binding CurrentNodes}" FontFamily="Gill Sans MT"
+                   Padding="10" FontWeight="Medium" FontSize="18" Foreground="RoyalBlue" />
+
+    </Grid>
+</Window>

@@ -9,7 +9,7 @@
             Utility class for tools methods
             </summary>
         </member>
-        <member name="M:Quasar.Utility.crop_box(Autodesk.Revit.DB.BoundingBoxXYZ,System.Double)">
+        <member name="M:Quasar.Utility.Crop_box(Autodesk.Revit.DB.BoundingBoxXYZ,System.Double)">
             <summary>
             Utility class tool
             </summary>
