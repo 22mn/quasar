@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="70.0796836646883" Y="-86.95961652819" zoom="0.70823125" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="-72.3203163353117" Y="26.64038347181" zoom="0.70823125" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <Dynamo.Graph.Nodes.CustomNodes.Function guid="7c51a2bc-2ec5-4050-ab30-e0230b14c042" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GetAllWorksets" x="157.898719521343" y="183.061916570329" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="True" IsFrozen="false" isPinned="false">
@@ -10,36 +10,10 @@
         <Output value="NameAndWorkset" />
       </Outputs>
     </Dynamo.Graph.Nodes.CustomNodes.Function>
-    <PythonNodeModels.PythonNode guid="9ecbf359-7aef-4314-9daa-549420e018df" type="PythonNodeModels.PythonNode" nickname="AllElementsOfWorkset" x="641.405341246291" y="241.158456973294" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
-      <PortInfo index="0" default="False" />
-      <Script># dynamo version - 1.3.2
-# author - min.naung/mgjean https://twentytwo.space/contact/
-
-import clr
-clr.AddReference('RevitAPI')
-from Autodesk.Revit.DB import *
-import Autodesk
-
-clr.AddReference("RevitServices")
-import RevitServices
-from RevitServices.Persistence import DocumentManager
-from RevitServices.Transactions import TransactionManager
-
-doc = DocumentManager.Instance.CurrentDBDocument
-
-workset = IN[0]
-filter = ElementWorksetFilter(workset.Id,False)
-# collect user created worksets
-elements = FilteredElementCollector(doc).WherePasses(filter).ToElements()
-
-
-# return list structure [[name,workset],[]...[]]
-OUT = elements</Script>
-    </PythonNodeModels.PythonNode>
     <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="3f21357b-cb38-4d12-9e3a-1bb313fad023" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="415.664890528341" y="215.304254436669" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="i[0][1];" ShouldFocus="false">
       <PortInfo index="0" default="False" />
     </Dynamo.Graph.Nodes.CodeBlockNodeModel>
-    <PythonNodeModels.PythonNode guid="6314c07c-fff4-45a4-b5e5-3cd1f18d0297" type="PythonNodeModels.PythonNode" nickname="UICollectElementsByWorksets" x="418.028658570506" y="350.017631624526" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+    <PythonNodeModels.PythonNode guid="6314c07c-fff4-45a4-b5e5-3cd1f18d0297" type="PythonNodeModels.PythonNode" nickname="UICollectElementsByWorksets" x="195.502470972882" y="278.85443457554" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="true" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script># dynamo version - 1.3.2
 # author - min.naung/mgjean https://twentytwo.space/contact
@@ -189,15 +163,27 @@ OUT = elements
 
 </Script>
     </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="96e801f2-859e-4415-a2f9-b6e1fb81fdf0" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="AllElementsOfWorkset" x="671.903854267285" y="233.251435078962" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <ID value="d95914d3-d3e8-4568-a830-a25bd192237e" />
+      <Name value="AllElementsOfWorkset" />
+      <Description value="Collect all elements from input workset." />
+      <Inputs>
+        <Input value="workset" />
+      </Inputs>
+      <Outputs>
+        <Output value="Elements" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
   </Elements>
   <Connectors>
     <Dynamo.Graph.Connectors.ConnectorModel start="7c51a2bc-2ec5-4050-ab30-e0230b14c042" start_index="0" end="3f21357b-cb38-4d12-9e3a-1bb313fad023" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="3f21357b-cb38-4d12-9e3a-1bb313fad023" start_index="0" end="9ecbf359-7aef-4314-9daa-549420e018df" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="3f21357b-cb38-4d12-9e3a-1bb313fad023" start_index="0" end="96e801f2-859e-4415-a2f9-b6e1fb81fdf0" end_index="0" portType="0" />
   </Connectors>
   <Notes />
   <Annotations />
   <Presets />
   <Cameras>
-    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+    <Camera Name="Background Preview" eyeX="15121.8769685405" eyeY="23704.3131388975" eyeZ="7926.38589083202" lookX="112.73349855794" lookY="-18324.8822401903" lookZ="-7262.04042040637" upX="0.0128681529411369" upY="0.559192903470746" upZ="-0.828937698109959" />
   </Cameras>
 </Workspace>
