@@ -136,7 +136,7 @@
       <DependentUpon>QuasarWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="QuasarWindowViewModel.cs" />
-    <Compile Include="QuasasrExtension.cs" />
+    <Compile Include="QuasarExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -149,7 +149,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="QuasarExtension_ViewExtensionDefinition.xml" />
+    <Content Include="QuasarExtension_ViewExtensionDefinition.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -16,12 +16,12 @@ namespace QuasarExtension
         {
             get
             {
-                currentNodes = getNodes();
+                currentNodes = GetNodes();
                 return currentNodes;
             }
         }
 
-        public string getNodes()
+        public string GetNodes()
         {
             string fileName = readyParams.CurrentWorkspaceModel.Name.ToString();
             int count = 1;
@@ -52,6 +52,31 @@ namespace QuasarExtension
         {
             readyParams.CurrentWorkspaceModel.NodeAdded -= NodesCount_Changed;
             readyParams.CurrentWorkspaceModel.NodeRemoved -= NodesCount_Changed;
+        }
+    }
+    public class QuasarFreezeViewModel : NotificationObject , IDisposable
+    {
+        private ReadyParams readyParams;
+
+        public void SelectionFreeze()
+        {
+            // selection list includes nodes that are not frozen yet.
+            var selection = readyParams.CurrentWorkspaceModel.CurrentSelection.Where(o => !o.IsFrozen).ToList();
+            
+            foreach(NodeModel node in selection)
+            {
+                node.IsFrozen = true;
+            }
+            
+        }
+        public QuasarFreezeViewModel(ReadyParams ready)
+        {
+            readyParams = ready;
+        }
+
+        public void Dispose()
+        {
+
         }
     }
 }

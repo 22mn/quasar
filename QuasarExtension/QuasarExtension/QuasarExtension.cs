@@ -9,6 +9,7 @@ namespace QuasarExtension
     {
         private MenuItem Quasar;
         private MenuItem NodesInGraph;
+        private MenuItem FreezeSelection;
 
 
         public void Dispose() { }
@@ -22,6 +23,9 @@ namespace QuasarExtension
         {
             Quasar = new MenuItem { Header = "Quasar" };
             NodesInGraph = new MenuItem { Header = "Nodes In Graph" };
+            FreezeSelection = new MenuItem { Header = "Freeze Selection" };
+
+            // ~ NodesInGraph Click Event ~  
             NodesInGraph.Click += (sender, args) =>
             {
                 var viewModel = new QuasarWindowViewModel(loaded);
@@ -34,6 +38,15 @@ namespace QuasarExtension
                 window.Top = window.Owner.Top + 250;
                 window.Show();
             };
+
+            FreezeSelection.Click += (sender, args) =>
+            {
+                // freeze view model here
+                var viewModel = new QuasarFreezeViewModel(loaded);
+                viewModel.SelectionFreeze();
+            };
+
+            Quasar.Items.Add(FreezeSelection);
             Quasar.Items.Add(NodesInGraph);
             loaded.dynamoMenu.Items.Add(Quasar);
         }
