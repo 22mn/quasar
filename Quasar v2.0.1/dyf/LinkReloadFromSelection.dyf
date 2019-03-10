@@ -1,0 +1,164 @@
+<Workspace Version="1.3.2.2480" X="-6.48627399224256" Y="282.354353830168" zoom="0.931811528498333" ScaleFactor="1" Name="LinkReloadFromSelection" Description="Link document reload from select check box." ID="7459951b-d264-4534-bc9a-3094ad1a3653" Category="Quasar.LinkDocumentUtility">
+  <NamespaceResolutionMap />
+  <Elements>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="2192d1ba-1a5c-43b4-98df-5ea6075a4572" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="408.2" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="// Reloaded link documents&#xD;&#xA;Result;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <PythonNodeModels.PythonNode guid="32e7f520-f63e-4c7a-9ed1-8dffe437c3ae" type="PythonNodeModels.PythonNode" nickname="ReloadLink" x="152.195473689707" y="-76.0412629648037" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="true" inputcount="0">
+      <Script># dynamo version - 1.3
+# author - min.naung
+
+import clr,sys
+sys.path.append(r"C:\Program Files (x86)\IronPython 2.7\Lib")
+import os, System
+
+#version = ["2.0","1.3","1.2","1.1","1.0","0.9","0.8","0.7"]
+
+#appdata = os.getenv("AppData");
+#qpath = r"\Dynamo\Dynamo Revit\%s\packages\Quasar"
+
+#for i in version:
+	#if os.path.exists(os.path.join(appdata+qpath %i)):
+		#ipath = os.path.join(appdata+qpath %i)
+
+clr.AddReference("System.Windows.Forms")
+clr.AddReference("System.Drawing")
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+
+from System.Collections.Generic import List
+from System.Windows.Forms import (Application, Button, ComboBox, CheckBox, Form as _Form,
+CheckedListBox,Padding,FormBorderStyle, SelectionMode,Label, MessageBox,MessageBoxButtons, MessageBoxIcon)
+from System.Drawing import (Font as _Font, Icon as _Icon, Point as _Point, Size as _Size,FontStyle)
+
+
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+linkInstances = FilteredElementCollector(doc).OfClass(RevitLinkInstance).ToElements()
+
+linkName = [i.Name.split(" : ")[0] for i in linkInstances]
+
+linkDict = {i.Name.split(" : ")[0] : i for i in linkInstances};
+
+res = []
+
+#TransactionManager.Instance.EnsureInTransaction(doc);
+
+class CheckedBoxListSelector(_Form):
+	"""Checked Box List Selector"""
+
+	def __init__(self):
+		#self.Icon = _Icon(r"%s\extra\icon.ico" %ipath)
+		self.Size = _Size(290,435)
+		self.Text = "Quasar®"
+
+		# fonts
+		self.gsmt_11r = _Font("Georgia", 10)
+		self.gsmt_10r = _Font("Georgia",9)
+
+		# label
+		self.label = Label()
+		self.label.Text = "Select Links:"
+		self.label.Font = self.gsmt_11r
+		self.label.Location = _Point(30,10)
+		self.label.Size = _Size(220,28)
+		self.Controls.Add(self.label)
+
+		# checklist box
+		self.lstbox = CheckedListBox()
+		self.lstbox.Items.AddRange(tuple(linkName))
+		self.lstbox.Font = self.gsmt_10r
+		# padding
+		self.lstbox.Padding = Padding(30)
+		# select one click
+		self.lstbox.CheckOnClick = True
+
+		self.FormBorderStyle = FormBorderStyle.FixedDialog
+		self.MaximizeBox = False;
+		self.ManimizeBox = False;
+		self.lstbox.Location = _Point(30,40)
+		self.lstbox.Size = _Size(210,280)
+
+		# auto horizontal scrollbar
+		self.lstbox.HorizontalScrollbar = True
+		self.Controls.Add(self.lstbox)
+
+		# select all btn
+		self.btn_all = Button()
+		self.btn_all.Text = "Select All"
+		self.btn_all.Font = self.gsmt_10r
+		self.btn_all.Size = _Size(95,25)
+		self.btn_all.Location = _Point(30,315)
+		self.Controls.Add(self.btn_all)
+
+		# select none btn
+		self.btn_none = Button()
+		self.btn_none.Text = "Select None"
+		self.btn_none.Font = self.gsmt_10r
+		self.btn_none.Size = _Size(95,25)
+		self.btn_none.Location = _Point(145,315)
+		self.Controls.Add(self.btn_none)
+
+		# ok btn
+		self.btn = Button()
+		self.btn.Text = "OK"
+		self.btn.Font = self.gsmt_10r
+		self.btn.Size = _Size(80,25)
+		self.btn.Location = _Point(95,350)
+		self.Controls.Add(self.btn)
+
+		# events
+		self.btn_all.Click += self.click_all
+		self.btn_none.Click += self.click_none
+		self.btn.Click += self.click_ok 
+
+		# pop up from center
+		self.CenterToScreen()
+
+	def click_ok(self, sender, event):
+		global res
+		if len(self.lstbox.Items) &lt; 1:
+			self.Close()
+		if len(self.lstbox.CheckedItems) &lt; 1:
+			return MessageBox.Show("No element selected!", "Quasar® Info Box", MessageBoxButtons.OK, MessageBoxIcon.Asterisk)
+		
+		
+		
+		for i in self.lstbox.CheckedItems:
+			i = linkDict[i];
+			linkType  = doc.GetElement(i.GetTypeId());
+			filepath = linkType.GetExternalFileReference().GetAbsolutePath();
+			linkType.LoadFrom(filepath,None);
+		
+		res = self.lstbox.CheckedItems;
+		return self.Close();
+			
+				
+			
+
+	def click_all(self, sender, event):
+		for i in range(len(self.lstbox.Items)):
+			self.lstbox.SetItemChecked(i,True)
+
+	def click_none(self, sender, event):
+		for i in range(len(self.lstbox.Items)):
+			self.lstbox.SetItemChecked(i,False)
+
+#TransactionManager.Instance.TransactionTaskDone()
+		
+Application.Run(CheckedBoxListSelector());
+OUT = res;</Script>
+    </PythonNodeModels.PythonNode>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="32e7f520-f63e-4c7a-9ed1-8dffe437c3ae" start_index="0" end="2192d1ba-1a5c-43b4-98df-5ea6075a4572" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+</Workspace>
