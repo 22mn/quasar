@@ -5,7 +5,7 @@
 
 - The most latest [version](https://github.com/mgjean/quasar/tree/master/Quasar%20v0.2.0) released on __24 November 2018__.
 
-- __Zerotouch__ codes are available [in this repository](https://github.com/mgjean/quasar.twotouch).
+- __Zerotouch__ codes are available [here](https://github.com/mgjean/quasar/tree/master/Quasar-ZTD).
 
 ### Quasar Wiki
 - Quasar includes 40+ nodes, simple usability and substantial enhancement to productivity.

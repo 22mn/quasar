@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autodesk.DesignScript.Geometry;
 using Autodesk.Revit.DB;
 using Autodesk.DesignScript.Runtime;
 using RevitServices.Persistence;
 using Revit.GeometryConversion;
 using Revit.Elements;
 using RevitServices.Transactions;
-using RevitServices.Persistence;
 
 namespace Quasar
 {
@@ -27,7 +23,7 @@ namespace Quasar
         /// <param name="offset"></param>
         /// <returns></returns>
         [IsVisibleInDynamoLibrary(false)]
-        public static BoundingBoxXYZ crop_box(BoundingBoxXYZ bbox, double offset)
+        public static BoundingBoxXYZ Crop_box(BoundingBoxXYZ bbox, double offset)
         {
             var minx = bbox.Min.X - offset;
             var miny = bbox.Min.Y - offset;
@@ -36,9 +32,11 @@ namespace Quasar
             var maxy = bbox.Max.Y + offset;
             var maxz = bbox.Max.Z + offset;
 
-            var newbox = new BoundingBoxXYZ();
-            newbox.Min = new XYZ(minx, miny, minz);
-            newbox.Max = new XYZ(maxx, maxy, maxz);
+            var newbox = new BoundingBoxXYZ
+            {
+                Min = new XYZ(minx, miny, minz),
+                Max = new XYZ(maxx, maxy, maxz)
+            };
 
             return newbox;
 
@@ -286,13 +284,17 @@ namespace Quasar
         {
             var doc = DocumentManager.Instance.CurrentDBDocument;
             var WallSweeps = new List<Revit.Elements.Element>();
-            var wallSweepTypes = new Dictionary<string, Autodesk.Revit.DB.WallSweepType>();
-            wallSweepTypes.Add("Sweep", WallSweepType.Sweep);
-            wallSweepTypes.Add("Reveal", WallSweepType.Reveal);
+            var wallSweepTypes = new Dictionary<string, Autodesk.Revit.DB.WallSweepType>
+            {
+                { "Sweep", WallSweepType.Sweep },
+                { "Reveal", WallSweepType.Reveal }
+            };
             var wallSweepTypeId = TypeElement.InternalElement.Id;
 
-            WallSweepInfo wallSweepInfo = new WallSweepInfo(wallSweepTypes[SweepOrReveal], IsVertical);
-            wallSweepInfo.Distance = Offset / 304.8;
+            WallSweepInfo wallSweepInfo = new WallSweepInfo(wallSweepTypes[SweepOrReveal], IsVertical)
+            {
+                Distance = Offset / 304.8
+            };
 
             TransactionManager.Instance.EnsureInTransaction(doc);
 
@@ -362,9 +364,11 @@ namespace Quasar
                 {
                     var value = i.Item1.InternalElement.LookupParameter(j).AsString().ToString();
                     var assign = i.Item2.InternalElement.LookupParameter(j).Set(value).ToString();
-                    var subList = new List<string>();
-                    subList.Add(value);
-                    subList.Add(assign);
+                    var subList = new List<string>
+                    {
+                        value,
+                        assign
+                    };
                     Result.Add(subList);
                 }
             }
@@ -423,8 +427,10 @@ namespace Quasar
                 var get_enum = geoobj.GetEnumerator();
                 var next = get_enum.MoveNext();
                 var shape = get_enum.Current;
-                var shape_list = new List<GeometryObject>();
-                shape_list.Add(shape);
+                var shape_list = new List<GeometryObject>
+                {
+                    shape
+                };
                 var shapeType = DirectShapeType.Create(doc, elem_name, objId);
                 shapeType.SetShape(shape_list);
                 var lib = DirectShapeLibrary.GetDirectShapeLibrary(doc);
@@ -513,7 +519,7 @@ namespace Quasar
             {
                 var v = view.Duplicate(ViewDuplicateOption.WithDetailing);
                 BoundingBoxXYZ bbox = elem.Item1.InternalElement.get_BoundingBox(doc.ActiveView);
-                var newbbox = Utility.crop_box(bbox, Offset / 304.8);
+                var newbbox = Utility.Crop_box(bbox, Offset / 304.8);
                 var dupview = (Autodesk.Revit.DB.View)doc.GetElement(v);
                 dupview.Name = elem.Item2;
                 dupview.CropBox = newbbox;
@@ -545,7 +551,7 @@ namespace Quasar
             foreach (var elem in Rooms.Zip(Names, Tuple.Create))
             {
                 BoundingBoxXYZ bbox = elem.Item1.InternalElement.get_BoundingBox(doc.ActiveView);
-                var newbbox = Utility.crop_box(bbox, Offset / 304.8);
+                var newbbox = Utility.Crop_box(bbox, Offset / 304.8);
                 View3D ThreeDView = View3D.CreateIsometric(doc, vtype.Id);
                 ThreeDView.Name = elem.Item2;
                 ThreeDView.SetSectionBox(newbbox);
@@ -580,7 +586,7 @@ namespace Quasar
             {
                 var v = view.Duplicate(ViewDuplicateOption.WithDetailing);
                 BoundingBoxXYZ bbox = elem.Item1.InternalElement.get_BoundingBox(doc.ActiveView);
-                var newbbox = Utility.crop_box(bbox, Offset / 304.8);
+                var newbbox = Utility.Crop_box(bbox, Offset / 304.8);
                 var dupview = (Autodesk.Revit.DB.View)doc.GetElement(v);
                 dupview.Name = elem.Item2;
                 dupview.CropBox = newbbox;
@@ -622,7 +628,7 @@ namespace Quasar
                 BoundingBoxXYZ bbox = r.InternalElement.get_BoundingBox(doc.ActiveView);
                 ElevationMarker marker = Autodesk.Revit.DB.ElevationMarker.CreateElevationMarker(doc, vtype.Id, point, 50);
 
-                BoundingBoxXYZ bcrop = Utility.crop_box(bbox, Offset / 304.8);
+                BoundingBoxXYZ bcrop = Utility.Crop_box(bbox, Offset / 304.8);
                 var surfaces = bcrop.ToProtoType(true).ToPolySurface().Surfaces().Skip(2).Take(4);
 
                 var westElev = marker.CreateElevation(doc, FloorPlan.InternalElement.Id, 0);
