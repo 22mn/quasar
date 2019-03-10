@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quasar", "Quasar\Quasar.csproj", "{EDB4B3AC-3ED3-4F85-9107-3AC5C18D0337}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EDB4B3AC-3ED3-4F85-9107-3AC5C18D0337}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDB4B3AC-3ED3-4F85-9107-3AC5C18D0337}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDB4B3AC-3ED3-4F85-9107-3AC5C18D0337}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDB4B3AC-3ED3-4F85-9107-3AC5C18D0337}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2A28D256-05F3-499A-88D1-17F1F6547D03}
+	EndGlobalSection
+EndGlobal
