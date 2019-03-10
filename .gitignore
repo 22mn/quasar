@@ -1,4 +1,4 @@
-# ignore these files
-backup
-upcoming
-dumps
+﻿# ignore these files
+backup/
+upcoming/
+dumps/
