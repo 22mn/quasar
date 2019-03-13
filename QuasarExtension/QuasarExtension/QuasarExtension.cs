@@ -9,7 +9,8 @@ namespace QuasarExtension
     {
         private MenuItem Quasar;
         private MenuItem NodesInGraph;
-        private MenuItem FreezeSelection;
+        private MenuItem About;
+        
 
 
         public void Dispose() { }
@@ -23,7 +24,7 @@ namespace QuasarExtension
         {
             Quasar = new MenuItem { Header = "Quasar" };
             NodesInGraph = new MenuItem { Header = "Nodes In Graph" };
-            FreezeSelection = new MenuItem { Header = "Freeze Selection" };
+            About = new MenuItem { Header = "About" };
 
             // ~ NodesInGraph Click Event ~  
             NodesInGraph.Click += (sender, args) =>
@@ -39,14 +40,22 @@ namespace QuasarExtension
                 window.Show();
             };
 
-            FreezeSelection.Click += (sender, args) =>
+            // ~ About Click Event ~ 
+
+            About.Click += (sender, args) =>
             {
-                // freeze view model here
-                var viewModel = new QuasarFreezeViewModel(loaded);
-                viewModel.SelectionFreeze();
+                var viewModel = new QuasarAbout(loaded);
+                var window = new QuasarAboutWindow
+                {
+                    MainGrid = { DataContext = viewModel },
+                    Owner = loaded.DynamoWindow
+                };
+                window.Left = window.Owner.Left + 200;
+                window.Top = window.Owner.Top + 100;
+                window.Show();
             };
 
-            Quasar.Items.Add(FreezeSelection);
+            Quasar.Items.Add(About);
             Quasar.Items.Add(NodesInGraph);
             loaded.dynamoMenu.Items.Add(Quasar);
         }

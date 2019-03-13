@@ -9,3 +9,5 @@ D:\SANDBAG\PROGRAMMING\git-contribution\quasar\QuasarExtension\QuasarExtension\o
 D:\SANDBAG\PROGRAMMING\git-contribution\quasar\QuasarExtension\QuasarExtension\obj\Debug\QuasarExtension.csproj.CoreCompileInputs.cache
 D:\SANDBAG\PROGRAMMING\git-contribution\quasar\QuasarExtension\QuasarExtension\obj\Debug\QuasarExtension.dll
 D:\SANDBAG\PROGRAMMING\git-contribution\quasar\QuasarExtension\QuasarExtension\obj\Debug\QuasarExtension.pdb
+D:\SANDBAG\PROGRAMMING\git-contribution\quasar\QuasarExtension\QuasarExtension\obj\Debug\QuasarAboutWindow.g.cs
+D:\SANDBAG\PROGRAMMING\git-contribution\quasar\QuasarExtension\QuasarExtension\obj\Debug\QuasarAboutWindow.baml

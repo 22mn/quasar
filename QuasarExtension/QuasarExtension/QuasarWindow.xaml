@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600" Width="450" Height="450">
     <Grid Name="MainGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <TextBlock Background="Ivory" HorizontalAlignment="Stretch" Text="{Binding CurrentNodes}" FontFamily="Gill Sans MT"
-                   Padding="10" FontWeight="Medium" FontSize="18" Foreground="RoyalBlue" />
+        <TextBlock Background="#2d2d2d" HorizontalAlignment="Stretch" Text="{Binding CurrentNodes}" FontFamily="Gill Sans MT"
+                   Padding="10" FontWeight="Medium" FontSize="18" Foreground="Ivory" />
 
     </Grid>
 </Window>

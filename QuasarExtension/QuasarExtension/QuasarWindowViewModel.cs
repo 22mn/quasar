@@ -54,29 +54,16 @@ namespace QuasarExtension
             readyParams.CurrentWorkspaceModel.NodeRemoved -= NodesCount_Changed;
         }
     }
-    public class QuasarFreezeViewModel : NotificationObject , IDisposable
+
+    public class QuasarAbout : NotificationObject, IDisposable
     {
-        private ReadyParams readyParams;
 
-        public void SelectionFreeze()
+        private readonly ReadyParams readyParams;
+        public QuasarAbout(ReadyParams r)
         {
-            // selection list includes nodes that are not frozen yet.
-            var selection = readyParams.CurrentWorkspaceModel.CurrentSelection.Where(o => !o.IsFrozen).ToList();
-            
-            foreach(NodeModel node in selection)
-            {
-                node.IsFrozen = true;
-            }
-            
-        }
-        public QuasarFreezeViewModel(ReadyParams ready)
-        {
-            readyParams = ready;
+            readyParams = r;
         }
 
-        public void Dispose()
-        {
-
-        }
+        public void Dispose() { }
     }
 }

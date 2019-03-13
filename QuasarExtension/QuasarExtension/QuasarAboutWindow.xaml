@@ -1,0 +1,22 @@
+﻿<Window x:Class="QuasarExtension.QuasarAboutWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QuasarExtension"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="400" Width="430" Height="180">
+    <Grid Name="MainGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <TextBlock Name="textblock1" Background="#2d2d2d" HorizontalAlignment="Stretch" FontFamily="Gill Sans MT"
+                  TextAlignment="Center" Padding="10" FontWeight="Medium" FontSize="18" Foreground="Ivory">   
+            Quasar Extension<LineBreak/>
+            <LineBreak/>
+            Quasar Extension includes in Quasar Package v2.0.101<LineBreak/>
+            developed and maintained by <TextBlock Foreground="LightGoldenrodYellow">min.naung</TextBlock> .<LineBreak/>
+            <LineBreak/>
+            <Hyperlink 
+            NavigateUri="https://github.com/mgjean/quasar" 
+            RequestNavigate="NavigateURL" Foreground="CadetBlue">https://github.com/mgjean/quasar</Hyperlink>
+        </TextBlock>
+    </Grid>
+</Window>

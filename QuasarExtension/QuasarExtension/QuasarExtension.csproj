@@ -132,6 +132,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="QuasarAboutWindow.xaml.cs">
+      <DependentUpon>QuasarAboutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="QuasarWindow.xaml.cs">
       <DependentUpon>QuasarWindow.xaml</DependentUpon>
     </Compile>
@@ -143,6 +146,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="QuasarAboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="QuasarWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
