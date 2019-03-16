@@ -15,7 +15,6 @@ namespace QuasarExtension
         private MenuItem Unfreeze;
         
 
-
         public void Dispose() { }
 
         public void Startup(ViewStartupParams startup)
@@ -25,11 +24,28 @@ namespace QuasarExtension
 
         public void Loaded(ViewLoadedParams loaded)
         {
+            // Quasar Main Menu
             Quasar = new MenuItem { Header = "Quasar" };
+            Quasar.ToolTip = new ToolTip { Content = "Quasar Package v2.0.102" };
+
+            // NodesInGraph MenuItem
             NodesInGraph = new MenuItem { Header = "Nodes In Graph" };
+            NodesInGraph.ToolTip = new ToolTip { Content = "Each node info in this graph" };
+
+            // About MenuItem
             About = new MenuItem { Header = "About" };
+            About.ToolTip = new ToolTip { Content = "About Quasar Extension" };
+
+            // Freeze MenuItem
             Freeze = new MenuItem { Header = "Freeze Selection" };
+            Freeze.ToolTip = new ToolTip { Content = "Freeze current selected nodes" };
+
+            // Unfreeze MenuItem
             Unfreeze = new MenuItem { Header = "Unfreeze Selection" };
+            Unfreeze.ToolTip = new ToolTip { Content = "Unfreeze current selected nodes" };
+
+
+            /* **EVENT REGION START** */
 
             // ~ NodesInGraph Click Event ~  
             NodesInGraph.Click += (sender, args) =>
@@ -46,7 +62,6 @@ namespace QuasarExtension
             };
 
             // ~ About Click Event ~ 
-
             About.Click += (sender, args) =>
             {
                 var viewModel = new QuasarAbout(loaded);
@@ -60,22 +75,27 @@ namespace QuasarExtension
                 window.Show();
             };
             
+            // ~ Freeze Click Event ~
             Freeze.Click += (sender, args) =>
             {
                 var viewModel = new QuasarFreeze(loaded); 
 
             };
 
+            // ~ Unfreeze Click Event ~
             Unfreeze.Click += (sender, args) =>
             {
                 var viewModel = new QuasarUnfreeze(loaded);
             };
 
 
-            Quasar.Items.Add(About);
+
+            // Add MenuItems 
             Quasar.Items.Add(Freeze);
             Quasar.Items.Add(Unfreeze);
             Quasar.Items.Add(NodesInGraph);
+            Quasar.Items.Add(new Separator());
+            Quasar.Items.Add(About);
             loaded.dynamoMenu.Items.Add(Quasar);
         }
         public void Shutdown() { }
