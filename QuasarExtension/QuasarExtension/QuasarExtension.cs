@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using Dynamo.Wpf.Extensions;
+using Dynamo.Graph.Nodes;
 
 namespace QuasarExtension
 {
@@ -10,6 +11,8 @@ namespace QuasarExtension
         private MenuItem Quasar;
         private MenuItem NodesInGraph;
         private MenuItem About;
+        private MenuItem Freeze;
+        private MenuItem Unfreeze;
         
 
 
@@ -25,6 +28,8 @@ namespace QuasarExtension
             Quasar = new MenuItem { Header = "Quasar" };
             NodesInGraph = new MenuItem { Header = "Nodes In Graph" };
             About = new MenuItem { Header = "About" };
+            Freeze = new MenuItem { Header = "Freeze Selection" };
+            Unfreeze = new MenuItem { Header = "Unfreeze Selection" };
 
             // ~ NodesInGraph Click Event ~  
             NodesInGraph.Click += (sender, args) =>
@@ -54,8 +59,22 @@ namespace QuasarExtension
                 window.Top = window.Owner.Top + 100;
                 window.Show();
             };
+            
+            Freeze.Click += (sender, args) =>
+            {
+                var viewModel = new QuasarFreeze(loaded); 
+
+            };
+
+            Unfreeze.Click += (sender, args) =>
+            {
+                var viewModel = new QuasarUnfreeze(loaded);
+            };
+
 
             Quasar.Items.Add(About);
+            Quasar.Items.Add(Freeze);
+            Quasar.Items.Add(Unfreeze);
             Quasar.Items.Add(NodesInGraph);
             loaded.dynamoMenu.Items.Add(Quasar);
         }

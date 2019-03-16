@@ -66,4 +66,58 @@ namespace QuasarExtension
 
         public void Dispose() { }
     }
+  
+    public class QuasarFreeze : NotificationObject, IDisposable
+    {
+        private readonly ReadyParams readyParams;
+
+        public ReadyParams Ready
+        {
+            get
+            {
+                return readyParams;
+            }
+        }
+
+
+        public QuasarFreeze(ReadyParams r)
+        {
+            readyParams = r;
+            var nodes = r.CurrentWorkspaceModel.CurrentSelection;
+            foreach(NodeModel node in nodes)
+            {
+                if (node.IsSelected && !node.IsFrozen)
+                {
+                    node.IsFrozen = true;
+                }
+            }
+        }
+        public void Dispose() { }
+        
+    }
+    public class QuasarUnfreeze: NotificationObject, IDisposable
+    {
+        private readonly ReadyParams readyParams;
+        public ReadyParams Ready
+        {
+            get
+            {
+                return readyParams;
+            }
+        }
+
+        public QuasarUnfreeze(ReadyParams r)
+        {
+            readyParams = r;
+            var nodes = r.CurrentWorkspaceModel.CurrentSelection;
+            foreach (NodeModel node in nodes)
+            {
+                if (node.IsSelected && node.IsFrozen)
+                {
+                    node.IsFrozen = false;
+                }
+            }
+        }
+        public void Dispose() { }
+    }
 }
