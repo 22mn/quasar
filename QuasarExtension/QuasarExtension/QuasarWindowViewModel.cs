@@ -3,11 +3,14 @@ using System.Linq;
 using Dynamo.Core;
 using Dynamo.Extensions;
 using Dynamo.Graph.Nodes;
+using Dynamo.Graph.Connectors;
+using Dynamo.ViewModels;
+using Dynamo.Graph.Workspaces;
 
 
 namespace QuasarExtension
 {
-    public class QuasarWindowViewModel : NotificationObject, IDisposable
+    public class QuasarNodeInGraph : NotificationObject, IDisposable
     {
         private string currentNodes;
         private ReadyParams readyParams;
@@ -26,12 +29,11 @@ namespace QuasarExtension
             string fileName = readyParams.CurrentWorkspaceModel.Name.ToString();
             int count = 1;
             string outputFormat = String.Format(" Nodes in {0}.dyn \n\n", fileName);
-            outputFormat += String.Format("** {0} [{1}] **\n\n", "Name", "Package/Category");
-            foreach (NodeModel node in readyParams.CurrentWorkspaceModel.Nodes.OrderBy(o => o.Category).ToList())
+            foreach (NodeModel node in readyParams.CurrentWorkspaceModel.Nodes)
             {
                 string name = node.Name;
                 string package = node.Category.Split('.')[0].ToString();
-                outputFormat += String.Format("{0}. {1} [{2}] \n", count, name, package);
+                outputFormat += String.Format("{0}. {1} ({2}) |{3}\n", count, name, package, node.State);
                 count += 1;
             }
             return outputFormat;
@@ -41,17 +43,26 @@ namespace QuasarExtension
             RaisePropertyChanged("CurrentNodes");
         }
 
-        public QuasarWindowViewModel(ReadyParams ready)
+        private void WiresCount_Changed(ConnectorModel wire)
+        {
+            RaisePropertyChanged("CurrentNodes");
+        }
+
+        public QuasarNodeInGraph(ReadyParams ready)
         {
             readyParams = ready;
             ready.CurrentWorkspaceModel.NodeAdded += NodesCount_Changed;
             ready.CurrentWorkspaceModel.NodeRemoved += NodesCount_Changed;
+            ready.CurrentWorkspaceModel.ConnectorAdded += WiresCount_Changed;
+            ready.CurrentWorkspaceModel.ConnectorDeleted += WiresCount_Changed;
         }
 
         public void Dispose()
         {
             readyParams.CurrentWorkspaceModel.NodeAdded -= NodesCount_Changed;
             readyParams.CurrentWorkspaceModel.NodeRemoved -= NodesCount_Changed;
+            readyParams.CurrentWorkspaceModel.ConnectorAdded -= WiresCount_Changed;
+            readyParams.CurrentWorkspaceModel.ConnectorDeleted -= WiresCount_Changed;
         }
     }
 
@@ -115,9 +126,37 @@ namespace QuasarExtension
                 if (node.IsSelected && node.IsFrozen)
                 {
                     node.IsFrozen = false;
+                    
                 }
             }
         }
         public void Dispose() { }
     }
+    public class QuasarFunctionTest : NotificationObject, IDisposable
+    {
+        
+        private readonly ReadyParams readyParams;
+        public string output;
+
+        public string Output
+        {
+            get { return output; }
+        }
+
+        // dynViewModel Function Test
+        public QuasarFunctionTest(ReadyParams r, DynamoViewModel dynamoViewModel)
+        {
+            readyParams = r;
+            WorkspaceModel workspace = readyParams.CurrentWorkspaceModel as WorkspaceModel;
+            output += workspace.FileName.ToString();
+            output += "/n";
+            output += dynamoViewModel.Model.Version.ToString();
+            
+            
+        }
+
+        public void Dispose() { }
+    }
+
+
 }

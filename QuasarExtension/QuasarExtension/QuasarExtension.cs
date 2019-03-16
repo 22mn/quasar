@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Dynamo.Wpf.Extensions;
 using Dynamo.Graph.Nodes;
+using Dynamo.ViewModels;
 
 namespace QuasarExtension
 {
@@ -13,6 +14,7 @@ namespace QuasarExtension
         private MenuItem About;
         private MenuItem Freeze;
         private MenuItem Unfreeze;
+        private MenuItem FunctionTest;
         
 
         public void Dispose() { }
@@ -24,6 +26,9 @@ namespace QuasarExtension
 
         public void Loaded(ViewLoadedParams loaded)
         {
+
+            DynamoViewModel dynamoViewModel = loaded.DynamoWindow.DataContext as DynamoViewModel;
+
             // Quasar Main Menu
             Quasar = new MenuItem { Header = "Quasar" };
             Quasar.ToolTip = new ToolTip { Content = "Quasar Package v2.0.102" };
@@ -44,13 +49,19 @@ namespace QuasarExtension
             Unfreeze = new MenuItem { Header = "Unfreeze Selection" };
             Unfreeze.ToolTip = new ToolTip { Content = "Unfreeze current selected nodes" };
 
+            // FunctionTest MenuItem
+            FunctionTest = new MenuItem { Header = "Function Test" };
+            FunctionTest.ToolTip = new ToolTip { Content = "Testing Dynamo API Methods" };
+
+
+
 
             /* **EVENT REGION START** */
 
             // ~ NodesInGraph Click Event ~  
             NodesInGraph.Click += (sender, args) =>
             {
-                var viewModel = new QuasarWindowViewModel(loaded);
+                var viewModel = new QuasarNodeInGraph(loaded);
                 var window = new QuasarWindow
                 {
                     MainGrid = { DataContext = viewModel },
@@ -78,7 +89,7 @@ namespace QuasarExtension
             // ~ Freeze Click Event ~
             Freeze.Click += (sender, args) =>
             {
-                var viewModel = new QuasarFreeze(loaded); 
+                var viewModel = new QuasarFreeze(loaded);
 
             };
 
@@ -88,9 +99,24 @@ namespace QuasarExtension
                 var viewModel = new QuasarUnfreeze(loaded);
             };
 
+            // ~ Unfreeze Click Event ~
+            FunctionTest.Click += (sender, args) =>
+            {
+                var viewModel = new QuasarFunctionTest(loaded, dynamoViewModel );
+                var window = new QuasarFunctionTestWindow
+                {
+                    MainGrid = { DataContext = viewModel },
+                    Owner = loaded.DynamoWindow
+                };
+                window.Left = window.Owner.Left + 200;
+                window.Top = window.Owner.Top + 100;
+                window.Show();
+            };
 
 
-            // Add MenuItems 
+            // Add MenuItems
+            Quasar.Items.Add(FunctionTest);
+            Quasar.Items.Add(new Separator());
             Quasar.Items.Add(Freeze);
             Quasar.Items.Add(Unfreeze);
             Quasar.Items.Add(NodesInGraph);

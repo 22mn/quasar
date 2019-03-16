@@ -10,7 +10,7 @@
 - __Extension__ codes are available [here](https://github.com/mgjean/quasar/tree/master/QuasarExtension)
 
 ### Quasar Wiki
-- Quasar includes 40+ nodes, simple usability and substantial enhancement to productivity.
+- Quasar includes 50+ nodes, simple usability and substantial enhancement to productivity.
 
 ### Quasar Usage
 - [Usage or Modification](https://twentytwo.space/2018/04/01/quasar)
