@@ -15,6 +15,7 @@ namespace QuasarExtension
         private MenuItem Freeze;
         private MenuItem Unfreeze;
         private MenuItem FunctionTest;
+        private MenuItem Samples;
         
 
         public void Dispose() { }
@@ -52,6 +53,10 @@ namespace QuasarExtension
             // FunctionTest MenuItem
             FunctionTest = new MenuItem { Header = "Function Test" };
             FunctionTest.ToolTip = new ToolTip { Content = "Testing Dynamo API Methods" };
+
+            // Samples MenuItem
+            Samples = new MenuItem { Header = "Samples" };
+            Samples.ToolTip = new ToolTip { Content = " Quasar Sample Files" };
 
 
 
@@ -113,8 +118,14 @@ namespace QuasarExtension
                 window.Show();
             };
 
+            // ~ Samples MenuItem
+            Samples.Click += (sender, args) =>
+             {
+                 var viewModel = new QuasarSamples(loaded, dynamoViewModel);
+             };
 
             // Add MenuItems
+            Quasar.Items.Add(Samples);
             Quasar.Items.Add(FunctionTest);
             Quasar.Items.Add(new Separator());
             Quasar.Items.Add(Freeze);

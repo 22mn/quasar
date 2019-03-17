@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 using Dynamo.Core;
 using Dynamo.Extensions;
+using Dynamo.Graph;
+using Dynamo.Graph.Notes;
 using Dynamo.Graph.Nodes;
 using Dynamo.Graph.Connectors;
 using Dynamo.ViewModels;
 using Dynamo.Graph.Workspaces;
-
+using Dynamo.Models;
 
 namespace QuasarExtension
 {
@@ -134,7 +137,7 @@ namespace QuasarExtension
     }
     public class QuasarFunctionTest : NotificationObject, IDisposable
     {
-        
+
         private readonly ReadyParams readyParams;
         public string output;
 
@@ -151,12 +154,47 @@ namespace QuasarExtension
             output += workspace.FileName.ToString();
             output += "/n";
             output += dynamoViewModel.Model.Version.ToString();
-            
-            
+
         }
 
         public void Dispose() { }
     }
+
+    public class QuasarSamples : NotificationObject, IDisposable
+    {
+
+
+        public QuasarSamples(ReadyParams r, DynamoViewModel dynamoViewModel)
+        {
+
+            // TEST TextNote REMOVE! 
+            /*
+            var notes = dynamoViewModel.Model.CurrentWorkspace.Notes;
+            foreach (var note in notes)
+            {
+                dynamoViewModel.AddToSelectionCommand.Execute(note);
+            }
+            dynamoViewModel.DeleteCommand.Execute(null);
+            */
+            //List<DynamoModel.RecordableCommand> commandRecorder = new List<DynamoModel.RecordableCommand>();
+
+
+            // Create notes for current selection nodes
+            var nodes = dynamoViewModel.Model.CurrentWorkspace.CurrentSelection;
+            foreach (NodeModel node in nodes)
+            {
+                if (node.IsSelected)
+                {
+                    string description = node.Category + "\n - " + node.Description;
+                    var note = new DynamoModel.CreateNoteCommand(Guid.NewGuid(), description, node.CenterX-50, node.CenterY-100, false);
+                    dynamoViewModel.ExecuteCommand(note);
+                }
+            };
+        }
+        public void Dispose() { }
+    }
+
+    
 
 
 }
