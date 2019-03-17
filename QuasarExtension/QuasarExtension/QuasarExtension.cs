@@ -10,13 +10,13 @@ namespace QuasarExtension
     public class QuasarExtension : IViewExtension
     {
         private MenuItem Quasar;
-        private MenuItem NodesInGraph;
         private MenuItem About;
         private MenuItem Freeze;
         private MenuItem Unfreeze;
-        private MenuItem FunctionTest;
-        private MenuItem Samples;
-        
+        private MenuItem Label;
+        //private MenuItem NodesInGraph;
+        //private MenuItem FunctionTest;
+
 
         public void Dispose() { }
 
@@ -33,10 +33,12 @@ namespace QuasarExtension
             // Quasar Main Menu
             Quasar = new MenuItem { Header = "Quasar" };
             Quasar.ToolTip = new ToolTip { Content = "Quasar Package v2.0.102" };
-
+            
+            /*
             // NodesInGraph MenuItem
             NodesInGraph = new MenuItem { Header = "Nodes In Graph" };
-            NodesInGraph.ToolTip = new ToolTip { Content = "Each node info in this graph" };
+            NodesInGraph.ToolTip = new ToolTip { Content = "Nodes info in this graph" };
+            */
 
             // About MenuItem
             About = new MenuItem { Header = "About" };
@@ -49,20 +51,23 @@ namespace QuasarExtension
             // Unfreeze MenuItem
             Unfreeze = new MenuItem { Header = "Unfreeze Selection" };
             Unfreeze.ToolTip = new ToolTip { Content = "Unfreeze current selected nodes" };
-
+            
+            /*
             // FunctionTest MenuItem
             FunctionTest = new MenuItem { Header = "Function Test" };
             FunctionTest.ToolTip = new ToolTip { Content = "Testing Dynamo API Methods" };
+            */
 
             // Samples MenuItem
-            Samples = new MenuItem { Header = "Samples" };
-            Samples.ToolTip = new ToolTip { Content = " Quasar Sample Files" };
+            Label = new MenuItem { Header = "Label Selection" };
+            Label.ToolTip = new ToolTip { Content = " Add description label to selected nodes" };
 
 
 
 
             /* **EVENT REGION START** */
 
+            /*
             // ~ NodesInGraph Click Event ~  
             NodesInGraph.Click += (sender, args) =>
             {
@@ -76,6 +81,7 @@ namespace QuasarExtension
                 window.Top = window.Owner.Top + 250;
                 window.Show();
             };
+            */
 
             // ~ About Click Event ~ 
             About.Click += (sender, args) =>
@@ -104,6 +110,7 @@ namespace QuasarExtension
                 var viewModel = new QuasarUnfreeze(loaded);
             };
 
+            /*
             // ~ Unfreeze Click Event ~
             FunctionTest.Click += (sender, args) =>
             {
@@ -117,20 +124,23 @@ namespace QuasarExtension
                 window.Top = window.Owner.Top + 100;
                 window.Show();
             };
+            */
 
             // ~ Samples MenuItem
-            Samples.Click += (sender, args) =>
+            Label.Click += (sender, args) =>
              {
-                 var viewModel = new QuasarSamples(loaded, dynamoViewModel);
+                 var viewModel = new QuasarLabel(loaded, dynamoViewModel);
              };
 
             // Add MenuItems
-            Quasar.Items.Add(Samples);
-            Quasar.Items.Add(FunctionTest);
-            Quasar.Items.Add(new Separator());
+            
+            //Quasar.Items.Add(FunctionTest);
+
+            Quasar.Items.Add(Label);
+            //Quasar.Items.Add(new Separator());
             Quasar.Items.Add(Freeze);
             Quasar.Items.Add(Unfreeze);
-            Quasar.Items.Add(NodesInGraph);
+            // Quasar.Items.Add(NodesInGraph);
             Quasar.Items.Add(new Separator());
             Quasar.Items.Add(About);
             loaded.dynamoMenu.Items.Add(Quasar);

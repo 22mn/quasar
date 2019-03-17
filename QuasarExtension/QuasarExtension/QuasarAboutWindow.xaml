@@ -11,7 +11,7 @@
                   TextAlignment="Center" Padding="10" FontWeight="Medium" FontSize="18" Foreground="Ivory">   
             Quasar Extension<LineBreak/>
             <LineBreak/>
-            Quasar Extension includes in Quasar Package v2.0.101<LineBreak/>
+            Quasar Extension includes in Quasar Package v2.0.102<LineBreak/>
             developed and maintained by <TextBlock Foreground="LightGoldenrodYellow">min.naung</TextBlock> .<LineBreak/>
             <LineBreak/>
             <Hyperlink 

@@ -13,6 +13,7 @@ using Dynamo.Models;
 
 namespace QuasarExtension
 {
+    /*
     public class QuasarNodeInGraph : NotificationObject, IDisposable
     {
         private string currentNodes;
@@ -36,7 +37,7 @@ namespace QuasarExtension
             {
                 string name = node.Name;
                 string package = node.Category.Split('.')[0].ToString();
-                outputFormat += String.Format("{0}. {1} ({2}) |{3}\n", count, name, package, node.State);
+                outputFormat += String.Format("{0}. {1} ({2}) | {3}\n", count, name, package, node.State);
                 count += 1;
             }
             return outputFormat;
@@ -68,7 +69,7 @@ namespace QuasarExtension
             readyParams.CurrentWorkspaceModel.ConnectorDeleted -= WiresCount_Changed;
         }
     }
-
+    */
     public class QuasarAbout : NotificationObject, IDisposable
     {
 
@@ -135,6 +136,8 @@ namespace QuasarExtension
         }
         public void Dispose() { }
     }
+
+    /*
     public class QuasarFunctionTest : NotificationObject, IDisposable
     {
 
@@ -159,42 +162,48 @@ namespace QuasarExtension
 
         public void Dispose() { }
     }
-
-    public class QuasarSamples : NotificationObject, IDisposable
+    */
+    public class QuasarLabel : NotificationObject, IDisposable
     {
 
-
-        public QuasarSamples(ReadyParams r, DynamoViewModel dynamoViewModel)
+        public QuasarLabel(ReadyParams r, DynamoViewModel dynamoViewModel)
         {
+            // Create notes for current selection nodes
+            var nodes = dynamoViewModel.Model.CurrentWorkspace.CurrentSelection;
+            List<Guid> guids = new List<Guid>();
+            foreach (NodeModel node in nodes)
+            {
+                if (node.IsSelected)  // node.IsCustomFunction can use to filter
+                {
+                    Guid newG = Guid.NewGuid();
+                    string description = "- " + node.Description.Split('\n')[0];
+                    var note = new DynamoModel.CreateNoteCommand(newG, description, node.CenterX-100, node.CenterY-75, false);
 
-            // TEST TextNote REMOVE! 
+                    // Execute create command
+                    dynamoViewModel.ExecuteCommand(note);
+                    
+                    // record note guid
+                    guids.Add(newG);
+
+                    // deselect node
+                    node.Deselect();
+                }
+            };
+
             /*
+            dynamoViewModel.Model.ClearCurrentWorkspace();
             var notes = dynamoViewModel.Model.CurrentWorkspace.Notes;
             foreach (var note in notes)
             {
-                dynamoViewModel.AddToSelectionCommand.Execute(note);
-            }
-            dynamoViewModel.DeleteCommand.Execute(null);
-            */
-            //List<DynamoModel.RecordableCommand> commandRecorder = new List<DynamoModel.RecordableCommand>();
-
-
-            // Create notes for current selection nodes
-            var nodes = dynamoViewModel.Model.CurrentWorkspace.CurrentSelection;
-            foreach (NodeModel node in nodes)
-            {
-                if (node.IsSelected)
+                if (guids.Contains(note.GUID))
                 {
-                    string description = node.Category + "\n - " + node.Description;
-                    var note = new DynamoModel.CreateNoteCommand(Guid.NewGuid(), description, node.CenterX-50, node.CenterY-100, false);
-                    dynamoViewModel.ExecuteCommand(note);
+                    dynamoViewModel.AddToSelectionCommand.Execute(note);
                 }
-            };
+            }
+            */
         }
         public void Dispose() { }
     }
 
     
-
-
 }
