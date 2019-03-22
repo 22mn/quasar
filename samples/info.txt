@@ -1,1 +1,0 @@
- Samples are written in revit version 2017.2, dynamo version - 1.3.2
