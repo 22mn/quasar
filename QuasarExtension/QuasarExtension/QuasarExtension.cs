@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Dynamo.Wpf.Extensions;
@@ -14,6 +16,7 @@ namespace QuasarExtension
         private MenuItem Freeze;
         private MenuItem Unfreeze;
         private MenuItem Label;
+        private MenuItem SampleFileMenu;
         //private MenuItem NodesInGraph;
         //private MenuItem FunctionTest;
 
@@ -58,9 +61,26 @@ namespace QuasarExtension
             FunctionTest.ToolTip = new ToolTip { Content = "Testing Dynamo API Methods" };
             */
 
-            // Samples MenuItem
+
+            // Samples MenuItems
             Label = new MenuItem { Header = "Label Selection" };
             Label.ToolTip = new ToolTip { Content = " Add description label to selected nodes" };
+
+            SampleFileMenu = new MenuItem { Header = "Quasar Samples" };
+            SampleFileMenu.ToolTip = new ToolTip { Content = " Sample files for node usage" };
+
+            var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var path = Path.Combine(appdata, "Dynamo\\Dynamo Revit\\2.0\\packages\\Quasar\\extra\\samples");
+            var SubMenuItem = Directory.GetDirectories(path);
+
+            foreach (string sub in SubMenuItem)
+            {
+                MenuItem subMenu = new MenuItem { Header = sub.Split('\\').Last()};
+                //subMenu.ToolTip = new ToolTip { Content = sub.Split('\\').Last()};
+                //SampleFileMenu.Items.Add(subMenu);
+                MenuItem subMenuItems = SampleFiles(sub, subMenu, dynamoViewModel);
+                SampleFileMenu.Items.Add(subMenuItems);
+            }
 
 
 
@@ -82,6 +102,7 @@ namespace QuasarExtension
                 window.Show();
             };
             */
+
 
             // ~ About Click Event ~ 
             About.Click += (sender, args) =>
@@ -110,27 +131,20 @@ namespace QuasarExtension
                 var viewModel = new QuasarUnfreeze(loaded);
             };
 
-            /*
-            // ~ Unfreeze Click Event ~
-            FunctionTest.Click += (sender, args) =>
-            {
-                var viewModel = new QuasarFunctionTest(loaded, dynamoViewModel );
-                var window = new QuasarFunctionTestWindow
-                {
-                    MainGrid = { DataContext = viewModel },
-                    Owner = loaded.DynamoWindow
-                };
-                window.Left = window.Owner.Left + 200;
-                window.Top = window.Owner.Top + 100;
-                window.Show();
-            };
-            */
-
-            // ~ Samples MenuItem
+            // ~ Label MenuItem
             Label.Click += (sender, args) =>
              {
                  var viewModel = new QuasarLabel(loaded, dynamoViewModel);
+                 
              };
+
+            // ~ Sample MenuItem
+
+            SampleFileMenu.Click += (sender, args) =>
+            {
+                var viewModel = new QuasarSampleFile(loaded, dynamoViewModel);
+            };
+
 
             // Add MenuItems
             
@@ -142,9 +156,37 @@ namespace QuasarExtension
             Quasar.Items.Add(Unfreeze);
             // Quasar.Items.Add(NodesInGraph);
             Quasar.Items.Add(new Separator());
+            Quasar.Items.Add(SampleFileMenu);
+            Quasar.Items.Add(new Separator());
             Quasar.Items.Add(About);
             loaded.dynamoMenu.Items.Add(Quasar);
         }
+
+
+        public MenuItem SampleFiles(string path, MenuItem submenu,DynamoViewModel dynamoViewModel)
+        {
+            string[] files = Directory.GetFiles(path,"*.dyn");
+            foreach(var file in files)
+            {
+                string fileName = Path.GetFileNameWithoutExtension(file);
+                MenuItem menu = new MenuItem { Header = file.Split('\\').Last() };
+                menu.Click += (sender, args) =>
+                  {
+                      if (File.Exists(file))
+                      {
+                          dynamoViewModel.CloseHomeWorkspaceCommand.Execute(null);
+                          dynamoViewModel.OpenCommand.Execute(file);
+                      }
+                      else { MessageBox.Show("File "+ file.Split('\\').Last() + " not found.", "Error Message!"); };
+                  };
+                submenu.Items.Add(menu);
+
+            }
+            return submenu;
+
+        }
+
+
         public void Shutdown() { }
 
         public string UniqueId

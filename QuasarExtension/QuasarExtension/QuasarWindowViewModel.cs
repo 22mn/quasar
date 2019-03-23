@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.IO;
 using System.Collections.Generic;
 using Dynamo.Core;
 using Dynamo.Extensions;
@@ -13,6 +14,7 @@ using Dynamo.Models;
 
 namespace QuasarExtension
 {
+    
     /*
     public class QuasarNodeInGraph : NotificationObject, IDisposable
     {
@@ -205,5 +207,19 @@ namespace QuasarExtension
         public void Dispose() { }
     }
 
-    
+    public class QuasarSampleFile : NotificationObject, IDisposable
+    {
+        public string[] SubMenu;
+        public string Files;
+
+        public QuasarSampleFile(ReadyParams readyParams, DynamoViewModel dynamoViewModel)
+        {
+            var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var path = Path.Combine(appdata,"\\Dynamo\\Dynamo Revit\\2.0\\packages\\Quasar\\extra\\samples");
+        }
+
+        public void Dispose() { }
+    }
+
+
 }
