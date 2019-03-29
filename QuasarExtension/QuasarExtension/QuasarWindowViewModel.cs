@@ -221,5 +221,14 @@ namespace QuasarExtension
         public void Dispose() { }
     }
 
+    public class QuasarSetting : NotificationObject, IDisposable
+    {
+        public QuasarSetting(ReadyParams readyParams, DynamoViewModel dynamoViewModel)
+        {
+
+        }
+        public void Dispose() { }
+    }
+
 
 }

@@ -138,6 +138,9 @@
     <Compile Include="QuasarFunctionTestWindow.xaml.cs">
       <DependentUpon>QuasarFunctionTestWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="QuasarSettingWindow.xaml.cs">
+      <DependentUpon>QuasarSettingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="QuasarWindow.xaml.cs">
       <DependentUpon>QuasarWindow.xaml</DependentUpon>
     </Compile>
@@ -154,6 +157,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="QuasarFunctionTestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="QuasarSettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
