@@ -1,0 +1,56 @@
+<Workspace Version="1.3.2.2480" X="-22.9100901139609" Y="-64.8821067780835" zoom="0.82770257044119" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="0958b2df-7bee-484e-abf3-033c7c18a25f" type="PythonNodeModels.PythonNode" nickname="Python Script" x="417.462172230903" y="385.671707729188" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import clr
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+cate = Category.GetCategory(doc, BuiltInCategory.OST_Lines)
+
+res = {}
+keywords = IN[0]
+removed = []
+# line category store
+for i in cate.SubCategories:
+	for k in keywords:
+		if k in i.Name:
+			res[i.Name] = i.Id
+			
+TransactionManager.Instance.EnsureInTransaction(doc)
+
+for name, id in res.items():
+	removed.append(name)
+	doc.Delete(id)
+
+TransactionManager.Instance.TransactionTaskDone()
+
+OUT = removed</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="8389e790-cf53-4c89-88f9-876e293389ad" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="148.397553800424" y="390.468569266337" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="{&quot;ciap&quot;, &quot;arup&quot;};" ShouldFocus="false" />
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="8389e790-cf53-4c89-88f9-876e293389ad" start_index="0" end="0958b2df-7bee-484e-abf3-033c7c18a25f" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="b75e008f-27b8-45ca-a25e-c390e2441a25" annotationText="Keywords" left="138.397553800424" top="344.468569266337" width="191.2" height="138.6" fontSize="30" InitialTop="390.468569266337" InitialHeight="122.6" TextblockHeight="36" backgrouund="#FFA4E1FF">
+      <Models ModelGuid="8389e790-cf53-4c89-88f9-876e293389ad" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="2fc0f4b5-426c-4a66-bc3a-e2f579f18d4f" annotationText="Remove LineStyles" left="407.462172230903" top="303.671707729188" width="144.8" height="174.6" fontSize="30" InitialTop="385.671707729188" InitialHeight="122.6" TextblockHeight="72" backgrouund="#FFB9F9E1">
+      <Models ModelGuid="0958b2df-7bee-484e-abf3-033c7c18a25f" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+  </Annotations>
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
