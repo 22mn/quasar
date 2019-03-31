@@ -1,61 +1,25 @@
-<Workspace Version="1.3.2.2480" X="-476.067626483137" Y="-427.034545638718" zoom="0.853164136581591" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="-862.288701205937" Y="-435.318852804683" zoom="0.989005846727376" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
   <NamespaceResolutionMap />
   <Elements>
-    <PythonNodeModels.PythonNode guid="ca029c00-859a-45e3-b02f-7cdf8c1984d6" type="PythonNodeModels.PythonNode" nickname="FillRegions" x="1196.44468561313" y="752.939854851409" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="3">
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="341ae45e-d517-4cc8-8070-482ff766376d" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="SetFillRegionLine" x="1196.44468561313" y="752.130961756745" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="False" />
-      <PortInfo index="2" default="False" />
-      <Script>
-import clr
-
-
-clr.AddReference("RevitAPI")
-from Autodesk.Revit.DB import *
-clr.AddReference("RevitServices")
-import RevitServices
-from RevitServices.Persistence import DocumentManager
-from RevitServices.Transactions import TransactionManager
-
-doc = DocumentManager.Instance.CurrentDBDocument
-
-frtId = UnwrapElement(IN[0]).Id
-lineId = UnwrapElement(IN[1]).Id
-active_view = IN[2]
-
-if active_view:
-	elems = FilteredElementCollector(doc, doc.ActiveView.Id).OfClass(FilledRegion)
-else:
-	elems = FilteredElementCollector(doc).OfClass(FilledRegion)
-
-
-res = []
-
-TransactionManager.Instance.EnsureInTransaction(doc)
-
-for i in elems:
-		if frtId == i.GetTypeId():
-			i.SetLineStyleId(lineId)
-			res.append(i)
-	
-TransactionManager.Instance.TransactionTaskDone()
-
-
-OUT = res
-
-</Script>
-    </PythonNodeModels.PythonNode>
-    <DSRevitNodesUI.FilledRegionTypes guid="1d718c4e-06fc-4217-86da-f0c0d91da682" type="DSRevitNodesUI.FilledRegionTypes" nickname="Select Filled Region Type" x="818.509331491728" y="704.017036319111" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="12:TYPE-5 (W1)" />
-    <archilabUI.LineStyleUi guid="2ae1cd87-a24f-44fb-be93-76f8349d6114" type="archilabUI.LineStyleUi" nickname="Line Styles" x="870.923312347955" y="799.924106730558" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="250:WP_TYPE-5 (W1)" />
-    <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="7893aa18-2367-4cf9-b29a-c82b1e41267f" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="952.237513009221" y="893.991075745566" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="true;" ShouldFocus="false" />
+      <PortInfo index="2" default="True" />
+      <ID value="8834f6e5-f2c7-4df2-85ec-3cc5b4549004" />
+      <Name value="SetFillRegionLine" />
+      <Description value="Modify fill region type line styles by given line style type in active view (default), set false to modify all view in the document. " />
+      <Inputs>
+        <Input value="FillRegionType" />
+        <Input value="LineStyleType" />
+        <Input value="ActiveViewOnly" />
+      </Inputs>
+      <Outputs>
+        <Output value="FillRegionElements" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
   </Elements>
-  <Connectors>
-    <Dynamo.Graph.Connectors.ConnectorModel start="1d718c4e-06fc-4217-86da-f0c0d91da682" start_index="0" end="ca029c00-859a-45e3-b02f-7cdf8c1984d6" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="2ae1cd87-a24f-44fb-be93-76f8349d6114" start_index="0" end="ca029c00-859a-45e3-b02f-7cdf8c1984d6" end_index="1" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="7893aa18-2367-4cf9-b29a-c82b1e41267f" start_index="0" end="ca029c00-859a-45e3-b02f-7cdf8c1984d6" end_index="2" portType="0" />
-  </Connectors>
-  <Notes>
-    <Dynamo.Graph.Notes.NoteModel guid="651a315b-6ea4-4952-9738-1cd88280a6e2" text="** Change Fill Region Line Style (Active View Only)&#xD;&#xA;IN[0] = Fill Region Type&#xD;&#xA;IN[1] = Line Style&#xD;&#xA;IN[2] = Active view (boolean)" x="1150.54753709291" y="688.269517986047" />
-  </Notes>
+  <Connectors />
+  <Notes />
   <Annotations />
   <Presets />
   <Cameras>
