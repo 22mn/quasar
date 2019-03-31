@@ -18,11 +18,10 @@ D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\bin\Debug\Quasa
 D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\bin\Debug\Quasar.xml
 D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\bin\Debug\Quasar.dll
 D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\bin\Debug\Quasar.pdb
-D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\bin\Debug\DynamoServices.dll
-D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\bin\Debug\DynamoUnits.dll
-D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\bin\Debug\ProtoGeometry.dll
 D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\obj\Debug\Quasar.csprojAssemblyReference.cache
 D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\obj\Debug\Quasar.csproj.CoreCompileInputs.cache
-D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\obj\Debug\Quasar.csproj.CopyComplete
 D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\obj\Debug\Quasar.dll
 D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\obj\Debug\Quasar.pdb
+D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\obj\Debug\Quasar.csproj.GenerateResource.cache
+D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\obj\Debug\Quasar.QuasarImages.resources
+D:\SANDBAG\PROGRAMMING\git-contribution\quasar\Quasar-ZTD\Quasar\obj\Debug\Quasar.PackageImages.resources
