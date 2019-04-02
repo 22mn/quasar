@@ -1,354 +1,113 @@
-{
-  "Uuid": "0caa49c4-d41c-4338-beed-a5497f653d16",
-  "IsCustomNode": true,
-  "Category": "Quasar.SheetUtility",
-  "Description": "Duplicate sheets with all the views that associate with the sheets. ",
-  "Name": "DuplicateSheetsWithViews",
-  "ElementResolver": {
-    "ResolutionMap": {
-      "ListUtilities": {
-        "Key": "Archilab.Grimshaw.Utilities.ListUtilities",
-        "Value": "Archi-lab_Grimshaw.dll"
-      },
-      "DSCore.List": {
-        "Key": "DSCore.List",
-        "Value": "DSCoreNodes.dll"
-      }
-    }
-  },
-  "Inputs": [],
-  "Outputs": [],
-  "Nodes": [
-    {
-      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
-      "NodeType": "PythonScriptNode",
-      "Code": "# dynamo version - 2.0.1\r\n# quasar version - 2.0.1\r\n\r\n# author - min.naung/mgjean https://twentytwo.space/contact/\r\nimport clr\r\nclr.AddReference('RevitAPI')\r\nclr.AddReference(\"RevitServices\")\r\n\r\nfrom Autodesk.Revit.DB import *\r\n\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\nsheets = UnwrapElement(IN[0])\r\nnames = IN[1]\r\nnumbers = IN[2]\r\ntitleblock = UnwrapElement(IN[3])\r\n\r\nnew_sheets = []\r\nout = []\r\n\r\n\r\n\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\nfor (name, number) in zip(names,numbers):\r\n\tnewSheet = ViewSheet.Create(doc, titleblock.Id)\t\r\n\t\r\n\tnewSheet.SheetNumber = number\r\n\tnewSheet.Name = name\r\n\tnew_sheets.append(newSheet)\r\n\r\n\r\nfor sheet,nSheet in zip(sheets,new_sheets):\t\r\n\tviews = []\r\n\tvPorts = sheet.GetAllViewports()\r\n\t\r\n\tfor ele in vPorts:\r\n\t\tele = doc.GetElement(ele)\t\t\t\t\r\n\t\tvOpt = ViewDuplicateOption.WithDetailing\r\n\t\t\t\t\r\n\t\tviewLoc = ele.GetBoxCenter()\r\n\t\tvptype = ele.GetTypeId()\r\n\r\n\t\tview = doc.GetElement(ele.ViewId)\r\n\t\tv = view.Duplicate(vOpt)\r\n\r\n\t\tnewPort = Viewport.Create(doc,nSheet.Id, v, viewLoc)\r\n\t\tviews.append(newPort)\r\n\t\tnewPort.ChangeTypeId(vptype)\r\n\t\t\t\t\t\r\n\tout.append(views)\r\nTransactionManager.Instance.TransactionTaskDone()\t\r\n\r\n\t\r\nOUT = out",
-      "VariableInputPorts": true,
-      "Id": "67fb932e6f74446a90200237f2cf9d37",
-      "Inputs": [
-        {
-          "Id": "761d739d13ee4e899fd64a28b59719e3",
-          "Name": "IN[0]",
-          "Description": "Input #0",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "bf7e485701b6445bba4871ce6e5a77eb",
-          "Name": "IN[1]",
-          "Description": "Input #1",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "85955610c5024ad0b4d0e21685278493",
-          "Name": "IN[2]",
-          "Description": "Input #2",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "dcb67adf158e4714be82f3f1ce8045ac",
-          "Name": "IN[3]",
-          "Description": "Input #3",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Outputs": [
-        {
-          "Id": "d410d2d8247841a598005beb86c6f9c9",
-          "Name": "OUT",
-          "Description": "Result of the python script",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Replication": "Disabled",
-      "Description": "Runs an embedded IronPython script."
-    },
-    {
-      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
-      "NodeType": "InputNode",
-      "Parameter": {
-        "Name": "Sheets",
-        "TypeName": "var",
-        "TypeRank": -1,
-        "DefaultValue": null,
-        "Description": " sheets to duplicate"
-      },
-      "Id": "97588a8779354a1c8e57aa1f8a190e4e",
-      "Inputs": [],
-      "Outputs": [
-        {
-          "Id": "db50282b0f414e5e8d2a396ddae49091",
-          "Name": "",
-          "Description": "Symbol",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Replication": "Disabled",
-      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
-    },
-    {
-      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
-      "NodeType": "InputNode",
-      "Parameter": {
-        "Name": "Names",
-        "TypeName": "var",
-        "TypeRank": -1,
-        "DefaultValue": null,
-        "Description": " names for sheets"
-      },
-      "Id": "f57daee103bc4501b5b4576de7d7d0e1",
-      "Inputs": [],
-      "Outputs": [
-        {
-          "Id": "12a7550e988940a0b347c58a4ae080c2",
-          "Name": "",
-          "Description": "Symbol",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Replication": "Disabled",
-      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
-    },
-    {
-      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
-      "NodeType": "InputNode",
-      "Parameter": {
-        "Name": "Numbers",
-        "TypeName": "var",
-        "TypeRank": -1,
-        "DefaultValue": null,
-        "Description": " number for sheets"
-      },
-      "Id": "dbbb9ade073141d2a11e7f3fbae70abd",
-      "Inputs": [],
-      "Outputs": [
-        {
-          "Id": "29739b4ffea640e68ce6e1a42608be97",
-          "Name": "",
-          "Description": "Symbol",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Replication": "Disabled",
-      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
-    },
-    {
-      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
-      "NodeType": "InputNode",
-      "Parameter": {
-        "Name": "Titleblock",
-        "TypeName": "var",
-        "TypeRank": -1,
-        "DefaultValue": null,
-        "Description": " Titleblock Family"
-      },
-      "Id": "0041927bec094ccb8c1444c1636af1ae",
-      "Inputs": [],
-      "Outputs": [
-        {
-          "Id": "922a07622f6a4eeaa29cf2baaf9d18da",
-          "Name": "",
-          "Description": "Symbol",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Replication": "Disabled",
-      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
-    },
-    {
-      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
-      "NodeType": "OutputNode",
-      "ElementResolver": null,
-      "Symbol": "// output sheets\r\nSheets",
-      "Id": "c169a7cc1be64255a68162b1d2c1466f",
-      "Inputs": [
-        {
-          "Id": "08057e2d56274a8cb352e89638a79c48",
-          "Name": "",
-          "Description": "",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Outputs": [],
-      "Replication": "Disabled",
-      "Description": "A function output, use with custom nodes"
-    }
-  ],
-  "Connectors": [
-    {
-      "Start": "d410d2d8247841a598005beb86c6f9c9",
-      "End": "08057e2d56274a8cb352e89638a79c48",
-      "Id": "80b809ad2e9745e6b56ed3b29a2d2de0"
-    },
-    {
-      "Start": "db50282b0f414e5e8d2a396ddae49091",
-      "End": "761d739d13ee4e899fd64a28b59719e3",
-      "Id": "50eb6fef1f29448685c9e442cfefb808"
-    },
-    {
-      "Start": "12a7550e988940a0b347c58a4ae080c2",
-      "End": "bf7e485701b6445bba4871ce6e5a77eb",
-      "Id": "68dbdb298d8b4263a68db1c025b2bed6"
-    },
-    {
-      "Start": "29739b4ffea640e68ce6e1a42608be97",
-      "End": "85955610c5024ad0b4d0e21685278493",
-      "Id": "935ccba3a5e64c7fa430b1ff3a7e697e"
-    },
-    {
-      "Start": "922a07622f6a4eeaa29cf2baaf9d18da",
-      "End": "dcb67adf158e4714be82f3f1ce8045ac",
-      "Id": "51aa9ebde8544ab5894fc222eba24546"
-    }
-  ],
-  "Dependencies": [],
-  "Bindings": [],
-  "View": {
-    "Dynamo": {
-      "ScaleFactor": 1.0,
-      "HasRunWithoutCrash": false,
-      "IsVisibleInDynamoLibrary": true,
-      "Version": "2.0.1.5055",
-      "RunType": "Manual",
-      "RunPeriod": "1000"
-    },
-    "Camera": {
-      "Name": "Background Preview",
-      "EyeX": -2313.46923828125,
-      "EyeY": 41894.7265625,
-      "EyeZ": -23996.501953125,
-      "LookX": 13472.7919921875,
-      "LookY": -17933.068359375,
-      "LookZ": -8921.0419921875,
-      "UpX": 0.48536446690559387,
-      "UpY": 0.81310075521469116,
-      "UpZ": -0.32138526439666748
-    },
-    "NodeViews": [
-      {
-        "ShowGeometry": true,
-        "Name": "Python Script",
-        "Id": "67fb932e6f74446a90200237f2cf9d37",
-        "IsSetAsInput": false,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": 304.05616778219667,
-        "Y": 70.375010886256
-      },
-      {
-        "ShowGeometry": true,
-        "Name": "Input",
-        "Id": "97588a8779354a1c8e57aa1f8a190e4e",
-        "IsSetAsInput": false,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": 0.0,
-        "Y": 0.0
-      },
-      {
-        "ShowGeometry": true,
-        "Name": "Input",
-        "Id": "f57daee103bc4501b5b4576de7d7d0e1",
-        "IsSetAsInput": false,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": 0.0,
-        "Y": 150.0
-      },
-      {
-        "ShowGeometry": true,
-        "Name": "Input",
-        "Id": "dbbb9ade073141d2a11e7f3fbae70abd",
-        "IsSetAsInput": false,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": -20.398553880074246,
-        "Y": 251.04347068782187
-      },
-      {
-        "ShowGeometry": true,
-        "Name": "Input",
-        "Id": "0041927bec094ccb8c1444c1636af1ae",
-        "IsSetAsInput": false,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": -19.378626186070392,
-        "Y": 344.94744751761789
-      },
-      {
-        "ShowGeometry": true,
-        "Name": "Output",
-        "Id": "c169a7cc1be64255a68162b1d2c1466f",
-        "IsSetAsInput": false,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": 531.39421552029683,
-        "Y": 113.21197403441181
-      }
-    ],
-    "Annotations": [
-      {
-        "Id": "d1e19cfdec71459abd70c5a1d7f94a23",
-        "Title": "",
-        "Nodes": [
-          "67fb932e6f74446a90200237f2cf9d37"
-        ],
-        "Left": 294.05616778219667,
-        "Top": 24.375010886256007,
-        "Width": 144.8,
-        "Height": 190.6,
-        "FontSize": 30.0,
-        "InitialTop": 70.375010886256,
-        "InitialHeight": 339.58996178558255,
-        "TextblockHeight": 36.0,
-        "Background": "#FFFFFFFF"
-      },
-      {
-        "Id": "12354073d4be4337a65b6c3fd2387eff",
-        "Title": "IN[0] = existing sheets to duplicate;\r\nIN[1] = names for new sheets;\r\nIN[2] = numbers for new sheets;\r\nIN[3] = titleblock family for new sheets;",
-        "Nodes": [],
-        "Left": 209.1979314509133,
-        "Top": -77.622614694661877,
-        "Width": 0.0,
-        "Height": 0.0,
-        "FontSize": 36.0,
-        "InitialTop": 0.0,
-        "InitialHeight": 0.0,
-        "TextblockHeight": 0.0,
-        "Background": "#FFC1D676"
-      }
-    ],
-    "X": -151.16513322893715,
-    "Y": 187.47318211278588,
-    "Zoom": 1.0298856394709863
-  }
-}
+<Workspace Version="1.3.2.2480" X="152.781085411153" Y="238.83784048573" zoom="0.565293988808902" ScaleFactor="1" Name="DuplicateSheetsWithViews" Description="Duplicate given sheets list, containing all views by new  sheets names, numbers and a titleblock " ID="0e77a333-3c27-4ad3-a4f3-75d54a8bc9aa" Category="Quasar.SheetUtility">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="ListUtilities" resolvedName="Archilab.Grimshaw.Utilities.ListUtilities" assemblyName="Archi-lab_Grimshaw.dll" />
+    <ClassMap partialName="DSCore.List" resolvedName="DSCore.List" assemblyName="DSCoreNodes.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <PythonNodeModels.PythonNode guid="aa8eb6d1-547d-41bc-a3c7-efa07ae20e02" type="PythonNodeModels.PythonNode" nickname="Python Script" x="250" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="4">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <Script>
+import clr
+clr.AddReference('RevitAPI')
+clr.AddReference("RevitServices")
+clr.AddReference("RevitNodes")
+import RevitServices
+import Revit
+import Autodesk
+from Autodesk.Revit.DB import *
+
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+sheets = UnwrapElement(IN[0])
+names = IN[1]
+numbers = IN[2]
+titleblock = UnwrapElement(IN[3])
+
+new_sheets = []
+out = []
+count = 1
+
+
+TransactionManager.Instance.EnsureInTransaction(doc)
+
+for (name, number) in zip(names,numbers):
+	newSheet = ViewSheet.Create(doc, titleblock.Id)	
+	
+	newSheet.SheetNumber = number
+	newSheet.Name = name
+	new_sheets.append(newSheet)
+
+
+for sheet,nSheet in zip(sheets,new_sheets):	
+	views = []
+	vPorts = sheet.GetAllViewports()
+	
+	for ele in vPorts:
+		ele = doc.GetElement(ele)				
+		vOpt = ViewDuplicateOption.WithDetailing
+				
+		viewLoc = ele.GetBoxCenter()
+		vptype = ele.GetTypeId()
+
+		view = doc.GetElement(ele.ViewId)
+		v = view.Duplicate(vOpt)
+		dup_view = doc.GetElement(v)
+		try:
+			dup_view.Name = ele.LookupParameter("View Name").AsString() + " (SHIMZ Roombook)"
+		except:
+			dup_view.Name = ele.LookupParameter("View Name").AsString() + " (SHIMZ Roombook)" + str(count)
+			count += 1
+
+		newPort = Viewport.Create(doc,nSheet.Id, v, viewLoc)
+		views.append(newPort)
+		newPort.ChangeTypeId(vptype)
+					
+	out.append(views)
+TransactionManager.Instance.TransactionTaskDone()	
+
+	
+OUT = out</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="a4a6b9c4-b9b4-492d-a34f-d19af1c47e87" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-102.551928783383" y="0.949554896142445" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// list of sheets to duplicate&#xD;&#xA;SheetList;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="85a8bace-448e-407b-af63-5e81849e776c" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-85.459940652819" y="77.8338278931752" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// names list for new sheets&#xD;&#xA;NameList;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="65adff9d-34fa-4d26-b0ee-6fd3a69b9f6d" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-149.976724343032" y="168.416647510359" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// numbers list for new sheets&#xD;&#xA;NumberList;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="5d06725a-191b-48f5-b203-e8ab35a0ec69" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-15.567121133805" y="258.948967903302" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// a titleblock&#xD;&#xA;titleblock;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="92d3f108-ae03-4172-97ee-c599effa9752" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="449.8" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="SheetsWithViews" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="aa8eb6d1-547d-41bc-a3c7-efa07ae20e02" start_index="0" end="92d3f108-ae03-4172-97ee-c599effa9752" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a4a6b9c4-b9b4-492d-a34f-d19af1c47e87" start_index="0" end="aa8eb6d1-547d-41bc-a3c7-efa07ae20e02" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="85a8bace-448e-407b-af63-5e81849e776c" start_index="0" end="aa8eb6d1-547d-41bc-a3c7-efa07ae20e02" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="65adff9d-34fa-4d26-b0ee-6fd3a69b9f6d" start_index="0" end="aa8eb6d1-547d-41bc-a3c7-efa07ae20e02" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="5d06725a-191b-48f5-b203-e8ab35a0ec69" start_index="0" end="aa8eb6d1-547d-41bc-a3c7-efa07ae20e02" end_index="3" portType="0" />
+  </Connectors>
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="7ca59001-a634-4c83-89c4-cc6ac78d92a6" text="IN[0] = existing sheets to duplicate;&#xD;&#xA;IN[1] = names for new sheets;&#xD;&#xA;IN[2] = numbers for new sheets;&#xD;&#xA;IN[3] = titleblock family for new sheets;" x="212.21114337828" y="-92.479977789956" />
+  </Notes>
+  <Annotations>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="df10c035-3c8a-477f-9bda-a9bcbc5853e5" annotationText="" left="240" top="-46" width="144.8" height="190.6" fontSize="30" InitialTop="0" InitialHeight="278.835442621412" TextblockHeight="36" backgrouund="#FFA4E1FF">
+      <Models ModelGuid="aa8eb6d1-547d-41bc-a3c7-efa07ae20e02" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+  </Annotations>
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-10040.3762790538" eyeY="52179.688450805" eyeZ="-18880.1116592325" lookX="21199.69903296" lookY="-28218.03024768" lookZ="-14037.43228608" upX="0.485364466905594" upY="0.813100755214691" upZ="-0.321385264396667" />
+  </Cameras>
+</Workspace>
