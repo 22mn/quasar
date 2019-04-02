@@ -118,10 +118,103 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="01770292-2e3b-4d86-9f84-e9204bb6cd49.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\01770292-2e3b-4d86-9f84-e9204bb6cd49.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="0178228c-2b6f-44a0-b5f9-543cb664e26d.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\0178228c-2b6f-44a0-b5f9-543cb664e26d.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="20846343-9989-4de1-b1d1-afd78f6ba152.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\20846343-9989-4de1-b1d1-afd78f6ba152.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="317db93b-f4ff-44de-916d-6da773e639ae.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\317db93b-f4ff-44de-916d-6da773e639ae.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="36dc4328-cc7c-4b75-ae14-84f76bf51887.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\36dc4328-cc7c-4b75-ae14-84f76bf51887.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="3b7f4eeb-4215-439c-bb8d-4f4d7db6289f.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\3b7f4eeb-4215-439c-bb8d-4f4d7db6289f.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="3ce0d90f-4a7f-4058-ac88-9de9e0834ee4.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\3ce0d90f-4a7f-4058-ac88-9de9e0834ee4.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="3ebe2f24-1e3d-4e61-849d-9c0569151958.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\3ebe2f24-1e3d-4e61-849d-9c0569151958.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="5b54fd55-3388-4662-8691-a43ba532f0ef.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\5b54fd55-3388-4662-8691-a43ba532f0ef.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="6012f0c5-f441-44f8-917c-44844d5bc7a4.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\6012f0c5-f441-44f8-917c-44844d5bc7a4.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="6870c156-3008-4030-bd79-d60619e037b1.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\6870c156-3008-4030-bd79-d60619e037b1.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="700b827d-9fae-4244-9294-f4b97936e203.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\700b827d-9fae-4244-9294-f4b97936e203.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="70430d84-967a-4f11-b4bd-46e4603cd1f5.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\70430d84-967a-4f11-b4bd-46e4603cd1f5.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="71cef8ca-325e-4d0b-80df-1a6f349e3093.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\71cef8ca-325e-4d0b-80df-1a6f349e3093.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="7459951b-d264-4534-bc9a-3094ad1a3653.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\7459951b-d264-4534-bc9a-3094ad1a3653.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="83058044-8983-4205-8139-2aca86cf1a03.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\83058044-8983-4205-8139-2aca86cf1a03.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="87517726-2423-475c-9a56-afcc51de404c.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\87517726-2423-475c-9a56-afcc51de404c.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="8cdef8e6-1c8e-4797-b5ae-d8f467afc8f2.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\8cdef8e6-1c8e-4797-b5ae-d8f467afc8f2.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="8e3818e8-fbc3-4dac-912c-266e12e18042.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\8e3818e8-fbc3-4dac-912c-266e12e18042.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="a00c3be9-e031-44d9-afed-485a4bd806cc.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\a00c3be9-e031-44d9-afed-485a4bd806cc.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ad75924a-af28-4e5d-b269-86408eecb907.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ad75924a-af28-4e5d-b269-86408eecb907.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="b2272f3f-8260-49e6-99a5-19be7778969d.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\b2272f3f-8260-49e6-99a5-19be7778969d.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bcbcad57-9571-4aed-ae61-1d6bd24d0a6b.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\bcbcad57-9571-4aed-ae61-1d6bd24d0a6b.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bfd1a96b-aec6-41c9-b5d0-d85123b286b4.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\bfd1a96b-aec6-41c9-b5d0-d85123b286b4.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cbf9edf9-a0f4-4760-b171-bb378dd9bea4.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\cbf9edf9-a0f4-4760-b171-bb378dd9bea4.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="d7b9c9c0-a487-4263-bb5d-279a1015943d.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\d7b9c9c0-a487-4263-bb5d-279a1015943d.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="d95914d3-d3e8-4568-a830-a25bd192237e.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\d95914d3-d3e8-4568-a830-a25bd192237e.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dd8d1e6d-5c8b-4fe9-8402-3dd72cbfbf42.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\dd8d1e6d-5c8b-4fe9-8402-3dd72cbfbf42.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ddde9b1c-52f8-4eca-b811-ddea3105a7c8.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ddde9b1c-52f8-4eca-b811-ddea3105a7c8.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="edafe6a1-b239-4100-b6a7-0303ddc655f2.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\edafe6a1-b239-4100-b6a7-0303ddc655f2.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="edafe6a1-b239-4100-b6a7-0303ddc655f2.Small" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\edafe6a1-b239-4100-b6a7-0303ddc655f2.Small.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="f1b554a7-c089-4113-80bb-2459ffbcfa9b.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\f1b554a7-c089-4113-80bb-2459ffbcfa9b.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fa6dbc4d-6949-40a7-901b-93e42971adbc.Large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\fa6dbc4d-6949-40a7-901b-93e42971adbc.Large.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DefaultCustomNode.Small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\DefaultCustomNode.Small.png;System.Drawing.Bitmap, System.Drawing, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
