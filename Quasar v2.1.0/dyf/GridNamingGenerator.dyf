@@ -1,0 +1,122 @@
+<Workspace Version="1.3.2.2480" X="-319.2" Y="181.6" zoom="1" ScaleFactor="1" Name="GridNamingGenerator" Description="Generate horizontal(X) or vertical(Y) grids naming  by providing startfrom(string) value and reverse (boolean) value." ID="3ebe2f24-1e3d-4e61-849d-9c0569151958" Category="Quasar.GridElements">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="Line" resolvedName="Autodesk.DesignScript.Geometry.Line" assemblyName="ProtoGeometry.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <PythonNodeModels.PythonNode guid="81e15c85-0953-4ec4-a240-72f9f3aa268b" type="PythonNodeModels.PythonNode" nickname="Python Script" x="525.952191719427" y="37.8969038304593" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <Script>import clr,math
+
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+
+
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+from Autodesk.Revit.DB import FilteredElementCollector, Grid
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+clr.AddReference("RevitNodes")
+import Revit
+clr.ImportExtensions(Revit.Elements)
+clr.ImportExtensions(Revit.GeometryConversion)
+
+doc = DocumentManager.Instance.CurrentDBDocument
+grids = FilteredElementCollector(doc).OfClass(Grid).ToElements()
+
+
+direction = IN[0]
+startfrom = IN[1]
+reverse = IN[2] if IN[2] else False
+
+tosort = []
+
+for grid in grids:
+	line = grid.ToDSType(False).Curve
+	if direction == 'X' and math.fabs(line.Direction.X) &gt; 50:
+		tosort.append((grid, line.StartPoint.Y))
+	
+	if direction == 'Y' and math.fabs(line.Direction.Y) &gt; 50:
+		tosort.append((grid, line.StartPoint.X))
+		
+res = sorted(tosort, key = lambda x: x[1])
+
+
+pre_naming = startfrom
+naming = startfrom
+
+sorted_grids = [i[0] for i in res]
+
+if reverse:
+	sorted_grids.reverse()
+
+def grid_num(n):
+	n = int(n)
+	for grid in sorted_grids:
+		try:
+			grid.Name = str(n)
+		except:
+			grid.Name = str(n) + "'"
+		n += 1
+		
+		
+def grid_str(n):
+	n = ord(n)
+	for grid in sorted_grids:
+		try:
+			grid.Name = chr(n)
+		except:
+			grid.Name = chr(n) + "'"
+		n += 1
+		
+
+TransactionManager.Instance.EnsureInTransaction(doc)
+
+if startfrom.isdigit():
+	grid_num(pre_naming)
+	grid_num(naming)
+else:
+	grid_str(pre_naming)
+	grid_str(naming)
+
+TransactionManager.Instance.TransactionTaskDone()
+
+
+OUT = sorted_grids
+
+
+
+
+
+
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="642a9f8d-4040-4b87-b7f3-56d7398382ae" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="725.752191719427" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="// Grid Elements&#xD;&#xA;Grid" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="068eeec3-451a-4072-9a25-01151895c3bc" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="75.2" y="-47.2" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// horizontal (X), vertical (Y)&#xD;&#xA;direction : string" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="a8919f5b-eacd-4b08-a824-bd9cae151b7b" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="156.8" y="47.9999999999999" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// value to startfrom&#xD;&#xA;startfrom : string" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="f95b7c04-917d-4e50-bb1e-f1410f55e6cc" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="172.8" y="142.4" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// default is false&#xD;&#xA;reverse : bool" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="81e15c85-0953-4ec4-a240-72f9f3aa268b" start_index="0" end="642a9f8d-4040-4b87-b7f3-56d7398382ae" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="068eeec3-451a-4072-9a25-01151895c3bc" start_index="0" end="81e15c85-0953-4ec4-a240-72f9f3aa268b" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a8919f5b-eacd-4b08-a824-bd9cae151b7b" start_index="0" end="81e15c85-0953-4ec4-a240-72f9f3aa268b" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="f95b7c04-917d-4e50-bb1e-f1410f55e6cc" start_index="0" end="81e15c85-0953-4ec4-a240-72f9f3aa268b" end_index="2" portType="0" />
+  </Connectors>
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="06066491-6953-4bc7-af94-2249f6f504dd" text="IN[0] =  X (Horizontal) or Y (Vertical)[string]&#xD;&#xA;IN[1] = startfrom (number or alphabet) [string]&#xD;&#xA;IN[2] = reverse [boolean]" x="446.4" y="-72.8" />
+  </Notes>
+  <Annotations />
+  <Presets />
+</Workspace>

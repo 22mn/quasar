@@ -1,0 +1,182 @@
+{
+  "Uuid": "3c9d0464-8643-5ffe-96e5-ab1769818209",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "custom-dropdown-selection",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "[\"Alphabet\",\"Number\"];",
+      "Id": "1219eb80db744ae583d893f9a346e3b5",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "e16413fc5e7c4305b0d9270fa6da47de",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "36dc4328-cc7c-4b75-ae14-84f76bf51887",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "9de82ad5441b46e5a564a1d84305f9a6",
+      "Inputs": [
+        {
+          "Id": "dd764bc7f7ff4a2ea2b0b696e689aab5",
+          "Name": "Title",
+          "Description": " A list input\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f451add7f99e4bc0832696cd68cc7030",
+          "Name": "Items",
+          "Description": " A nested list input\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "5714e2a43c584aba9d9e2826c0521262",
+          "Name": "Selection",
+          "Description": " Selected items",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Create a dropdown with checkboxes. First input is a list and Second input is a nested list.\r\n\r\nEg. {\"a\",\"b\",\"c\"} and {{1,2,3},{4,5,6},{7,8,9}}.\r\nIt match their index. So, {1,2,3} is under dropdown \"a\". "
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "[\"a\"..\"e\",1..5];",
+      "Id": "065d783a53534f64847dc5c05c0f61eb",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "d2e9732d5a1a4b0a9869ea4383ec02e0",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "e16413fc5e7c4305b0d9270fa6da47de",
+      "End": "dd764bc7f7ff4a2ea2b0b696e689aab5",
+      "Id": "33c2e35f80c14f7c8a0c2189a52cb290"
+    },
+    {
+      "Start": "d2e9732d5a1a4b0a9869ea4383ec02e0",
+      "End": "f451add7f99e4bc0832696cd68cc7030",
+      "Id": "6bdf17e06cb34dce8e96163d347e4ce6"
+    }
+  ],
+  "Dependencies": [
+    "36dc4328-cc7c-4b75-ae14-84f76bf51887"
+  ],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.1.5055",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "1219eb80db744ae583d893f9a346e3b5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -235.8,
+        "Y": 384.4
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "CustomDropdownSelection",
+        "Id": "9de82ad5441b46e5a564a1d84305f9a6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 71.874456989493339,
+        "Y": 425.47940377759164
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "065d783a53534f64847dc5c05c0f61eb",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -228.0,
+        "Y": 505.0
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "2edf5499870d47dfa199bd9753fe566c",
+        "Title": "** Quasar Package Sample File **",
+        "Nodes": [],
+        "Left": -63.746292362924947,
+        "Top": 273.55794738964158,
+        "Width": 0.0,
+        "Height": 0.0,
+        "FontSize": 36.0,
+        "InitialTop": 0.0,
+        "InitialHeight": 0.0,
+        "TextblockHeight": 0.0,
+        "Background": "#FFC1D676"
+      }
+    ],
+    "X": 316.61176998635176,
+    "Y": -164.86839768262098,
+    "Zoom": 0.8425
+  }
+}

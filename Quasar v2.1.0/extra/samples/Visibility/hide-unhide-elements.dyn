@@ -1,0 +1,382 @@
+{
+  "Uuid": "3c9d0464-8643-5ffe-96e5-ab1769818209",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "hide-unhide-elements",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "List.C": {
+        "Key": "DSCore.List",
+        "Value": "DSCoreNodes.dll"
+      }
+    }
+  },
+  "Inputs": [
+    {
+      "Id": "f1e2b762cc3f41efa33d2dfa005fa60a",
+      "Name": "Boolean",
+      "Type": "boolean",
+      "Value": "false",
+      "Description": "Selection between a true and false."
+    }
+  ],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "DSRevitNodesUI.Views, DSRevitNodesUI",
+      "SelectedIndex": 16,
+      "NodeType": "ExtensionNode",
+      "Id": "d6e8733e5ec4440aba7aae1cbe8dde2e",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "71d4ddb83e554e22826313549a5c5749",
+          "Name": "Views",
+          "Description": "The selected Views",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "All views available in the current document."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.BoolSelector, CoreNodeModels",
+      "NodeType": "BooleanInputNode",
+      "InputValue": false,
+      "Id": "f1e2b762cc3f41efa33d2dfa005fa60a",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "ab3786a1f8ad4cdbba362a0d982e1900",
+          "Name": "",
+          "Description": "Boolean",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Selection between a true and false."
+    },
+    {
+      "ConcreteType": "DSRevitNodesUI.Views, DSRevitNodesUI",
+      "SelectedIndex": 28,
+      "NodeType": "ExtensionNode",
+      "Id": "113c232c809842d98ee8043e8782b475",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "c848fd5830b24cb8b8078bfeaa6dc75c",
+          "Name": "Views",
+          "Description": "The selected Views",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "All views available in the current document."
+    },
+    {
+      "ConcreteType": "DSRevitNodesUI.Views, DSRevitNodesUI",
+      "SelectedIndex": 17,
+      "NodeType": "ExtensionNode",
+      "Id": "552f29f02aab417885eb83598403ef39",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "e58d8bdcdb754188bc7c3b3114cce1c9",
+          "Name": "Views",
+          "Description": "The selected Views",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "All views available in the current document."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.CreateList, CoreNodeModels",
+      "VariableInputPorts": true,
+      "NodeType": "ExtensionNode",
+      "Id": "846a1637871f41bbbe2d326d146c6e2c",
+      "Inputs": [
+        {
+          "Id": "8473346c266f4319a60960cd228713fa",
+          "Name": "item0",
+          "Description": "Item Index #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "cfde27caf905434b94979d1a0cffc0c7",
+          "Name": "item1",
+          "Description": "Item Index #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7c54b4c656bf407190ff98231110e505",
+          "Name": "item2",
+          "Description": "Item Index #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ebb1f007fe1d4f6694980d4c2176abc1",
+          "Name": "list",
+          "Description": "A list",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Makes a new list out of the given inputs"
+    },
+    {
+      "ConcreteType": "Dynamo.Nodes.DSModelElementsSelection, DSRevitNodesUI",
+      "NodeType": "ExtensionNode",
+      "InstanceId": [],
+      "Id": "17c753e5ed184f1c814ce7793f10f01a",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "c8b92c682c364b5da7c9e83ed995a930",
+          "Name": "Elements",
+          "Description": "The selected elements.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Quasar.ElementGraphics.HideUnHideElement@Revit.Elements.Element[],Revit.Elements.Element[],bool",
+      "Id": "6cfbf182856b4bb48d2683bb8370a4f7",
+      "Inputs": [
+        {
+          "Id": "ebdf214d19ce434fa6e64ad3e4527705",
+          "Name": "Elements",
+          "Description": "Elements or Element\n\nElement[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "37dec1eda534452d84be45acd9abd37d",
+          "Name": "Views",
+          "Description": "Views or View\n\nElement[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "31b2e9e14961469386a516eb0aa56b72",
+          "Name": "HideUnhide",
+          "Description": "true = hide , false = unhide\n\nbool\nDefault value : false",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "6705eb9a8bc54784afcef9a61476f5df",
+          "Name": "string",
+          "Description": "Return message",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Elements hide/unhide in given view. Default value is true(hide).\n\nElementGraphics.HideUnHideElement (Elements: Element[], Views: Element[], HideUnhide: bool = false): string"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "71d4ddb83e554e22826313549a5c5749",
+      "End": "8473346c266f4319a60960cd228713fa",
+      "Id": "e88cfb20ebe94ce999dd9a0e233fc463"
+    },
+    {
+      "Start": "ab3786a1f8ad4cdbba362a0d982e1900",
+      "End": "31b2e9e14961469386a516eb0aa56b72",
+      "Id": "803876c1debc42398d5e683345ddd2c2"
+    },
+    {
+      "Start": "c848fd5830b24cb8b8078bfeaa6dc75c",
+      "End": "7c54b4c656bf407190ff98231110e505",
+      "Id": "157dc8bf18404fb59334afadb4cc234d"
+    },
+    {
+      "Start": "e58d8bdcdb754188bc7c3b3114cce1c9",
+      "End": "cfde27caf905434b94979d1a0cffc0c7",
+      "Id": "1dd89fba4984401f90ee69567c209171"
+    },
+    {
+      "Start": "ebb1f007fe1d4f6694980d4c2176abc1",
+      "End": "37dec1eda534452d84be45acd9abd37d",
+      "Id": "044ef11bf669498ba0ef6cd16cea021e"
+    },
+    {
+      "Start": "c8b92c682c364b5da7c9e83ed995a930",
+      "End": "ebdf214d19ce434fa6e64ad3e4527705",
+      "Id": "011db1495d5f4d3a871f5621bce0205e"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.1.5055",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Views",
+        "Id": "d6e8733e5ec4440aba7aae1cbe8dde2e",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1565.78861630596,
+        "Y": 1133.58248232687
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Boolean",
+        "Id": "f1e2b762cc3f41efa33d2dfa005fa60a",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1691.60532216981,
+        "Y": 1422.63609672907
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Views",
+        "Id": "113c232c809842d98ee8043e8782b475",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1568.21089073648,
+        "Y": 1310.10667491591
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Views",
+        "Id": "552f29f02aab417885eb83598403ef39",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1567.03059126584,
+        "Y": 1224.14243779287
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.Create",
+        "Id": "846a1637871f41bbbe2d326d146c6e2c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1756.24973292145,
+        "Y": 1160.90290223739
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Select Model Elements",
+        "Id": "17c753e5ed184f1c814ce7793f10f01a",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1689.16793609757,
+        "Y": 990.403335310036
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "ElementGraphics.HideUnHideElement",
+        "Id": "6cfbf182856b4bb48d2683bb8370a4f7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1974.2655725990419,
+        "Y": 1121.7718540901285
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "db9ed92716034440bbb39502093c91fa",
+        "Title": "- Elements hide/unhide in given view. Default value is true(hide).",
+        "Nodes": [],
+        "Left": 1980.5634317705189,
+        "Top": 1072.0408059428669,
+        "Width": 0.0,
+        "Height": 0.0,
+        "FontSize": 36.0,
+        "InitialTop": 0.0,
+        "InitialHeight": 0.0,
+        "TextblockHeight": 0.0,
+        "Background": "#FFC1D676"
+      },
+      {
+        "Id": "058c06846f194fdeaf25b0291d495486",
+        "Title": "** Quasar Package Sample File **",
+        "Nodes": [],
+        "Left": 1841.8108640030268,
+        "Top": 895.21629161617443,
+        "Width": 0.0,
+        "Height": 0.0,
+        "FontSize": 36.0,
+        "InitialTop": 0.0,
+        "InitialHeight": 0.0,
+        "TextblockHeight": 0.0,
+        "Background": "#FFC1D676"
+      }
+    ],
+    "X": -1253.60946614281,
+    "Y": -694.413000469195,
+    "Zoom": 0.858653207385435
+  }
+}

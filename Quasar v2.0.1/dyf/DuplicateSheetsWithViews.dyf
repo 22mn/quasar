@@ -1,0 +1,113 @@
+<Workspace Version="1.3.2.2480" X="152.781085411153" Y="238.83784048573" zoom="0.565293988808902" ScaleFactor="1" Name="DuplicateSheetsWithViews" Description="Duplicate given sheets list, containing all views by new  sheets names, numbers and a titleblock " ID="0e77a333-3c27-4ad3-a4f3-75d54a8bc9aa" Category="Quasar.SheetUtility">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="ListUtilities" resolvedName="Archilab.Grimshaw.Utilities.ListUtilities" assemblyName="Archi-lab_Grimshaw.dll" />
+    <ClassMap partialName="DSCore.List" resolvedName="DSCore.List" assemblyName="DSCoreNodes.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <PythonNodeModels.PythonNode guid="aa8eb6d1-547d-41bc-a3c7-efa07ae20e02" type="PythonNodeModels.PythonNode" nickname="Python Script" x="250" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="4">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <Script>
+import clr
+clr.AddReference('RevitAPI')
+clr.AddReference("RevitServices")
+clr.AddReference("RevitNodes")
+import RevitServices
+import Revit
+import Autodesk
+from Autodesk.Revit.DB import *
+
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+sheets = UnwrapElement(IN[0])
+names = IN[1]
+numbers = IN[2]
+titleblock = UnwrapElement(IN[3])
+
+new_sheets = []
+out = []
+count = 1
+
+
+TransactionManager.Instance.EnsureInTransaction(doc)
+
+for (name, number) in zip(names,numbers):
+	newSheet = ViewSheet.Create(doc, titleblock.Id)	
+	
+	newSheet.SheetNumber = number
+	newSheet.Name = name
+	new_sheets.append(newSheet)
+
+
+for sheet,nSheet in zip(sheets,new_sheets):	
+	views = []
+	vPorts = sheet.GetAllViewports()
+	
+	for ele in vPorts:
+		ele = doc.GetElement(ele)				
+		vOpt = ViewDuplicateOption.WithDetailing
+				
+		viewLoc = ele.GetBoxCenter()
+		vptype = ele.GetTypeId()
+
+		view = doc.GetElement(ele.ViewId)
+		v = view.Duplicate(vOpt)
+		dup_view = doc.GetElement(v)
+		try:
+			dup_view.Name = ele.LookupParameter("View Name").AsString() + " (SHIMZ Roombook)"
+		except:
+			dup_view.Name = ele.LookupParameter("View Name").AsString() + " (SHIMZ Roombook)" + str(count)
+			count += 1
+
+		newPort = Viewport.Create(doc,nSheet.Id, v, viewLoc)
+		views.append(newPort)
+		newPort.ChangeTypeId(vptype)
+					
+	out.append(views)
+TransactionManager.Instance.TransactionTaskDone()	
+
+	
+OUT = out</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="a4a6b9c4-b9b4-492d-a34f-d19af1c47e87" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-102.551928783383" y="0.949554896142445" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// list of sheets to duplicate&#xD;&#xA;SheetList;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="85a8bace-448e-407b-af63-5e81849e776c" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-85.459940652819" y="77.8338278931752" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// names list for new sheets&#xD;&#xA;NameList;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="65adff9d-34fa-4d26-b0ee-6fd3a69b9f6d" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-149.976724343032" y="168.416647510359" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// numbers list for new sheets&#xD;&#xA;NumberList;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="5d06725a-191b-48f5-b203-e8ab35a0ec69" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-15.567121133805" y="258.948967903302" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// a titleblock&#xD;&#xA;titleblock;" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="92d3f108-ae03-4172-97ee-c599effa9752" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="449.8" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="SheetsWithViews" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="aa8eb6d1-547d-41bc-a3c7-efa07ae20e02" start_index="0" end="92d3f108-ae03-4172-97ee-c599effa9752" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a4a6b9c4-b9b4-492d-a34f-d19af1c47e87" start_index="0" end="aa8eb6d1-547d-41bc-a3c7-efa07ae20e02" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="85a8bace-448e-407b-af63-5e81849e776c" start_index="0" end="aa8eb6d1-547d-41bc-a3c7-efa07ae20e02" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="65adff9d-34fa-4d26-b0ee-6fd3a69b9f6d" start_index="0" end="aa8eb6d1-547d-41bc-a3c7-efa07ae20e02" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="5d06725a-191b-48f5-b203-e8ab35a0ec69" start_index="0" end="aa8eb6d1-547d-41bc-a3c7-efa07ae20e02" end_index="3" portType="0" />
+  </Connectors>
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="7ca59001-a634-4c83-89c4-cc6ac78d92a6" text="IN[0] = existing sheets to duplicate;&#xD;&#xA;IN[1] = names for new sheets;&#xD;&#xA;IN[2] = numbers for new sheets;&#xD;&#xA;IN[3] = titleblock family for new sheets;" x="212.21114337828" y="-92.479977789956" />
+  </Notes>
+  <Annotations>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="df10c035-3c8a-477f-9bda-a9bcbc5853e5" annotationText="" left="240" top="-46" width="144.8" height="190.6" fontSize="30" InitialTop="0" InitialHeight="278.835442621412" TextblockHeight="36" backgrouund="#FFA4E1FF">
+      <Models ModelGuid="aa8eb6d1-547d-41bc-a3c7-efa07ae20e02" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+  </Annotations>
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-10040.3762790538" eyeY="52179.688450805" eyeZ="-18880.1116592325" lookX="21199.69903296" lookY="-28218.03024768" lookZ="-14037.43228608" upX="0.485364466905594" upY="0.813100755214691" upZ="-0.321385264396667" />
+  </Cameras>
+</Workspace>

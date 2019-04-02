@@ -1,0 +1,182 @@
+<Workspace Version="1.3.2.2480" X="-90.6443597675749" Y="-217.939719012326" zoom="0.823465932541051" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="3aec3cbb-e8dc-4562-8102-5e7b10ec05a6" type="PythonNodeModels.PythonNode" nickname="Python Script" x="621.811542980043" y="532.772228281705" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="3">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <Script># dynamo version - 1.3.2
+# author - min.naung/mgjean https://twentytwo.space/contact
+
+import clr,sys
+sys.path.append(r"C:\Program Files (x86)\IronPython 2.7\Lib")
+import os, System
+
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+
+clr.AddReference("System.Windows.Forms")
+clr.AddReference("System.Drawing")
+
+
+from System.Collections.Generic import List
+from System.Windows.Forms import (Application, Button, ComboBox, CheckBox, Form as _Form,
+CheckedListBox,Padding,FormBorderStyle, SelectionMode,Label, MessageBox,MessageBoxButtons, MessageBoxIcon)
+from System.Drawing import (Font as _Font, Icon as _Icon, Point as _Point, Size as _Size,FontStyle)
+
+doc = DocumentManager.Instance.CurrentDBDocument
+# elements display names in listbox
+names = IN[0]
+# ids to removed from doc
+ids = IN[1]
+# header in display
+title = IN[2]
+
+# names and ids dictionary 
+names_ids_dict = {k:v for k,v in zip(names,ids)}
+
+iconpath = r"\\SpecialistSvr\00_WIP(For_Coordination)\99_TRAINING\190326 - Training session 01\Resources\logo.ico"
+
+
+class CheckedBoxListSelector(_Form):
+	"""Checked Box List Selector"""
+	
+	def __init__(self,inputList):
+		if os.path.isfile(iconpath):
+			self.Icon = _Icon(iconpath)
+		self.Size = _Size(370,435)
+		self.Text = "SHIMZ Dynamo DEMO"
+		self.class1Result = [];
+
+		# fonts
+		self.gsmt_11r = _Font("Georgia", 10)
+		self.gsmt_10r = _Font("Georgia",9)
+
+		# label
+		self.label = Label()
+		self.label.Text = title
+		self.label.Font = self.gsmt_11r
+		self.label.Location = _Point(30,10)
+		self.label.Size = _Size(220,28)
+		self.Controls.Add(self.label)
+
+		# checklist box
+		self.lstbox = CheckedListBox()
+		self.lstbox.Items.AddRange(tuple(inputList))
+		self.lstbox.Font = self.gsmt_10r
+		# padding
+		self.lstbox.Padding = Padding(30)
+		# select one click
+		self.lstbox.CheckOnClick = True
+
+		self.FormBorderStyle = FormBorderStyle.FixedDialog
+		self.MaximizeBox = False;
+		self.ManimizeBox = False;
+		self.lstbox.Location = _Point(30,40)
+		self.lstbox.Size = _Size(290,280)
+
+		# auto horizontal scrollbar
+		self.lstbox.HorizontalScrollbar = True
+		self.Controls.Add(self.lstbox)
+
+		# select all btn
+		self.btn_all = Button()
+		self.btn_all.Text = "Select All"
+		self.btn_all.Font = self.gsmt_10r
+		self.btn_all.Size = _Size(95,25)
+		self.btn_all.Location = _Point(30,350)
+		self.Controls.Add(self.btn_all)
+
+		# select none btn
+		self.btn_none = Button()
+		self.btn_none.Text = "Select None"
+		self.btn_none.Font = self.gsmt_10r
+		self.btn_none.Size = _Size(95,25)
+		self.btn_none.Location = _Point(225,350)
+		self.Controls.Add(self.btn_none)
+
+		# ok btn
+		self.btn = Button()
+		self.btn.Text = "OK"
+		self.btn.Font = self.gsmt_10r
+		self.btn.Size = _Size(80,25)
+		self.btn.Location = _Point(135,350)
+		self.Controls.Add(self.btn)
+
+		# events
+		
+		self.btn_all.Click += self.click_all
+		self.btn_none.Click += self.click_none
+		self.btn.Click += self.click_ok 
+
+		# pop up from center
+		self.CenterToScreen()
+	
+	
+
+	def click_ok(self, sender, event):
+		#global res
+		if len(self.lstbox.Items) &lt; 1:
+			self.Close()
+		if len(self.lstbox.CheckedItems) &lt; 1:
+			return MessageBox.Show("No element selected!", "Quasar Info Box", MessageBoxButtons.OK, MessageBoxIcon.Asterisk)
+		
+		self.class1Result = self.lstbox.CheckedItems;
+		
+		return self.Close();			
+
+	def click_all(self, sender, event):
+		for i in range(len(self.lstbox.Items)):
+			self.lstbox.SetItemChecked(i,True)
+
+	def click_none(self, sender, event):
+		for i in range(len(self.lstbox.Items)):
+			self.lstbox.SetItemChecked(i,False);
+
+# instantiate class
+ui = CheckedBoxListSelector(sorted(names))
+# run class
+Application.Run(ui)
+# extract selected value
+selected = ui.class1Result
+
+
+# dot-net elementId list
+remove_ids = List[ElementId]([names_ids_dict[i] for i in selected]);
+remove_names = sorted(selected)
+
+# transaction start
+TransactionManager.Instance.EnsureInTransaction(doc)
+
+for i in remove_ids:
+	doc.Delete(i)
+
+# transaction done			
+TransactionManager.Instance.TransactionTaskDone()
+
+OUT = remove_names
+
+
+</Script>
+    </PythonNodeModels.PythonNode>
+  </Elements>
+  <Connectors />
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="f0f84940-f058-407b-95b4-1c5d8acd9b77" text="IN[0] = names&#xD;&#xA;IN[1] = ids&#xD;&#xA;IN[2] = title" x="628.010348373094" y="458.340472029814" />
+  </Notes>
+  <Annotations>
+    <Dynamo.Graph.Annotations.AnnotationModel guid="a3b1ac1a-2f11-4697-9618-ed548ca4e4e1" annotationText="ElementRemoveFunction" left="611.811542980043" top="412.340472029814" width="361.764527940282" height="264.231756251891" fontSize="30" InitialTop="458.340472029814" InitialHeight="248.231756251891" TextblockHeight="36" backgrouund="#FFA4E1FF">
+      <Models ModelGuid="3aec3cbb-e8dc-4562-8102-5e7b10ec05a6" />
+      <Models ModelGuid="f0f84940-f058-407b-95b4-1c5d8acd9b77" />
+    </Dynamo.Graph.Annotations.AnnotationModel>
+  </Annotations>
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
