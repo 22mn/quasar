@@ -1,0 +1,83 @@
+<Workspace Version="1.3.2.2480" X="-30.6810379219212" Y="-30.7338516808687" zoom="0.847618571998227" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="c62eeffe-7515-4221-9531-cf2783efc8ce" type="PythonNodeModels.PythonNode" nickname="Python Script" x="324" y="260" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="4">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <Script>import clr
+clr.AddReference('RevitAPI')
+clr.AddReference("RevitServices")
+clr.AddReference("RevitNodes")
+import RevitServices
+import Revit
+import Autodesk
+from Autodesk.Revit.DB import *
+
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+sheets = UnwrapElement(IN[0])
+names = IN[1]
+numbers = IN[2]
+titleblock = UnwrapElement(IN[3])
+
+new_sheets = []
+out = []
+count = 1
+
+
+TransactionManager.Instance.EnsureInTransaction(doc)
+
+for (name, number) in zip(names,numbers):
+	newSheet = ViewSheet.Create(doc, titleblock.Id)	
+	
+	newSheet.SheetNumber = number
+	newSheet.Name = name
+	new_sheets.append(newSheet)
+
+
+for sheet,nSheet in zip(sheets,new_sheets):	
+	views = []
+	vPorts = sheet.GetAllViewports()
+	
+	for ele in vPorts:
+		ele = doc.GetElement(ele)				
+		vOpt = ViewDuplicateOption.WithDetailing
+				
+		viewLoc = ele.GetBoxCenter()
+		vptype = ele.GetTypeId()
+
+		view = doc.GetElement(ele.ViewId)
+		v = view.Duplicate(vOpt)
+		dup_view = doc.GetElement(v)
+		try:
+			dup_view.Name = ele.LookupParameter("View Name").AsString() + " (SHIMZ Roombook)"
+		except:
+			dup_view.Name = ele.LookupParameter("View Name").AsString() + " (SHIMZ Roombook)" + str(count)
+			count += 1
+
+		newPort = Viewport.Create(doc,nSheet.Id, v, viewLoc)
+		views.append(newPort)
+		newPort.ChangeTypeId(vptype)
+					
+	out.append(views)
+TransactionManager.Instance.TransactionTaskDone()	
+
+	
+OUT = out</Script>
+    </PythonNodeModels.PythonNode>
+  </Elements>
+  <Connectors />
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="277fc2a0-73b7-480b-8eb4-b25498e92566" text="IN[0] = Sheet list to duplicate&#xD;&#xA;IN[1] = Name list for new sheets&#xD;&#xA;IN[2] = Numbers list for new sheets&#xD;&#xA;IN[3] = Titleblock" x="286.958103675872" y="160.293309357994" />
+  </Notes>
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
