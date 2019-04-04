@@ -1,0 +1,607 @@
+{
+  "Uuid": "3c9d0464-8643-5ffe-96e5-ab1769818209",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "threeDview-byrooms",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "DSCore.List": {
+        "Key": "DSCore.List",
+        "Value": "DSCoreNodes.dll"
+      },
+      "CSV": {
+        "Key": "DSCore.IO.CSV",
+        "Value": "DSCoreNodes.dll"
+      }
+    }
+  },
+  "Inputs": [
+    {
+      "Id": "dc042af78e2b42019af82801e3ba5ccd",
+      "Name": "Number Slider",
+      "Type": "number",
+      "Value": "600",
+      "MaximumValue": 2000.0,
+      "MinimumValue": -1000.0,
+      "StepValue": 10.0,
+      "NumberType": "Double",
+      "Description": "A slider that produces numeric values."
+    }
+  ],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Quasar.ViewUtility.ThreeDViewByRoom@Revit.Elements.Room[],string[],double",
+      "Id": "8f89f90275b1447fb1e7a94005f7f2b5",
+      "Inputs": [
+        {
+          "Id": "ffb94f902bef40fd9c3652dc467c9fbb",
+          "Name": "Rooms",
+          "Description": "Rooms elements\n\nRoom[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "421b626dff05498688109a75ad145653",
+          "Name": "Names",
+          "Description": "Name for new views\n\nstring[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "454c96f5a69a4f13be97cd1a7e5cd82a",
+          "Name": "Offset",
+          "Description": "Offset value for section box. Default is 500.\n\ndouble\nDefault value : 500",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c316603f36064106977749338fa06487",
+          "Name": "ThreeDView",
+          "Description": "New 3D Views",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Create 3D Views for given room.\n\nViewUtility.ThreeDViewByRoom (Rooms: Room[], Names: string[], Offset: double = 500): Element[]"
+    },
+    {
+      "ConcreteType": "DSRevitNodesUI.Levels, DSRevitNodesUI",
+      "SelectedIndex": 0,
+      "NodeType": "ExtensionNode",
+      "Id": "7b01b66e32c34ec8a3863fc1e8b17876",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "e8b164eff39a44ddb477bc5cc3b585ef",
+          "Name": "Levels",
+          "Description": "The selected Levels",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Select a level in the active document"
+    },
+    {
+      "ConcreteType": "DSRevitNodesUI.Categories, DSRevitNodesUI",
+      "SelectedIndex": 403,
+      "NodeType": "ExtensionNode",
+      "Id": "d97871f0043047ceac4f7ef43386e25d",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "e4123083e190419e9eab37cc597bcf8a",
+          "Name": "Category",
+          "Description": "The selected Category.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "All built-in categories."
+    },
+    {
+      "ConcreteType": "DSRevitNodesUI.ElementsOfCategory, DSRevitNodesUI",
+      "NodeType": "ExtensionNode",
+      "Id": "a9bbf77c4b92403992df5c2c143a81f4",
+      "Inputs": [
+        {
+          "Id": "dd507b38b0ad4608bedb4a38a2b7392f",
+          "Name": "Category",
+          "Description": "The Category",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c0f39eeb09a247ac93c1cf4babac86b0",
+          "Name": "Elements",
+          "Description": "An element type.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Get all elements of the specified category from the model."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Level.Name",
+      "Id": "63db584120da475bb3542fd74da92d6b",
+      "Inputs": [
+        {
+          "Id": "6a610df75b0348bda78075190d989177",
+          "Name": "level",
+          "Description": "Revit.Elements.Level",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "77347688bd7e49fca434fcdaca578e8e",
+          "Name": "string",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "The name of the level\n\nLevel.Name: string"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Element.GetParameterValueByName@string",
+      "Id": "889e1e68d49e4a099f2b01678f33a534",
+      "Inputs": [
+        {
+          "Id": "726d0e5a66e24cf1aad5673ee960bb00",
+          "Name": "element",
+          "Description": "Revit.Elements.Element",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3f4448b6414f486bbb8bb080988f7e35",
+          "Name": "parameterName",
+          "Description": "The name of the parameter whose value you want to obtain.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "d6053e7897da43c9b0cc695e6b3681cd",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get the value of one of the element's parameters.\n\nElement.GetParameterValueByName (parameterName: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "==@var[]..[],var[]..[]",
+      "Id": "f296f595795648d79576861227373171",
+      "Inputs": [
+        {
+          "Id": "4da4d2dac04f4664855d7c2f2e37949f",
+          "Name": "x",
+          "Description": "x value.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5ee3e21d8b714a668728f698e803ebd4",
+          "Name": "y",
+          "Description": "y value.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "104ef2d9e4124e4a8c07d199cdf864d4",
+          "Name": "var[]..[]",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Equal x to y?\n\n== (x: var[]..[], y: var[]..[]): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"Level\";",
+      "Id": "c370bc4d2c6d48e8a0af7ad765c0f204",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "8b82f65559834803b7f3ca313d267677",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.DoubleSlider, CoreNodeModels",
+      "NodeType": "NumberInputNode",
+      "NumberType": "Double",
+      "MaximumValue": 2000.0,
+      "MinimumValue": -1000.0,
+      "StepValue": 10.0,
+      "InputValue": 600.0,
+      "Id": "dc042af78e2b42019af82801e3ba5ccd",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "e2d72a5cff224e18b2d6aa40743a4e8a",
+          "Name": "",
+          "Description": "Double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A slider that produces numeric values."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Elements.Room.Number",
+      "Id": "5059a36ab1dc41a5a876911fce9b77ad",
+      "Inputs": [
+        {
+          "Id": "bd80217fb5664415b46f764f56abf77e",
+          "Name": "room",
+          "Description": "Revit.Elements.Room",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "2a5a130be1b942a3adbbebcf3c484192",
+          "Name": "string",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get room number\n\nRoom.Number: string"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.FilterByBoolMask@var[]..[],var[]..[]",
+      "Id": "e51308d47686479c91c8a296b2f3b3e8",
+      "Inputs": [
+        {
+          "Id": "63706f0bd9cf42648111671a9802846e",
+          "Name": "list",
+          "Description": "List to filter.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "fc10149352af4c80ae43ebe482be6d02",
+          "Name": "mask",
+          "Description": "List of booleans representing a mask.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "58da74b13ef844a48cdde951728dbb15",
+          "Name": "in",
+          "Description": "Items whose mask index is true.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "0928fc01c5fd4f4db38f2f098d54b8c6",
+          "Name": "out",
+          "Description": "Items whose mask index is false.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Filters a sequence by looking up corresponding indices in a separate list of booleans.\n\nList.FilterByBoolMask (list: var[]..[], mask: var[]..[]): var[]..[]"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "e8b164eff39a44ddb477bc5cc3b585ef",
+      "End": "6a610df75b0348bda78075190d989177",
+      "Id": "a088a7a026d64d5ea356439468e55dbc"
+    },
+    {
+      "Start": "e4123083e190419e9eab37cc597bcf8a",
+      "End": "dd507b38b0ad4608bedb4a38a2b7392f",
+      "Id": "41b2d9957c0b4bc8823df5afa8f6e1d9"
+    },
+    {
+      "Start": "c0f39eeb09a247ac93c1cf4babac86b0",
+      "End": "bd80217fb5664415b46f764f56abf77e",
+      "Id": "1cba4b940f3946f5be8e1dc8dfd8354e"
+    },
+    {
+      "Start": "c0f39eeb09a247ac93c1cf4babac86b0",
+      "End": "63706f0bd9cf42648111671a9802846e",
+      "Id": "7f37019486dd4db3aed609f4b92049ae"
+    },
+    {
+      "Start": "c0f39eeb09a247ac93c1cf4babac86b0",
+      "End": "726d0e5a66e24cf1aad5673ee960bb00",
+      "Id": "28f2f569197d401bb4919f130eecc07d"
+    },
+    {
+      "Start": "77347688bd7e49fca434fcdaca578e8e",
+      "End": "4da4d2dac04f4664855d7c2f2e37949f",
+      "Id": "acc34a2e4cf1446aa61f9218cdea428b"
+    },
+    {
+      "Start": "104ef2d9e4124e4a8c07d199cdf864d4",
+      "End": "fc10149352af4c80ae43ebe482be6d02",
+      "Id": "6f723a2d4d234feabe18491f7ec8c26d"
+    },
+    {
+      "Start": "8b82f65559834803b7f3ca313d267677",
+      "End": "3f4448b6414f486bbb8bb080988f7e35",
+      "Id": "a8fb32e24377434ab9ce1a039100bd60"
+    },
+    {
+      "Start": "e2d72a5cff224e18b2d6aa40743a4e8a",
+      "End": "454c96f5a69a4f13be97cd1a7e5cd82a",
+      "Id": "80d380f39b8b4e368dda06e61405af09"
+    },
+    {
+      "Start": "2a5a130be1b942a3adbbebcf3c484192",
+      "End": "421b626dff05498688109a75ad145653",
+      "Id": "76371c145baf4c97b9a20cacb15dd6a3"
+    },
+    {
+      "Start": "58da74b13ef844a48cdde951728dbb15",
+      "End": "ffb94f902bef40fd9c3652dc467c9fbb",
+      "Id": "5eb217e3d0534640b12ad440b547c263"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.1.5055",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -28403.26953125,
+      "EyeY": 179886.34375,
+      "EyeZ": 39464.9609375,
+      "LookX": 29135.767578125,
+      "LookY": -129775.0390625,
+      "LookZ": -48702.8203125,
+      "UpX": 0.41533473134040833,
+      "UpY": 0.58778530359268188,
+      "UpZ": -0.694266140460968
+    },
+    "NodeViews": [
+      {
+        "Id": "8f89f90275b1447fb1e7a94005f7f2b5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "ViewUtility.ThreeDViewByRoom",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 271.92766888032463,
+        "Y": 568.025712988936
+      },
+      {
+        "Id": "7b01b66e32c34ec8a3863fc1e8b17876",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Levels",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -1076.8769406913236,
+        "Y": 486.4161209830329
+      },
+      {
+        "Id": "d97871f0043047ceac4f7ef43386e25d",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Name": "Categories",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -1093.6769406913236,
+        "Y": 706.04819367464484
+      },
+      {
+        "Id": "a9bbf77c4b92403992df5c2c143a81f4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "All Elements of Category",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -822.15213359852555,
+        "Y": 703.65712478829573
+      },
+      {
+        "Id": "63db584120da475bb3542fd74da92d6b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Level.Name",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -827.61800567320563,
+        "Y": 510.38826804997871
+      },
+      {
+        "Id": "889e1e68d49e4a099f2b01678f33a534",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Element.GetParameterValueByName",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -595.69384017004018,
+        "Y": 704.68358528601971
+      },
+      {
+        "Id": "f296f595795648d79576861227373171",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "==",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -502.09384017004061,
+        "Y": 556.48957467832975
+      },
+      {
+        "Id": "c370bc4d2c6d48e8a0af7ad765c0f204",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Code Block",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -747.67870687700724,
+        "Y": 821.17208160771884
+      },
+      {
+        "Id": "dc042af78e2b42019af82801e3ba5ccd",
+        "IsSetAsInput": true,
+        "IsSetAsOutput": false,
+        "Name": "Number Slider",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -219.08943407677771,
+        "Y": 729.39539789292371
+      },
+      {
+        "Id": "5059a36ab1dc41a5a876911fce9b77ad",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Room.Number",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -106.69806589550853,
+        "Y": 638.8580777069767
+      },
+      {
+        "Id": "e51308d47686479c91c8a296b2f3b3e8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "List.FilterByBoolMask",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -92.6776371066876,
+        "Y": 522.54834805921178
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "13cdd3fc480841b7a4dccd2e754f2c86",
+        "Title": "** Quasar Package Sample **",
+        "Nodes": [],
+        "Left": -418.80142759372529,
+        "Top": 349.12114535147896,
+        "Width": 0.0,
+        "Height": 0.0,
+        "FontSize": 36.0,
+        "InitialTop": 0.0,
+        "InitialHeight": 0.0,
+        "TextblockHeight": 0.0,
+        "Background": "#FFC1D676"
+      },
+      {
+        "Id": "83e8cd3b32dd4d9681546350b3c4479d",
+        "Title": "- Create 3D Views for given room.",
+        "Nodes": [],
+        "Left": 287.72718667711246,
+        "Top": 530.4126935022033,
+        "Width": 0.0,
+        "Height": 0.0,
+        "FontSize": 36.0,
+        "InitialTop": 0.0,
+        "InitialHeight": 0.0,
+        "TextblockHeight": 0.0,
+        "Background": "#FFC1D676"
+      }
+    ],
+    "X": 268.48771653944976,
+    "Y": -260.23361895369362,
+    "Zoom": 0.79961442335643884
+  }
+}

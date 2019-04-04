@@ -1,0 +1,354 @@
+{
+  "Uuid": "9f1cab38-6fd8-4b09-9fca-bc25e40d002e",
+  "IsCustomNode": true,
+  "Category": "Quasar.DynamoNodes",
+  "Description": "Surface divides to diamond panels and triangle panels by UV divisions.",
+  "Name": "DiamondPanel",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "i[0];\ni[1];",
+      "Id": "2d3c9818ee50452b9d8b7d35776bd142",
+      "Inputs": [
+        {
+          "Id": "b4538a7ced3a4c4aa7727020bc7b33e5",
+          "Name": "i",
+          "Description": "i",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "cc035e4029bd48888ff93747cf33ad2b",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "d2f9a49d7df848b7b6cfbe4406fdf746",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# dynamo version 1.3.0\n# author - min.naung@mgjean https://twentytwopaths.wordpress.com/contact/\nimport clr\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n\nsurface = IN[0];\nupanel = IN[1];\nvpanel = IN[2];\n\nDiamondPanel = [];\nTrianglePanel = []; \nustep = 1.0/upanel;\nvstep = 1.0/vpanel;\nfor i in range(0,upanel+1,1):\n\tfor j in range(0,vpanel+1,1):\n\t\tif (i+j) % 2 == 0:\n\t\t\tpointA = surface.PointAtParameter(0,0);\n\t\t\tpointB = surface.PointAtParameter(0,0);\n\t\t\tpointC = surface.PointAtParameter(0,0);\n\t\t\tpointD = surface.PointAtParameter(0,0);\n\n\t\t\tif i > 0:\n\t\t\t\tpointA = surface.PointAtParameter((i-1)*ustep, j*vstep);\n\n\t\t\telse:\n\t\t\t\tpointB = surface.PointAtParameter(i * ustep, j*vstep)\n\n\t\t\tif j > 0:\n\t\t\t\tpointB = surface.PointAtParameter(i * ustep, (j-1) * vstep);\n\t\t\telse:\n\t\t\t\tpointB = surface.PointAtParameter(i *ustep, j * vstep);\n\n\t\t\tif i < upanel:\n\t\t\t\tpointC = surface.PointAtParameter((i+1) * ustep, j * vstep);\n\n\t\t\telse:\n\t\t\t\tpointC = surface.PointAtParameter(i * ustep, j* vstep);\n\n\t\t\tif j <= (vpanel - 1):\n\t\t\t\tpointD = surface.PointAtParameter(i*ustep, (j+1)*vstep);\n\t\t\telse:\n\t\t\t\tpointD = surface.PointAtParameter(i * ustep, j * vstep);\n\n\t\t\tif i > 0 and j > 0 and i < upanel and j <= (vpanel - 1):\n\n\t\t\t\tpoints = [];\n\t\t\t\tpoints.append(pointA);\n\t\t\t\tpoints.append(pointB);\n\t\t\t\tpoints.append(pointC);\n\t\t\t\tpoints.append(pointD);\n\t\t\n\t\t\t\tpanel = Surface.ByPerimeterPoints(points);\n\t\t\n\t\t\t\tDiamondPanel.append(panel);\n\t\t\n\t\t\t\t\n\t\t\tif i > 0 and j>0 and i < upanel and j < vpanel:\n\t\t\t\tpoints = [];\n\t\t\telse:\n\t\t\t\tif i == 0 and j == 0:\n\t\t\t\t\tpoints = []\n\t\t\t\t\tpoints.append(pointB);\n\t\t\t\t\tpoints.append(pointC);\n\t\t\t\t\tpoints.append(pointD);\n\n\t\t\t\t\tpanel = Surface.ByPerimeterPoints(points);\n\t\t\t\t\tTrianglePanel.append(panel);\n\t\t\t\t\n\t\t\t\tif i == 0 and j == vpanel:\n\t\t\t\t\tpoints = []\n\t\t\t\t\tpoints.append(pointB);\n\t\t\t\t\tpoints.append(pointC);\n\t\t\t\t\tpoints.append(pointD);\n\n\t\t\t\t\tpanel = Surface.ByPerimeterPoints(points);\n\t\t\t\t\tTrianglePanel.append(panel);\n\t\t\t\t\n\t\t\t\tif i == upanel and j == 0:\n\t\t\t\t\tpoints = []\n\t\t\t\t\tpoints.append(pointC);\n\t\t\t\t\tpoints.append(pointD);\n\t\t\t\t\tpoints.append(pointA);\n\n\t\t\t\t\tpanel = Surface.ByPerimeterPoints(points);\n\t\t\t\t\tTrianglePanel.append(panel);\n\n\t\t\t\tif i == upanel and j == vpanel:\n\t\t\t\t\tpoints = []\n\t\t\t\t\tpoints.append(pointA);\n\t\t\t\t\tpoints.append(pointB);\n\t\t\t\t\tpoints.append(pointC);\n\n\t\t\t\t\tpanel = Surface.ByPerimeterPoints(points);\n\t\t\t\t\tTrianglePanel.append(panel);\n\t\t\t\t\n\t\t\t\tif i == 0 and j > 0 and j < vpanel:\n\t\t\t\t\tpoints = []\n\t\t\t\t\tpoints.append(pointB);\n\t\t\t\t\tpoints.append(pointC);\n\t\t\t\t\tpoints.append(pointD);\n\n\t\t\t\t\tpanel = Surface.ByPerimeterPoints(points);\n\t\t\t\t\tTrianglePanel.append(panel);\n\n\t\t\t\tif i == upanel and j > 0 and j < vpanel:\n\t\t\t\t\tpoints = []\n\t\t\t\t\tpoints.append(pointA);\n\t\t\t\t\tpoints.append(pointB);\n\t\t\t\t\tpoints.append(pointD);\n\n\t\t\t\t\tpanel = Surface.ByPerimeterPoints(points);\n\t\t\t\t\tTrianglePanel.append(panel);\n\n\t\t\t\tif j==0 and i > 0 and j < vpanel:\n\t\t\t\t\tpoints = []\n\t\t\t\t\tpoints.append(pointA);\n\t\t\t\t\tpoints.append(pointC);\n\t\t\t\t\tpoints.append(pointD);\n\n\t\t\t\t\tpanel = Surface.ByPerimeterPoints(points);\n\t\t\t\t\tTrianglePanel.append(panel);\n\n\t\t\t\tif j == vpanel and i > 0 and i < upanel:\n\t\t\t\t\tpoints = []\n\t\t\t\t\tpoints.append(pointA);\n\t\t\t\t\tpoints.append(pointB);\n\t\t\t\t\tpoints.append(pointC);\n\n\t\t\t\t\tpanel = Surface.ByPerimeterPoints(points);\n\t\t\t\t\tTrianglePanel.append(panel);\n\nOUT = DiamondPanel,TrianglePanel",
+      "VariableInputPorts": true,
+      "Id": "d0bb5cf917df4ead8a303b9adf4fca56",
+      "Inputs": [
+        {
+          "Id": "d53c809d66054a70a8e1e95e07a70001",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "beba4fba492f442ebbc3c33d65863320",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "620c16759845414891cc22f9d245c6ff",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "bf21b354e83d4b208d2d207a4630f199",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "GeometrySurface",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": " Surface geometry"
+      },
+      "Id": "1977dded8a374e32b4f73d92aec0af42",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "47e367d89c014a9b80e1b33c2351c3b2",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "Udivision",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": " double "
+      },
+      "Id": "9cc3f6ac78974a1ca955c1bf5e65547e",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "9a06884496444f62bcc66ad46b344bcf",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "Vdivision",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": " double"
+      },
+      "Id": "948ae5ef1b2146cbb921e15a83a9d812",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "f02e2d509fa345af8baf37b0b86cbb64",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "// Diamond Panels\r\nDiamondPanel",
+      "Id": "7045c4da8ef446c4979bea002c3a9b4f",
+      "Inputs": [
+        {
+          "Id": "d68db8952802415f9ac5f87c7636a3fa",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "// Triangle Panels\r\nTrianglePanel",
+      "Id": "86c0c5e3c9744180b60be94f2ca0102c",
+      "Inputs": [
+        {
+          "Id": "a893378c3a63420782970dc8ee29a346",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "cc035e4029bd48888ff93747cf33ad2b",
+      "End": "d68db8952802415f9ac5f87c7636a3fa",
+      "Id": "c323ba7d99204f0487e29e3d1ffb5658"
+    },
+    {
+      "Start": "d2f9a49d7df848b7b6cfbe4406fdf746",
+      "End": "a893378c3a63420782970dc8ee29a346",
+      "Id": "58dc4a59cc814a0fabd0ccd08f92e1e8"
+    },
+    {
+      "Start": "bf21b354e83d4b208d2d207a4630f199",
+      "End": "b4538a7ced3a4c4aa7727020bc7b33e5",
+      "Id": "5517f67d74714ec69be27c7b7b1d5137"
+    },
+    {
+      "Start": "47e367d89c014a9b80e1b33c2351c3b2",
+      "End": "d53c809d66054a70a8e1e95e07a70001",
+      "Id": "774b387bc6cc4b17942834fd4113f7e0"
+    },
+    {
+      "Start": "9a06884496444f62bcc66ad46b344bcf",
+      "End": "beba4fba492f442ebbc3c33d65863320",
+      "Id": "74e7a0b30a3543bbb288ead258a1cb34"
+    },
+    {
+      "Start": "f02e2d509fa345af8baf37b0b86cbb64",
+      "End": "620c16759845414891cc22f9d245c6ff",
+      "Id": "3c37a264de1c4328bd72ab18ee5e8659"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.1.5055",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "2d3c9818ee50452b9d8b7d35776bd142",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 771.09371892568913,
+        "Y": 66.63050952609106
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "d0bb5cf917df4ead8a303b9adf4fca56",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 597.6,
+        "Y": 18.400000000000034
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "1977dded8a374e32b4f73d92aec0af42",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 358.05738312560311,
+        "Y": -102.28548041302111
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "9cc3f6ac78974a1ca955c1bf5e65547e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 345.41600879245891,
+        "Y": 46.493771353984187
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "948ae5ef1b2146cbb921e15a83a9d812",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 377.50565133044017,
+        "Y": 151.51441966010543
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "7045c4da8ef446c4979bea002c3a9b4f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 902.60889286104725,
+        "Y": -9.9062064400438885
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "86c0c5e3c9744180b60be94f2ca0102c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 988.18127296233126,
+        "Y": 118.45236371188224
+      }
+    ],
+    "Annotations": [],
+    "X": -268.17214748739013,
+    "Y": 227.34979006723484,
+    "Zoom": 0.822695359375
+  }
+}

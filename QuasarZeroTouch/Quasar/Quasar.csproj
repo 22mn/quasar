@@ -71,17 +71,83 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RevitNodes.cs" />
-    <Compile Include="DynamoNodes.cs" />
+    <Compile Include="DynamoNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Quasar_DynamoCustomization.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\edafe6a1-b239-4100-b6a7-0303ddc655f2.Small.png" />
-    <None Include="Resources\edafe6a1-b239-4100-b6a7-0303ddc655f2.Large.png" />
+    <None Include="Resources\e52835e2-4639-465f-acbc-0a9bda480092.Large.png" />
+    <None Include="Resources\8834f6e5-f2c7-4df2-85ec-3cc5b4549004.Large.png" />
+    <None Include="Resources\Quasar.BuiltIns.GetBuiltInParameterName.Small.png" />
     <None Include="Resources\Quasar.DynamoNodes.QuadPanel.Small.png" />
+    <None Include="Resources\Quasar.ElementGraphics.CopyPasteFilter.Small.png" />
+    <None Include="Resources\Quasar.ElementGraphics.HideUnHideElement.Small.png" />
+    <None Include="Resources\Quasar.ElementGraphics.LinkLevelGrid.Small.png" />
+    <None Include="Resources\Quasar.ElementUtility.GetAndSetParams.Small.png" />
+    <None Include="Resources\Quasar.ElementUtility.GetElementType.Small.png" />
+    <None Include="Resources\Quasar.LinkDocumentUtility.GetElementFromLinkDocument.Small.png" />
+    <None Include="Resources\Quasar.RoomUtility.CenterRoom.Small.png" />
+    <None Include="Resources\Quasar.RoomUtility.MassingsByRooms.Small.png" />
+    <None Include="Resources\Quasar.ViewUtility.ActiveView.Small.png" />
+    <None Include="Resources\Quasar.ViewUtility.CeilingViewByRoom.Small.png" />
+    <None Include="Resources\Quasar.ViewUtility.ElevationInRoom.Small.png" />
+    <None Include="Resources\Quasar.ViewUtility.FloorPlanByRoom.Small.png" />
+    <None Include="Resources\Quasar.ViewUtility.ThreeDViewByRoom.Small.png" />
+    <None Include="Resources\Quasar.ViewUtility.TransferViewTemplateAndFilter.Small.png" />
+    <None Include="Resources\Quasar.Wallelements.CreateWallSweep.Small.png" />
+    <None Include="Resources\Quasar.BuiltIns.GetBuiltInParameterName.Large.png" />
     <None Include="Resources\Quasar.DynamoNodes.QuadPanel.Large.png" />
+    <None Include="Resources\Quasar.ElementGraphics.CopyPasteFilter.Large.png" />
+    <None Include="Resources\Quasar.ElementGraphics.HideUnHideElement.Large.png" />
+    <None Include="Resources\Quasar.ElementGraphics.LinkLevelGrid.Large.png" />
+    <None Include="Resources\Quasar.ElementUtility.GetAndSetParams.Large.png" />
+    <None Include="Resources\Quasar.ElementUtility.GetElementType.Large.png" />
+    <None Include="Resources\Quasar.LinkDocumentUtility.GetElementFromLinkDocument.Large.png" />
+    <None Include="Resources\Quasar.RoomUtility.CenterRoom.Large.png" />
+    <None Include="Resources\Quasar.RoomUtility.MassingsByRooms.Large.png" />
+    <None Include="Resources\Quasar.ViewUtility.ActiveView.Large.png" />
+    <None Include="Resources\Quasar.ViewUtility.CeilingViewByRoom.Large.png" />
+    <None Include="Resources\Quasar.ViewUtility.ElevationInRoom.Large.png" />
+    <None Include="Resources\Quasar.ViewUtility.FloorPlansByRooms.Large.png" />
+    <None Include="Resources\Quasar.ViewUtility.ThreeDViewByRoom.Large.png" />
+    <None Include="Resources\Quasar.ViewUtility.TransferViewTempateAndFilter.Large.png" />
+    <None Include="Resources\Quasar.WallELements.CreateWallSweep.Large.png" />
+    <None Include="Resources\0e77a333-3c27-4ad3-a4f3-75d54a8bc9aa.Large.png" />
+    <None Include="Resources\DefaultCustomNode.Small.png" />
+    <None Include="Resources\5b54fd55-3388-4662-8691-a43ba532f0ef.Large.png" />
+    <None Include="Resources\3ebe2f24-1e3d-4e61-849d-9c0569151958.Large.png" />
+    <None Include="Resources\3ce0d90f-4a7f-4058-ac88-9de9e0834ee4.Large.png" />
+    <None Include="Resources\3b7f4eeb-4215-439c-bb8d-4f4d7db6289f.Large.png" />
+    <None Include="Resources\fa6dbc4d-6949-40a7-901b-93e42971adbc.Large.png" />
+    <None Include="Resources\f1b554a7-c089-4113-80bb-2459ffbcfa9b.Large.png" />
+    <None Include="Resources\edafe6a1-b239-4100-b6a7-0303ddc655f2.Large.png" />
+    <None Include="Resources\ddde9b1c-52f8-4eca-b811-ddea3105a7c8.Large.png" />
+    <None Include="Resources\dd8d1e6d-5c8b-4fe9-8402-3dd72cbfbf42.Large.png" />
+    <None Include="Resources\d95914d3-d3e8-4568-a830-a25bd192237e.Large.png" />
+    <None Include="Resources\d7b9c9c0-a487-4263-bb5d-279a1015943d.Large.png" />
+    <None Include="Resources\cbf9edf9-a0f4-4760-b171-bb378dd9bea4.Large.png" />
+    <None Include="Resources\bfd1a96b-aec6-41c9-b5d0-d85123b286b4.Large.png" />
+    <None Include="Resources\bcbcad57-9571-4aed-ae61-1d6bd24d0a6b.Large.png" />
+    <None Include="Resources\b2272f3f-8260-49e6-99a5-19be7778969d.Large.png" />
+    <None Include="Resources\ad75924a-af28-4e5d-b269-86408eecb907.Large.png" />
+    <None Include="Resources\a00c3be9-e031-44d9-afed-485a4bd806cc.Large.png" />
+    <None Include="Resources\87517726-2423-475c-9a56-afcc51de404c.Large.png" />
+    <None Include="Resources\83058044-8983-4205-8139-2aca86cf1a03.Large.png" />
+    <None Include="Resources\20846343-9989-4de1-b1d1-afd78f6ba152.Large.png" />
+    <None Include="Resources\7459951b-d264-4534-bc9a-3094ad1a3653.Large.png" />
+    <None Include="Resources\01770292-2e3b-4d86-9f84-e9204bb6cd49.Large.png" />
+    <None Include="Resources\0178228c-2b6f-44a0-b5f9-543cb664e26d.Large.png" />
+    <None Include="Resources\70430d84-967a-4f11-b4bd-46e4603cd1f5.Large.png" />
+    <None Include="Resources\6870c156-3008-4030-bd79-d60619e037b1.Large.png" />
+    <None Include="Resources\6012f0c5-f441-44f8-917c-44844d5bc7a4.Large.png" />
+    <None Include="Resources\700b827d-9fae-4244-9294-f4b97936e203.Large.png" />
+    <None Include="Resources\317db93b-f4ff-44de-916d-6da773e639ae.Large.png" />
+    <None Include="Resources\71cef8ca-325e-4d0b-80df-1a6f349e3093.Large.png" />
+    <None Include="Resources\36dc4328-cc7c-4b75-ae14-84f76bf51887.Large.png" />
+    <None Include="Resources\8e3818e8-fbc3-4dac-912c-266e12e18042.Large.png" />
+    <None Include="Resources\8cdef8e6-1c8e-4797-b5ae-d8f467afc8f2.Large.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

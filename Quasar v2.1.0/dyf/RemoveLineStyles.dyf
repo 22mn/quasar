@@ -1,0 +1,58 @@
+<Workspace Version="1.3.2.2480" X="-2.39999999999998" Y="245.6" zoom="1" ScaleFactor="1" Name="RemoveLineStyles" Description="Remove line styles from the current documet by keywords (string list)." ID="e52835e2-4639-465f-acbc-0a9bda480092" Category="Quasar.LineUtility">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="438ddb9c-9505-4ce4-bfaf-315d3b6c91eb" type="PythonNodeModels.PythonNode" nickname="Python Script" x="531.567370343723" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import clr
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+cate = Category.GetCategory(doc, BuiltInCategory.OST_Lines)
+
+res = {}
+keywords = IN[0]
+removed = []
+# line category store
+for i in cate.SubCategories:
+	for k in keywords:
+		if k in i.Name:
+			res[i.Name] = i.Id
+			
+TransactionManager.Instance.EnsureInTransaction(doc)
+
+for name, id in res.items():
+	removed.append(name)
+	doc.Delete(id)
+
+TransactionManager.Instance.TransactionTaskDone()
+
+OUT = removed</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="2bd2b08b-2d18-481e-ba35-66f799778c6e" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="731.367370343723" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="// deleted line styles&#xD;&#xA;Removed" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="5b001fbf-e994-4e81-ba7b-66dcb313fbd5" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="164.8" y="108" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="//keywords (string list)&#xD;&#xA;KeywordList" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="438ddb9c-9505-4ce4-bfaf-315d3b6c91eb" start_index="0" end="2bd2b08b-2d18-481e-ba35-66f799778c6e" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="5b001fbf-e994-4e81-ba7b-66dcb313fbd5" start_index="0" end="438ddb9c-9505-4ce4-bfaf-315d3b6c91eb" end_index="0" portType="0" />
+  </Connectors>
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="83da477b-9372-471b-8c71-7c6be416967f" text="IN[0] = Keywords (string list) " x="506.026988808995" y="-46.9287178486895" />
+  </Notes>
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
