@@ -1,7 +1,7 @@
-<Workspace Version="1.3.2.2480" X="-30.6810379219212" Y="-30.7338516808687" zoom="0.847618571998227" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.2.2480" X="64.4871658115294" Y="18.6674696414076" zoom="0.808219866393029" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
   <NamespaceResolutionMap />
   <Elements>
-    <PythonNodeModels.PythonNode guid="c62eeffe-7515-4221-9531-cf2783efc8ce" type="PythonNodeModels.PythonNode" nickname="Python Script" x="324" y="260" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="4">
+    <PythonNodeModels.PythonNode guid="c62eeffe-7515-4221-9531-cf2783efc8ce" type="PythonNodeModels.PythonNode" nickname="Python Script" x="352.314622629635" y="377.977594290146" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="4">
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="False" />
       <PortInfo index="2" default="False" />
@@ -20,10 +20,18 @@ from RevitServices.Transactions import TransactionManager
 
 doc = DocumentManager.Instance.CurrentDBDocument
 
-sheets = UnwrapElement(IN[0])
-names = IN[1]
-numbers = IN[2]
+def lst(l):
+	if isinstance(l, list):
+		return l
+	else:
+		return [l]
+
+sheets = UnwrapElement(lst(IN[0]))
+names = lst(IN[1])
+numbers = lst(IN[2])
 titleblock = UnwrapElement(IN[3])
+
+
 
 new_sheets = []
 out = []
@@ -55,9 +63,9 @@ for sheet,nSheet in zip(sheets,new_sheets):
 		v = view.Duplicate(vOpt)
 		dup_view = doc.GetElement(v)
 		try:
-			dup_view.Name = ele.LookupParameter("View Name").AsString() + " (SHIMZ Roombook)"
+			dup_view.Name = ele.LookupParameter("View Name").AsString() + " (" + count +")"
 		except:
-			dup_view.Name = ele.LookupParameter("View Name").AsString() + " (SHIMZ Roombook)" + str(count)
+			dup_view.Name = ele.LookupParameter("View Name").AsString() + +"New "+"(" + str(count)+ ")"
 			count += 1
 
 		newPort = Viewport.Create(doc,nSheet.Id, v, viewLoc)
@@ -70,10 +78,28 @@ TransactionManager.Instance.TransactionTaskDone()
 	
 OUT = out</Script>
     </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="0ec697c4-cd47-4972-9a79-866f6f51937b" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="DuplicateSheetsWithViews" x="80.054751880295" y="112.496043242182" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <PortInfo index="2" default="False" />
+      <PortInfo index="3" default="False" />
+      <ID value="0e77a333-3c27-4ad3-a4f3-75d54a8bc9aa" />
+      <Name value="DuplicateSheetsWithViews" />
+      <Description value="Duplicate given sheets list, containing all views by new  sheets names, numbers and a titleblock " />
+      <Inputs>
+        <Input value="SheetList" />
+        <Input value="NameList" />
+        <Input value="NumberList" />
+        <Input value="titleblock" />
+      </Inputs>
+      <Outputs>
+        <Output value="SheetsWithViews" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
   </Elements>
   <Connectors />
   <Notes>
-    <Dynamo.Graph.Notes.NoteModel guid="277fc2a0-73b7-480b-8eb4-b25498e92566" text="IN[0] = Sheet list to duplicate&#xD;&#xA;IN[1] = Name list for new sheets&#xD;&#xA;IN[2] = Numbers list for new sheets&#xD;&#xA;IN[3] = Titleblock" x="286.958103675872" y="160.293309357994" />
+    <Dynamo.Graph.Notes.NoteModel guid="277fc2a0-73b7-480b-8eb4-b25498e92566" text="IN[0] = Sheet list to duplicate&#xD;&#xA;IN[1] = Name list for new sheets&#xD;&#xA;IN[2] = Numbers list for new sheets&#xD;&#xA;IN[3] = Titleblock" x="313.385084796865" y="293.372035717279" />
   </Notes>
   <Annotations />
   <Presets />

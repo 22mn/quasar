@@ -9,14 +9,26 @@
     <Grid Name="MainGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <TextBlock Name="textblock1" Background="#2d2d2d" HorizontalAlignment="Stretch" FontFamily="Gill Sans MT"
                   TextAlignment="Center" Padding="10" FontWeight="Medium" FontSize="18" Foreground="Ivory">   
-            Quasar Extension<LineBreak/>
+            Quasar View Extension<LineBreak/>
             <LineBreak/>
-            Quasar Extension includes in Quasar Package v2.0.102<LineBreak/>
-            developed and maintained by <TextBlock Foreground="LightGoldenrodYellow">min.naung</TextBlock> .<LineBreak/>
+            Quasar View Extension includes in Quasar Package v2<LineBreak/>
+            developed and maintained by 
+            <Hyperlink Name="myname"
+                NavigateUri="https://twentytwo.space/contact/" 
+                RequestNavigate="NavigateURL" Foreground="DeepSkyBlue"
+                MouseEnter="MyNameMouseEnter"
+                MouseLeave="MyNameMouseLeave"
+                TextDecorations="None">
+                min.naung</Hyperlink> .<LineBreak/>
             <LineBreak/>
-            <Hyperlink 
+            <Hyperlink Name="link1"
             NavigateUri="https://github.com/mgjean/quasar" 
-            RequestNavigate="NavigateURL" Foreground="CadetBlue">https://github.com/mgjean/quasar</Hyperlink>
+            RequestNavigate="NavigateURL" 
+            Foreground="DeepSkyBlue" 
+            MouseEnter="HyperlinkMouseEnter"
+            MouseLeave="HyperlinkMouseLeave"
+            TextDecorations="None">
+                https://github.com/mgjean/quasar</Hyperlink>
         </TextBlock>
     </Grid>
 </Window>

@@ -13,3 +13,5 @@ D:\SANDBAG\PROGRAMMING\git-contribution\quasar\QuasarExtension\QuasarExtension\o
 D:\SANDBAG\PROGRAMMING\git-contribution\quasar\QuasarExtension\QuasarExtension\obj\Debug\QuasarAboutWindow.baml
 D:\SANDBAG\PROGRAMMING\git-contribution\quasar\QuasarExtension\QuasarExtension\obj\Debug\QuasarFunctionTestWindow.g.cs
 D:\SANDBAG\PROGRAMMING\git-contribution\quasar\QuasarExtension\QuasarExtension\obj\Debug\QuasarFunctionTestWindow.baml
+D:\SANDBAG\PROGRAMMING\git-contribution\quasar\QuasarExtension\QuasarExtension\obj\Debug\QuasarSettingWindow.g.cs
+D:\SANDBAG\PROGRAMMING\git-contribution\quasar\QuasarExtension\QuasarExtension\obj\Debug\QuasarSettingWindow.baml

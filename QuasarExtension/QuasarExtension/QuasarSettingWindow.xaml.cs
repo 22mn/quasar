@@ -18,7 +18,7 @@ namespace QuasarExtension
     /// <summary>
     /// Interaction logic for QuasarSettingWindow.xaml
     /// </summary>
-    public partial class QuasarSettingWindow : UserControl
+    public partial class QuasarSettingWindow : Window
     {
         public QuasarSettingWindow()
         {

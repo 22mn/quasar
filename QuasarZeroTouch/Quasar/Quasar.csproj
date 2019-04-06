@@ -78,6 +78,7 @@
     <Content Include="Quasar_DynamoCustomization.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\4cb7cd42-fffa-4557-a3e5-7e5e74e0aed1.Large.png" />
     <None Include="Resources\e52835e2-4639-465f-acbc-0a9bda480092.Large.png" />
     <None Include="Resources\8834f6e5-f2c7-4df2-85ec-3cc5b4549004.Large.png" />
     <None Include="Resources\Quasar.BuiltIns.GetBuiltInParameterName.Small.png" />
@@ -165,7 +166,7 @@
     </PostBuildEvent>
   </PropertyGroup>
   <Target Name="BeforeBuild">
-    <GetReferenceAssemblyPaths TargetFrameworkMoniker=".NETFramework, Version=v2.0">
+    <GetReferenceAssemblyPaths TargetFrameworkMoniker=".NETFramework, Version=v4.6">
       <Output TaskParameter="FullFrameworkReferenceAssemblyPaths" PropertyName="FrameworkAssembliesPath" />
     </GetReferenceAssemblyPaths>
     <GenerateResource UseSourcePath="true" Sources="$(ProjectDir)PackageImages.resx" OutputResources="$(ProjectDir)PackageImages.resources" References="$(FrameworkAssembliesPath)System.Drawing.dll" />

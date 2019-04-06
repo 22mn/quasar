@@ -4,7 +4,7 @@
 > - Quasar includes 50+ nodes, simple usability and substantial enhancement to productivity.
 > - Code samples are provided in [this](https://github.com/mgjean/quasar/tree/master/samples) directory.
 > - For node usage, modification or understanding please see [__The Quasar Offical Website__](https://twentytwo.space/2018/04/01/quasar)
-> - The most latest [_version_](https://github.com/mgjean/quasar/tree/master/Quasar%20v2.1.0) released on __2 April 2019__.
+> - The most latest [_version_](https://github.com/mgjean/quasar/tree/master/Quasar%20v2.1.1) released on __6 April 2019__.
 > - Click to see [__Zero Touch__](https://github.com/mgjean/quasar/tree/master/Quasar-ZTD) and [__View Extension__](https://github.com/mgjean/quasar/tree/master/QuasarExtension) source codes.
 
 

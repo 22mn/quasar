@@ -9,7 +9,7 @@ using Dynamo.ViewModels;
 
 namespace QuasarExtension
 {
-    public class QuasarExtension : IViewExtension
+    public class QuasarMenuModel : IViewExtension
     {
         private MenuItem Quasar;
         private MenuItem About;
@@ -38,7 +38,7 @@ namespace QuasarExtension
             #region QuasarMainMenu
             // Quasar Main Menu
             Quasar = new MenuItem { Header = "Quasar" };
-            Quasar.ToolTip = new ToolTip { Content = "Quasar View Extension" };
+            Quasar.ToolTip = new ToolTip { Content = "Quasar Package v2.0.102" };
             #endregion QuasarMainMenu
 
             #region Label
@@ -54,6 +54,7 @@ namespace QuasarExtension
 
             };
 
+            Quasar.Items.Add(Label);
             #endregion Label
 
             #region NodeInGraph
