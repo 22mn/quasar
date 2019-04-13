@@ -6,3 +6,4 @@ dumps/
 icons-tool/
 packages/
 bin/
+obj/
