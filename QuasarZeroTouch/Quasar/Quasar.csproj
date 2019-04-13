@@ -197,7 +197,7 @@
 </PostBuildEvent>
   </PropertyGroup>
   <Target Name="BeforeBuild">
-    <GetReferenceAssemblyPaths TargetFrameworkMoniker=".NETFramework, Version=v4.6">
+    <GetReferenceAssemblyPaths TargetFrameworkMoniker=".NETFramework, Version=v2.0">
       <Output TaskParameter="FullFrameworkReferenceAssemblyPaths" PropertyName="FrameworkAssembliesPath" />
     </GetReferenceAssemblyPaths>
     <GenerateResource UseSourcePath="true" Sources="$(ProjectDir)PackageImages.resx" OutputResources="$(ProjectDir)PackageImages.resources" References="$(FrameworkAssembliesPath)System.Drawing.dll" />
