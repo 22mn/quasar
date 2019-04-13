@@ -7,3 +7,5 @@ icons-tool/
 packages/
 bin/
 obj/
+QuasarNodeModel/
+QuasarNodeModelFunction

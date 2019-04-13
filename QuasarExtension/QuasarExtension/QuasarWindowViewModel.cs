@@ -79,6 +79,7 @@ namespace QuasarExtension
         public QuasarAbout(ReadyParams r)
         {
             readyParams = r;
+            
         }
 
         public void Dispose() { }
@@ -93,6 +94,7 @@ namespace QuasarExtension
             get
             {
                 return readyParams;
+                
             }
         }
 
@@ -180,7 +182,6 @@ namespace QuasarExtension
                     Guid newG = Guid.NewGuid();
                     string description = "- " + node.Description.Split('\n')[0];
                     var note = new DynamoModel.CreateNoteCommand(newG, description, node.CenterX-100, node.CenterY-75, false);
-
                     // Execute create command
                     dynamoViewModel.ExecuteCommand(note);
                     

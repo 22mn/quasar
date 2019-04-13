@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quasar", "Quasar\Quasar.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuasarExtension", "..\QuasarExtension\QuasarExtension\QuasarExtension.csproj", "{812D9CB7-D104-4165-8D88-B102399520B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuasarNodeModel", "..\QuasarNodeModel\QuasarNodeModel.csproj", "{A1340833-4311-4D38-B0B7-7D6320C0B329}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuasarNodeModelFunction", "..\QuasarNodeModelFunction\QuasarNodeModelFunction.csproj", "{A159FBE5-4C14-4D7E-989A-32FC2C5542B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{812D9CB7-D104-4165-8D88-B102399520B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{812D9CB7-D104-4165-8D88-B102399520B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{812D9CB7-D104-4165-8D88-B102399520B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1340833-4311-4D38-B0B7-7D6320C0B329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1340833-4311-4D38-B0B7-7D6320C0B329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1340833-4311-4D38-B0B7-7D6320C0B329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1340833-4311-4D38-B0B7-7D6320C0B329}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A159FBE5-4C14-4D7E-989A-32FC2C5542B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A159FBE5-4C14-4D7E-989A-32FC2C5542B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A159FBE5-4C14-4D7E-989A-32FC2C5542B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A159FBE5-4C14-4D7E-989A-32FC2C5542B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
