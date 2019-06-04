@@ -1,0 +1,77 @@
+<Workspace Version="1.3.3.4651" X="33.086492692542" Y="-0.206284077698029" zoom="0.687429564313338" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="4ed2cccd-0f80-48cb-9743-aa9735930b6c" type="PythonNodeModels.PythonNode" nickname="Python Script" x="136.408341379062" y="362.188296266186" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script>import clr
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+#TransactionManager.Instance.EnsureInTransaction()
+result = []
+
+families = FilteredElementCollector(doc).OfClass(Family).WhereElementIsNotElementType().ToElements()
+
+categories = {f.FamilyCategory.Name:[] for f in families if f.IsUserCreated}
+
+
+for f in families:
+	for key in categories.keys():
+		if f.FamilyCategory.Name == key:
+			categories[key].append(f.Name)
+			break
+
+OUT = sorted(categories.items(), key= lambda keyvalue:keyvalue)</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="044455fa-67ce-45c1-9986-76d36561f83c" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="CustomDropdownSelection" x="865.073878569502" y="396.2225341162" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+      <ID value="36dc4328-cc7c-4b75-ae14-84f76bf51887" />
+      <Name value="CustomDropdownSelection" />
+      <Description value="Create a dropdown with checkboxes. First input is a list and Second input is a nested list.&#xD;&#xA;&#xD;&#xA;Eg. {&quot;a&quot;,&quot;b&quot;,&quot;c&quot;} and {{1,2,3},{4,5,6},{7,8,9}}.&#xD;&#xA;It match their index. So, {1,2,3} is under dropdown &quot;a&quot;. " />
+      <Inputs>
+        <Input value="Title" />
+        <Input value="Items" />
+      </Inputs>
+      <Outputs>
+        <Output value="Selection" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="e7a3a904-ff90-48ce-9fcf-66e98e9416b7" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="List.FirstItem" x="297.440159479176" y="470.60352475969" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.List.FirstItem@var[]..[]">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <CoreNodeModels.HigherOrder.Map guid="1732ff50-03d6-4f53-ac8f-5afd960e3cb6" type="CoreNodeModels.HigherOrder.Map" nickname="List.Map" x="574.1627291638" y="62.5177079800704" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+    </CoreNodeModels.HigherOrder.Map>
+    <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="217041c7-dd8d-418c-bb47-bea0e49d6772" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="List.LastItem" x="319.435404880762" y="602.694930469402" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.List.LastItem@var[]..[]">
+      <PortInfo index="0" default="False" />
+    </Dynamo.Graph.Nodes.ZeroTouch.DSFunction>
+    <CoreNodeModels.HigherOrder.Map guid="79fa3736-c227-45a7-9f62-43fd2c9dec1a" type="CoreNodeModels.HigherOrder.Map" nickname="List.Map" x="599.220672271369" y="465.517340125254" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <PortInfo index="1" default="False" />
+    </CoreNodeModels.HigherOrder.Map>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="4ed2cccd-0f80-48cb-9743-aa9735930b6c" start_index="0" end="1732ff50-03d6-4f53-ac8f-5afd960e3cb6" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="4ed2cccd-0f80-48cb-9743-aa9735930b6c" start_index="0" end="79fa3736-c227-45a7-9f62-43fd2c9dec1a" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="e7a3a904-ff90-48ce-9fcf-66e98e9416b7" start_index="0" end="1732ff50-03d6-4f53-ac8f-5afd960e3cb6" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="1732ff50-03d6-4f53-ac8f-5afd960e3cb6" start_index="0" end="044455fa-67ce-45c1-9986-76d36561f83c" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="217041c7-dd8d-418c-bb47-bea0e49d6772" start_index="0" end="79fa3736-c227-45a7-9f62-43fd2c9dec1a" end_index="1" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="79fa3736-c227-45a7-9f62-43fd2c9dec1a" start_index="0" end="044455fa-67ce-45c1-9986-76d36561f83c" end_index="1" portType="0" />
+  </Connectors>
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="d5937056-abcc-4f83-b9ea-dfb38e274017" text="*** NOTE&#xD;&#xA;Collect user loaded families. &#xD;&#xA;Return value = FamilyCategoryName and FamilyName pairs&#xD;&#xA;{ &quot;FamilyCategoryName&quot; : [ &quot;FamilyName1&quot;, &quot;FamilyName2&quot; ] }&#xD;&#xA;" x="98.3398353560773" y="233.229840854289" />
+  </Notes>
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
