@@ -400,8 +400,7 @@ namespace Quasar
     }
     /// <summary>
     /// Quasar RoomUtility class contains room operation nodes
-    /// </summary>
-    
+    /// </summary>   
     public static class RoomUtility
     {
         /// <summary>
@@ -697,7 +696,8 @@ namespace Quasar
             foreach (var view in views) { ids.Add(view.Id); }
             TransactionManager.Instance.EnsureInTransaction(doc);
 
-            var templates = ElementTransformUtils.CopyElements(LinkDocument, ids, doc, Transform.Identity, new CopyPasteOptions());
+            var templates = ElementTransformUtils.CopyElements(LinkDocument, ids, doc, Transform.Identity,
+                new CopyPasteOptions());
             foreach (var i in templates) { TemplateNames.Add(doc.GetElement(i).Name); }
 
             if (!IsIncludeFilters)

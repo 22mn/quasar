@@ -108,6 +108,7 @@ namespace QuasarExtension
                 if (node.IsSelected && !node.IsFrozen)
                 {
                     node.IsFrozen = true;
+                    
                 }
             }
         }
