@@ -1,4 +1,4 @@
-<Workspace Version="1.3.3.4651" X="404.218327222058" Y="-244.716556990991" zoom="0.729950825270786" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.3.4651" X="405.113014615253" Y="-230.892740668156" zoom="0.643176972789841" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <PythonNodeModels.PythonNode guid="fcb66e85-7b16-4135-a75e-ab772f8d4ea3" type="PythonNodeModels.PythonNode" nickname="Python Script" x="86.1695503642384" y="598.856449658286" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="false" inputcount="1">
@@ -31,11 +31,13 @@ for i in settingParams:
 
 OUT = res</Script>
     </PythonNodeModels.PythonNode>
-    <PythonNodeModels.PythonNode guid="aa0e2391-7d0f-4e85-82a2-2a96f5536bde" type="PythonNodeModels.PythonNode" nickname="Print Parameters" x="-222.210798360259" y="602.706404730698" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="3">
+    <PythonNodeModels.PythonNode guid="aa0e2391-7d0f-4e85-82a2-2a96f5536bde" type="PythonNodeModels.PythonNode" nickname="Print Parameters" x="-224.599680441744" y="754.458862052871" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="3">
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="False" />
       <PortInfo index="2" default="False" />
-      <Script>import clr
+      <Script># dynamo version - 1.3.3
+
+import clr
 clr.AddReference("RevitAPI")
 clr.AddReference("RevitServices")
 
@@ -46,78 +48,67 @@ from RevitServices.Transactions import TransactionManager
 doc = DocumentManager.Instance.CurrentDBDocument
 
 sheet = UnwrapElement(IN[0])
+pdfName = IN[1]
+SetupName = IN[2]
 
+# current document's print manager object
 pmgr = doc.PrintManager
-res = []
-
-
 # set in session
 pmgr.PrintSetup.CurrentPrintSetting = pmgr.PrintSetup.InSession
-
-
 # determine print range
 pmgr.PrintRange = PrintRange.Select
 # set printer
 pmgr.SelectNewPrintDriver("PDF reDirect v2")
+# print to file
 pmgr.PrintToFile = True
-pmgr.PrintToFileName = IN[1]
-
+pmgr.PrintToFileName = pdfName
+# current printing setting
 currentPrintSetting = pmgr.PrintSetup.CurrentPrintSetting
+# current printing setting
 settingParams = currentPrintSetting.PrintParameters
-
-
 # color depth type enum
 settingParams.ColorDepth = ColorDepthType.Color
-
 # hidden line views type
 settingParams.HiddenLineViews = HiddenLineViewsType.RasterProcessing
-
 # hide crop boundaries
 settingParams.HideCropBoundaries = False
-
 # hide ref/work planes
 settingParams.HideReforWorkPlanes = True
-
 # hide scope boxes
 settingParams.HideScopeBoxes = True
-
 # hide unreferenced view tags
 settingParams.HideUnreferencedViewTags = False
-
 # paper placement
 settingParams.PaperPlacement = PaperPlacementType.Margins
-
 # margin type
 settingParams.MarginType = MarginType.PrinterLimit
-
 # mask coincident lines
 settingParams.MaskCoincidentLines = False
-
 # page orientation
 settingParams.PageOrientation = PageOrientationType.Landscape
-
-# paper size
+# get A1 paper size
 A1 = [i for i in pmgr.PaperSizes if i.Name =="A1"][0]
+# set A1 paper size
 settingParams.PaperSize = A1
-
 # raseter quality type
 settingParams.RasterQuality = RasterQualityType.Presentation
-
 # replace halftone 
 settingParams.ReplaceHalftoneWithThinLines = False
-
 # zoom
 settingParams.ZoomType = ZoomType.Zoom
+# zoom value
 settingParams.Zoom = 100
 
-TransactionManager.Instance.EnsureInTransaction(doc)
+#TransactionManager.Instance.EnsureInTransaction(doc)
 
 pmgr.PrintSetup.CurrentPrintSetting = currentPrintSetting
 
-pmgr.PrintSetup.SaveAs(IN[2])
+try:
+	pmgr.PrintSetup.SaveAs(SetupName)
+except:
+	pass
 
-
-TransactionManager.Instance.TransactionTaskDone()
+#TransactionManager.Instance.TransactionTaskDone()
 pmgr.Apply()
 
 # sheet
@@ -129,13 +120,13 @@ OUT = pmgr
     <DSRevitNodesUI.Views guid="ace7497f-2c95-46cd-8e8d-4a55890608f1" type="DSRevitNodesUI.Views" nickname="Views" x="-601.983465199932" y="528.140449526826" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="22:What's New in Templates and Content" />
     <CoreNodeModels.Input.Filename guid="6130d553-c520-4025-b018-755dfe7ac3e9" type="CoreNodeModels.Input.Filename" nickname="File Path" x="-409.093759310815" y="627.873195185404" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
       <System.String>.\efg.pdf</System.String>
-      <HintPath>C:\Users\min.naung\Desktop\efg.pdf</HintPath>
+      <HintPath>C:\Users\min.naung\Desktop\github\quasar\Contribution\efg.pdf</HintPath>
     </CoreNodeModels.Input.Filename>
     <CoreNodeModels.Input.StringInput guid="0f5517c9-7fa3-48a3-aa20-c32f16e3a497" type="CoreNodeModels.Input.StringInput" nickname="String" x="-400.326045406764" y="735.277690510026" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
-      <System.String>bbb</System.String>
-      <System.String value="bbb" />
+      <System.String>aaa</System.String>
+      <System.String value="aaa" />
     </CoreNodeModels.Input.StringInput>
-    <PythonNodeModels.PythonNode guid="0cebac4d-c77b-4077-a4f1-53788efc3530" type="PythonNodeModels.PythonNode" nickname="Python Script" x="136.716625895693" y="726.260944982908" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="false" inputcount="1">
+    <PythonNodeModels.PythonNode guid="0cebac4d-c77b-4077-a4f1-53788efc3530" type="PythonNodeModels.PythonNode" nickname="Python Script" x="157.363361708029" y="851.431780845195" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script>import clr
 clr.AddReference("RevitAPI")
@@ -149,31 +140,26 @@ doc = DocumentManager.Instance.CurrentDBDocument
 
 #TransactionManager.Instance.EnsureInTransaction()
 
-pmgr = UnwrapElement(IN[0])
-res = []
+pmgr = doc.PrintManager
 
-currentPrintSetting = pmgr.PrintSetup.CurrentPrintSetting
-settingParams = currentPrintSetting.PrintParameters
+psetup = pmgr.PrintSetup
 
-
-for i in settingParams:
-	if not i.startswith("__"):
-		try:
-			res.append([i, getattr(settingParams,i)])
-		except:
-			res.append(i + " can't get value.")
-
-OUT = res</Script>
+OUT = psetup.CurrentPrintSetting,psetup.InSession</Script>
     </PythonNodeModels.PythonNode>
+    <CoreNodeModels.Watch guid="cb0be171-1f20-4a5a-8b1b-d0cf2db3c5be" type="CoreNodeModels.Watch" nickname="Watch" x="166.997178184459" y="960.773995470206" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </CoreNodeModels.Watch>
   </Elements>
   <Connectors>
     <Dynamo.Graph.Connectors.ConnectorModel start="aa0e2391-7d0f-4e85-82a2-2a96f5536bde" start_index="0" end="fcb66e85-7b16-4135-a75e-ab772f8d4ea3" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="aa0e2391-7d0f-4e85-82a2-2a96f5536bde" start_index="0" end="0cebac4d-c77b-4077-a4f1-53788efc3530" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="ace7497f-2c95-46cd-8e8d-4a55890608f1" start_index="0" end="aa0e2391-7d0f-4e85-82a2-2a96f5536bde" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="6130d553-c520-4025-b018-755dfe7ac3e9" start_index="0" end="aa0e2391-7d0f-4e85-82a2-2a96f5536bde" end_index="1" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="0f5517c9-7fa3-48a3-aa20-c32f16e3a497" start_index="0" end="aa0e2391-7d0f-4e85-82a2-2a96f5536bde" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="0cebac4d-c77b-4077-a4f1-53788efc3530" start_index="0" end="cb0be171-1f20-4a5a-8b1b-d0cf2db3c5be" end_index="0" portType="0" />
   </Connectors>
-  <Notes />
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="22bad638-2864-47cb-ad5e-a04dcc014b70" text="IN[0] = Sheet&#xD;&#xA;IN[1] = PDF Name&#xD;&#xA;IN[2] = Print Setup Name" x="-247.044204480229" y="567.632239648574" />
+  </Notes>
   <Annotations />
   <Presets />
   <Cameras>

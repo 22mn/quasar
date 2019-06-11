@@ -1,13 +1,15 @@
-<Workspace Version="1.3.4.6666" X="142.826646495651" Y="-11.6065561935205" zoom="0.590352561493108" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.3.4651" X="118.334067750075" Y="-18.8558482071611" zoom="0.725833350964941" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
   <NamespaceResolutionMap />
   <Elements>
     <PythonNodeModels.PythonNode guid="7a062380-6e0a-4eda-91e9-23ffc6964ba7" type="PythonNodeModels.PythonNode" nickname="ImageExportor" x="399.044895422678" y="430.701613263356" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script># dynamo version - 1.3.4
 
+# import modules
 import clr,sys,System
 clr.AddReference("RevitAPI")
 clr.AddReference("RevitServices")
+# import classes
 from System.Collections.Generic import List
 from Autodesk.Revit.DB import *
 from RevitServices.Persistence import DocumentManager
@@ -40,9 +42,10 @@ if not isinstance(views,list):
 else:
 	views = UnwrapElement(views)
 
+# element's id list
 ids = [v.Id for v in views]
 
-# element's id list
+# ids list to .net List
 viewIds = List[ElementId](ids)
 
 # transaction start
@@ -74,6 +77,7 @@ doc.ExportImage(ieo)
 # transaction done
 TransactionManager.Instance.TransactionTaskDone()
 
+# get exported images paths
 images_fullpath = [filePath[:-4] + ieo.GetFileName(doc,id) + "."+ieo.HLRandWFViewsFileType.ToString() for id in ids]
 
 # output images fullpath
@@ -86,14 +90,14 @@ OUT = images_fullpath
 
 </Script>
     </PythonNodeModels.PythonNode>
-    <DSRevitNodesUI.Views guid="bb0722e7-c9f7-4bc7-951a-4be61c493e59" type="DSRevitNodesUI.Views" nickname="Views" x="-77.2486646884272" y="469.744807121662" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="3:Level 2" />
+    <DSRevitNodesUI.Views guid="bb0722e7-c9f7-4bc7-951a-4be61c493e59" type="DSRevitNodesUI.Views" nickname="Views" x="-77.2486646884272" y="469.744807121662" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="-1" />
     <CoreNodeModels.CreateList guid="8209cfe3-2f76-46f7-959f-1f3d701d6152" type="CoreNodeModels.CreateList" nickname="List.Create" x="171.53471810089" y="426.06528189911" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="3">
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="False" />
       <PortInfo index="2" default="False" />
     </CoreNodeModels.CreateList>
-    <DSRevitNodesUI.Views guid="220a6965-6626-478b-934c-4c31a864ba42" type="DSRevitNodesUI.Views" nickname="Views" x="-73.2225519287833" y="350.160237388724" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="6:East" />
-    <DSRevitNodesUI.Views guid="9d7b133d-38c2-46de-87bd-b3749a156b3e" type="DSRevitNodesUI.Views" nickname="Views" x="-70.8189910979227" y="620.338278931751" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="1:Level 1" />
+    <DSRevitNodesUI.Views guid="220a6965-6626-478b-934c-4c31a864ba42" type="DSRevitNodesUI.Views" nickname="Views" x="-73.2225519287833" y="350.160237388724" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="-1" />
+    <DSRevitNodesUI.Views guid="9d7b133d-38c2-46de-87bd-b3749a156b3e" type="DSRevitNodesUI.Views" nickname="Views" x="-70.8189910979227" y="620.338278931751" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="-1" />
   </Elements>
   <Connectors>
     <Dynamo.Graph.Connectors.ConnectorModel start="bb0722e7-c9f7-4bc7-951a-4be61c493e59" start_index="0" end="8209cfe3-2f76-46f7-959f-1f3d701d6152" end_index="1" portType="0" />
