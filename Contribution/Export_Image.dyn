@@ -1,109 +1,29 @@
-<Workspace Version="1.3.3.4651" X="118.334067750075" Y="-18.8558482071611" zoom="0.725833350964941" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+<Workspace Version="1.3.4.6666" X="255.762077665657" Y="-204.951300729592" zoom="1.13136064003941" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
-    <PythonNodeModels.PythonNode guid="7a062380-6e0a-4eda-91e9-23ffc6964ba7" type="PythonNodeModels.PythonNode" nickname="ImageExportor" x="399.044895422678" y="430.701613263356" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
-      <PortInfo index="0" default="False" />
-      <Script># dynamo version - 1.3.4
-
-# import modules
-import clr,sys,System
-clr.AddReference("RevitAPI")
-clr.AddReference("RevitServices")
-# import classes
-from System.Collections.Generic import List
-from Autodesk.Revit.DB import *
-from RevitServices.Persistence import DocumentManager
-from RevitServices.Transactions import TransactionManager
-
-# add ipy library path
-sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
-# os module import
-import os
-# current document
-doc = DocumentManager.Instance.CurrentDBDocument
-# current working dir
-output_path = os.path.dirname(doc.PathName)
-# if cwd is none (file have not save yet)
-# get desktop path instead
-if not os.path.exists(output_path):
-	output_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') 
-
-# doc name
-doc_name = os.path.basename(doc.PathName)
-# filenames with project name prefix
-filePath = os.path.join(output_path,doc_name)
-
-# input views
-views = IN[0]
-
-# create unwrap list
-if not isinstance(views,list):	
-	views = UnwrapElement([views])
-else:
-	views = UnwrapElement(views)
-
-# element's id list
-ids = [v.Id for v in views]
-
-# ids list to .net List
-viewIds = List[ElementId](ids)
-
-# transaction start
-TransactionManager.Instance.EnsureInTransaction(doc)
-
-# image export options constructor
-ieo = ImageExportOptions()
-# export range (exporting amount of view(s))  
-ieo.ExportRange = ExportRange.SetOfViews
-ieo.SetViewsAndSheets(viewIds)
-# filepath
-ieo.FilePath = filePath
-# File type for exported HLR and wireframe views
-ieo.HLRandWFViewsFileType = ImageFileType.PNG
-# image resolution
-ieo.ImageResolution = ImageResolution.DPI_300
-# fit direction
-ieo.FitDirection = FitDirectionType.Horizontal
-# pixelsize
-ieo.PixelSize = 1200
-# file type for exported shadow views
-ieo.ShadowViewsFileType = ImageFileType.PNG
-# zoom type
-ieo.ZoomType = ZoomFitType.FitToPage
-
-# export image
-doc.ExportImage(ieo)
-
-# transaction done
-TransactionManager.Instance.TransactionTaskDone()
-
-# get exported images paths
-images_fullpath = [filePath[:-4] + ieo.GetFileName(doc,id) + "."+ieo.HLRandWFViewsFileType.ToString() for id in ids]
-
-# output images fullpath
-OUT = images_fullpath
-
-
-
-
-
-
-</Script>
-    </PythonNodeModels.PythonNode>
-    <DSRevitNodesUI.Views guid="bb0722e7-c9f7-4bc7-951a-4be61c493e59" type="DSRevitNodesUI.Views" nickname="Views" x="-77.2486646884272" y="469.744807121662" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="-1" />
-    <CoreNodeModels.CreateList guid="8209cfe3-2f76-46f7-959f-1f3d701d6152" type="CoreNodeModels.CreateList" nickname="List.Create" x="171.53471810089" y="426.06528189911" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="3">
+    <CoreNodeModels.CreateList guid="8209cfe3-2f76-46f7-959f-1f3d701d6152" type="CoreNodeModels.CreateList" nickname="List.Create" x="171.53471810089" y="426.06528189911" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="2">
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="False" />
-      <PortInfo index="2" default="False" />
     </CoreNodeModels.CreateList>
-    <DSRevitNodesUI.Views guid="220a6965-6626-478b-934c-4c31a864ba42" type="DSRevitNodesUI.Views" nickname="Views" x="-73.2225519287833" y="350.160237388724" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="-1" />
-    <DSRevitNodesUI.Views guid="9d7b133d-38c2-46de-87bd-b3749a156b3e" type="DSRevitNodesUI.Views" nickname="Views" x="-70.8189910979227" y="620.338278931751" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="-1" />
+    <DSRevitNodesUI.Views guid="b3657f9f-174f-4c2e-a7ef-4bfd041aeb75" type="DSRevitNodesUI.Views" nickname="Views" x="-53.3808654324156" y="378.178302762366" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="1:Level 1" />
+    <DSRevitNodesUI.Views guid="c5f042d3-aefd-4f6b-bf9b-074891145e38" type="DSRevitNodesUI.Views" nickname="Views" x="-38.3030821873109" y="452.626016267632" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="3:Level 2" />
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="182f1db6-c403-4baa-9886-31867b8de09f" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="ExportImage" x="413.187158670799" y="397.467294630272" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <ID value="da8c46fd-53ed-42bc-951f-3880c6e2bf3b" />
+      <Name value="ExportImage" />
+      <Description value="Views export as images with the default settings." />
+      <Inputs>
+        <Input value="ViewToExport" />
+      </Inputs>
+      <Outputs>
+        <Output value="ImageFiles" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
   </Elements>
   <Connectors>
-    <Dynamo.Graph.Connectors.ConnectorModel start="bb0722e7-c9f7-4bc7-951a-4be61c493e59" start_index="0" end="8209cfe3-2f76-46f7-959f-1f3d701d6152" end_index="1" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="8209cfe3-2f76-46f7-959f-1f3d701d6152" start_index="0" end="7a062380-6e0a-4eda-91e9-23ffc6964ba7" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="220a6965-6626-478b-934c-4c31a864ba42" start_index="0" end="8209cfe3-2f76-46f7-959f-1f3d701d6152" end_index="0" portType="0" />
-    <Dynamo.Graph.Connectors.ConnectorModel start="9d7b133d-38c2-46de-87bd-b3749a156b3e" start_index="0" end="8209cfe3-2f76-46f7-959f-1f3d701d6152" end_index="2" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="8209cfe3-2f76-46f7-959f-1f3d701d6152" start_index="0" end="182f1db6-c403-4baa-9886-31867b8de09f" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="b3657f9f-174f-4c2e-a7ef-4bfd041aeb75" start_index="0" end="8209cfe3-2f76-46f7-959f-1f3d701d6152" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="c5f042d3-aefd-4f6b-bf9b-074891145e38" start_index="0" end="8209cfe3-2f76-46f7-959f-1f3d701d6152" end_index="1" portType="0" />
   </Connectors>
   <Notes />
   <Annotations />

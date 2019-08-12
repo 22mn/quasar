@@ -1,11 +1,11 @@
-<Workspace Version="1.3.3.4651" X="-409.909399742229" Y="-259.494572970264" zoom="0.922375540385151" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.4.6666" X="-401.55233740972" Y="-506.150501140585" zoom="1.39578138667476" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
-    <DSRevitNodesUI.ElementsOfCategory guid="21ea2004-56a5-4d8c-aaef-e0969edc5f3e" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="651.399547419433" y="553.16044461807" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+    <DSRevitNodesUI.ElementsOfCategory guid="21ea2004-56a5-4d8c-aaef-e0969edc5f3e" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="623.69524045995" y="549.416619353275" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
       <PortInfo index="0" default="False" />
     </DSRevitNodesUI.ElementsOfCategory>
-    <DSRevitNodesUI.Categories guid="3ca40edc-2633-4993-9d70-b25cc585dc1c" type="DSRevitNodesUI.Categories" nickname="Categories" x="424.741625013561" y="579.358827264048" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="403:Rooms" />
-    <PythonNodeModels.PythonNode guid="7a5dbd2b-cf5e-492d-bf23-c6b466945b2c" type="PythonNodeModels.PythonNode" nickname="Python Script" x="893.336075081052" y="538.09077267374" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+    <DSRevitNodesUI.Categories guid="3ca40edc-2633-4993-9d70-b25cc585dc1c" type="DSRevitNodesUI.Categories" nickname="Categories" x="406.771263742545" y="550.156990198647" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="425:Rooms" />
+    <PythonNodeModels.PythonNode guid="7a5dbd2b-cf5e-492d-bf23-c6b466945b2c" type="PythonNodeModels.PythonNode" nickname="Python Script" x="860.390412750855" y="547.075953309248" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
       <PortInfo index="0" default="False" />
       <Script>import clr, System
 
@@ -98,7 +98,9 @@ OUT = res
     <Dynamo.Graph.Connectors.ConnectorModel start="21ea2004-56a5-4d8c-aaef-e0969edc5f3e" start_index="0" end="7a5dbd2b-cf5e-492d-bf23-c6b466945b2c" end_index="0" portType="0" />
     <Dynamo.Graph.Connectors.ConnectorModel start="3ca40edc-2633-4993-9d70-b25cc585dc1c" start_index="0" end="21ea2004-56a5-4d8c-aaef-e0969edc5f3e" end_index="0" portType="0" />
   </Connectors>
-  <Notes />
+  <Notes>
+    <Dynamo.Graph.Notes.NoteModel guid="cdbd39ab-8310-45f9-b817-d90301fb2ab3" text="MassingByRoomScript" x="852.696877461966" y="513.265893037725" />
+  </Notes>
   <Annotations />
   <Presets />
   <Cameras>

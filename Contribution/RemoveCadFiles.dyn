@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="-32.927548213105" Y="-249.629739076425" zoom="0.732558882192134" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+<Workspace Version="1.3.4.6666" X="-32.927548213105" Y="-249.629739076425" zoom="0.732558882192134" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <PythonNodeModels.PythonNode guid="f4c9405a-8e98-4cdf-957d-e50d03e6730e" type="PythonNodeModels.PythonNode" nickname="Python Script" x="222.451272933405" y="656.484079097532" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="0">
@@ -57,17 +57,15 @@ title = IN[2]
 # names and ids dictionary 
 names_ids_dict = {k:v for k,v in zip(names,ids)}
 
-iconpath = r"\\SpecialistSvr\00_WIP(For_Coordination)\99_TRAINING\190326 - Training session 01\Resources\logo.ico"
+
 
 
 class CheckedBoxListSelector(_Form):
 	"""Checked Box List Selector"""
 	
 	def __init__(self,inputList):
-		if os.path.isfile(iconpath):
-			self.Icon = _Icon(iconpath)
 		self.Size = _Size(370,435)
-		self.Text = "SHIMZ Dynamo DEMO"
+		self.Text = "Quasar Remove CADs"
 		self.class1Result = [];
 
 		# fonts

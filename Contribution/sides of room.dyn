@@ -1,0 +1,331 @@
+{
+  "Uuid": "a4dd5dde-32fc-4f2b-b346-24e520584452",
+  "IsCustomNode": false,
+  "Description": null,
+  "Name": "sides of room",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "DSRevitNodesUI.Categories, DSRevitNodesUI",
+      "SelectedIndex": 403,
+      "NodeType": "ExtensionNode",
+      "Id": "172a5786143e41a0a9b175e97cf3f7c0",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "94b3fd9d1e79493bbb1fda977856e7c8",
+          "Name": "Category",
+          "Description": "The selected Category.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "All built-in categories."
+    },
+    {
+      "ConcreteType": "DSRevitNodesUI.ElementsOfCategory, DSRevitNodesUI",
+      "NodeType": "ExtensionNode",
+      "Id": "dbfbc4ec23e340458bbe249652bef998",
+      "Inputs": [
+        {
+          "Id": "47446df22a1747328e2b119ecdcae6de",
+          "Name": "Category",
+          "Description": "The Category",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "0474be895b68490cac9b75564bba5154",
+          "Name": "Elements",
+          "Description": "An element type.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Get all elements of the specified category from the model."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\nclr.AddReference(\"RevitAPI\");\r\nclr.AddReference(\"RevitNodes\")\r\n\r\nimport Autodesk, Revit;\r\nclr.ImportExtensions(Revit.Elements);\r\nclr.ImportExtensions(Revit.GeometryConversion);\r\nfrom Autodesk.Revit.DB import *\r\n\r\nrooms = UnwrapElement(IN[0]);\r\nresult =[];\r\n\r\n\r\nfor room in rooms:\r\n\tgeo = room.get_Geometry(Options())\r\n\tenum = geo.GetEnumerator()\r\n\tnext = enum.MoveNext()\r\n\tsolid = enum.Current\r\n\tfaces = solid.Faces\r\n\tcount = 0;\r\n\tsub = []\r\n\tfor face in faces:\r\n\t\tcount +=1;\r\n\t\tif count>2:\r\n\t\t\tsub.append(face.ToProtoType()[0])\r\n\t\t\tsub.append(face.GetEdgesAsCurveLoops()[0])\r\n\tresult.append(sub)\r\nOUT = result\r\n\r\n",
+      "VariableInputPorts": true,
+      "Id": "a68433cadf894291831da1e85e3d2d3f",
+      "Inputs": [
+        {
+          "Id": "6edc833a959a47d6b28b1c33c5f64ae1",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c05ffe93deb04f7ba105b890e75fb094",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "b2272f3f-8260-49e6-99a5-19be7778969d",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "dc63b2617f7e445c9c897b4305c8ac3c",
+      "Inputs": [
+        {
+          "Id": "0977a2a4e56a4001977f3a2060db1681",
+          "Name": "Rooms",
+          "Description": "Rooms input, \nDefault is all rooms from current document\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "88f2b60e1fce447295b129363a669d45",
+          "Name": "Placed",
+          "Description": "Placed Rooms",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e87bd17ad0f54fc59833b0efe9f9ea5c",
+          "Name": "Unplaced",
+          "Description": "Unplaced Rooms",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3d86024c44c04ba6a1e1e569e55d2864",
+          "Name": "NotEnclosed",
+          "Description": "NotEnclosed Rooms",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "997456e52cd04bb083f0d09c848785a0",
+          "Name": "Redundant",
+          "Description": "Redundant Rooms",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Collect rooms by their status."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\nclr.AddReference(\"RevitAPI\");\r\nclr.AddReference(\"RevitNodes\")\r\n\r\nimport Autodesk, Revit;\r\nclr.ImportExtensions(Revit.Elements);\r\nclr.ImportExtensions(Revit.GeometryConversion);\r\nfrom Autodesk.Revit.DB import *\r\n\r\nrooms = UnwrapElement(IN[0]);\r\nresult =[];\r\n\r\n\"\"\"\r\nfor room in rooms:\r\n\tgeo = room.get_Geometry(Options())\r\n\tenum = geo.GetEnumerator()\r\n\tnext = enum.MoveNext()\r\n\tsolid = enum.Current\r\n\tfaces = solid.Faces\r\n\tcount = 0;\r\n\tsub = []\r\n\tfor face in faces:\r\n\t\tcount +=1;\r\n\t\tif count>2:\r\n\t\t\tsub.append(face.ToProtoType()[0])\r\n\t\t\tsub.append(face.GetEdgesAsCurveLoops()[0])\r\n\tresult.append(sub)\r\nOUT = result\r\n\"\"\"\r\n\r\nfor room in rooms:\r\n\tbbox = room.get_BoundingBox(None);\r\n\tresult.append(bbox.ToProtoType())\r\n\t\r\nOUT = result\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+      "VariableInputPorts": true,
+      "Id": "0ccef5f84fb34399863a2187eb2493a8",
+      "Inputs": [
+        {
+          "Id": "c009e4b27665435f99ffe6f1b41b009e",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b32bb097a3e14bf5a0a46d5fae9b387c",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Autodesk.DesignScript.Geometry.BoundingBox.ToCuboid",
+      "Id": "2737bd7b42734f0fb8b02969e144b429",
+      "Inputs": [
+        {
+          "Id": "f21df72a6da24fe88dcee9b172ee972b",
+          "Name": "boundingBox",
+          "Description": "Autodesk.DesignScript.Geometry.BoundingBox",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "608dca2a1a2141ebb5e5bdcf5af175cd",
+          "Name": "Cuboid",
+          "Description": "A Cuboid representation of the BoundingBox",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get the BoundingBox as a Solid Cuboid\n\nBoundingBox.ToCuboid ( ): Cuboid"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "94b3fd9d1e79493bbb1fda977856e7c8",
+      "End": "47446df22a1747328e2b119ecdcae6de",
+      "Id": "99889027bf664aeea0cd389ea57174fb"
+    },
+    {
+      "Start": "0474be895b68490cac9b75564bba5154",
+      "End": "0977a2a4e56a4001977f3a2060db1681",
+      "Id": "9e13e71c833f474183d0994d625ba80c"
+    },
+    {
+      "Start": "88f2b60e1fce447295b129363a669d45",
+      "End": "6edc833a959a47d6b28b1c33c5f64ae1",
+      "Id": "2ab1bb3238634394bc43c37e074d3463"
+    },
+    {
+      "Start": "88f2b60e1fce447295b129363a669d45",
+      "End": "c009e4b27665435f99ffe6f1b41b009e",
+      "Id": "2bddfb7d689a4c5d905ac26889014098"
+    },
+    {
+      "Start": "b32bb097a3e14bf5a0a46d5fae9b387c",
+      "End": "f21df72a6da24fe88dcee9b172ee972b",
+      "Id": "97124da8f3ed4e84bd3a92982bbce88f"
+    }
+  ],
+  "Dependencies": [
+    "b2272f3f-8260-49e6-99a5-19be7778969d"
+  ],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.2.6826",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 30986.072728584626,
+      "EyeY": 21349.909903213043,
+      "EyeZ": -7223.95952807283,
+      "LookX": 18880.89453219435,
+      "LookY": -22266.118439454844,
+      "LookZ": -14916.921040596508,
+      "UpX": 0.39706514228592543,
+      "UpY": 0.86251366920725181,
+      "UpZ": -0.31370279439636212
+    },
+    "NodeViews": [
+      {
+        "Id": "172a5786143e41a0a9b175e97cf3f7c0",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Categories",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 46.399999999999977,
+        "Y": 170.4
+      },
+      {
+        "Id": "dbfbc4ec23e340458bbe249652bef998",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "All Elements of Category",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 283.20000000000005,
+        "Y": 166.39999999999995
+      },
+      {
+        "Id": "a68433cadf894291831da1e85e3d2d3f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Sides of Room",
+        "ShowGeometry": false,
+        "Excluded": true,
+        "X": 765.91332817744728,
+        "Y": -159.54617858604081
+      },
+      {
+        "Id": "dc63b2617f7e445c9c897b4305c8ac3c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "RoomCollector",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 473.02354117066989,
+        "Y": -42.844669593550435
+      },
+      {
+        "Id": "0ccef5f84fb34399863a2187eb2493a8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Sides of Room",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 861.71832243621225,
+        "Y": 179.40170192552964
+      },
+      {
+        "Id": "2737bd7b42734f0fb8b02969e144b429",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "BoundingBox.ToCuboid",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 1085.4443111651722,
+        "Y": 169.3729797586783
+      }
+    ],
+    "Annotations": [],
+    "X": -736.47416727070174,
+    "Y": -78.93424468938548,
+    "Zoom": 0.94876882703760523
+  }
+}
