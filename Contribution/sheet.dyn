@@ -1,4 +1,4 @@
-<Workspace Version="1.3.4.6666" X="-829.085368340887" Y="-377.144271654891" zoom="0.785106736384788" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+<Workspace Version="1.3.4.6666" X="-776.740979418707" Y="-318.95172668364" zoom="0.713270132042073" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="087f66cf-bd7d-4217-ad1d-c426fefa4ccc" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="ViewUtility.FloorPlanViewByRoom" x="757.491562119774" y="285.92763589442" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="true" isPinned="true" assembly="..\AppData\Roaming\Dynamo\Dynamo Revit\1.3\packages\Quasar\bin\Quasar.dll" function="Quasar.ViewUtility.FloorPlanViewByRoom@Revit.Elements.Element,Revit.Elements.Room[],string[],double">
@@ -97,9 +97,9 @@ sheet = ViewSheet.Create(doc, t.Id)
 
 o = sheet.Outline
 uv1 = XYZ((o.Max.U-o.Min.U)/1, (o.Max.V - o.Min.V)/1,0)
-uv2 = XYZ((o.Max.U-o.Min.U)/1, (o.Max.V - o.Min.V)/1.5,0)
-uv3 = XYZ((o.Max.U-o.Min.U)/1, (o.Max.V - o.Min.V)/2,0)
-uv4 = XYZ((o.Max.U-o.Min.U)/1, (o.Max.V - o.Min.V)/3,0)
+uv2 = XYZ((o.Max.U-o.Min.U)/1.5, (o.Max.V - o.Min.V)/1,0)
+uv3 = XYZ((o.Max.U-o.Min.U)/2, (o.Max.V - o.Min.V)/1,0)
+uv4 = XYZ((o.Max.U-o.Min.U)/3, (o.Max.V - o.Min.V)/1,0)
 
 for v,loc in zip(views,[uv1,uv2,uv3,uv4]):
 	Viewport.Create(doc, sheet.Id , v.Id,loc)
