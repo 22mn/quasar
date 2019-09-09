@@ -1,7 +1,7 @@
 <Workspace Version="1.3.4.6666" X="-68.106786997132" Y="264.687420059092" zoom="0.888789228297156" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
-    <PythonNodeModels.PythonNode guid="fd3dd14e-d348-436d-bba6-fe91039da279" type="PythonNodeModels.PythonNode" nickname="Python Script" x="320.995761458119" y="31.9862751977187" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="0">
+    <PythonNodeModels.PythonNode guid="cf85d49f-c03a-4ec2-91d1-eb1bd8280f31" type="PythonNodeModels.PythonNode" nickname="Python Script" x="352.68657795071" y="-84.8290642871838" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="0">
       <Script># dynamo version - 1.3.0 
 
 import clr,sys
@@ -20,27 +20,42 @@ doc = DocumentManager.Instance.CurrentDBDocument;
 link_docs = FilteredElementCollector(doc).OfClass(RevitLinkInstance);
 
 
-# destination path
-docPath = doc.PathName
+# the current document path
+# if the current document haven't created it returns ""
+docPath = doc.PathName 
 docName = os.path.basename(docPath).split(".")[0]
 dirName = os.path.dirname(docPath)
-folder = docName + "LinkFiles"
+
+if docName == "":
+	docName = "TheCurrentDocument"
+
+if dirName == "":	
+	# make dir in the current user desktop
+	dirName = os.path.join(os.path.join(os.environ["USERPROFILE"]),"Desktop")
+
+# destination folder
+folder = docName + "_LinkFileExport"
 destFolder = os.path.join(dirName,folder)
 
+# if folder does not exit
 if not os.path.exists(destFolder):
+	# create destination folder
 	os.mkdir(destFolder)
-
 
 # collect filepaths 
 filepaths = []
 for i in link_docs:
+	# get link documents
 	ldoc = i.GetLinkDocument()
+	# if link is loaded
 	if ldoc:
+		# link file path
 		lpath = ldoc.PathName
+		# check if collected
 		if lpath not in filepaths:
 			filepaths.append(lpath);
 			
-# new filepaths and remove existing
+# new filepaths and remove existing (override)
 newfiles = []
 for path in filepaths:
 	newpath = os.path.join(destFolder, os.path.basename(path))
@@ -51,10 +66,13 @@ for path in filepaths:
 # copy files
 output = []
 for path in filepaths:
+	# copy file 
 	shutil.copy(path, destFolder);
 
 
 OUT = newfiles
+
+
 </Script>
     </PythonNodeModels.PythonNode>
   </Elements>
