@@ -284,7 +284,7 @@ namespace Quasar
         {
             var doc = DocumentManager.Instance.CurrentDBDocument;
             var WallSweeps = new List<Revit.Elements.Element>();
-            var wallSweepTypes = new Dictionary<string, Autodesk.Revit.DB.WallSweepType>
+            var wallSweepTypes = new Dictionary<string, WallSweepType>
             {
                 { "Sweep", WallSweepType.Sweep },
                 { "Reveal", WallSweepType.Reveal }
