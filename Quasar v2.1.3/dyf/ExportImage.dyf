@@ -1,0 +1,112 @@
+<Workspace Version="1.3.4.6666" X="226.070275235585" Y="224.746227425621" zoom="1.130842140625" ScaleFactor="1" Name="ExportImage" Description="Views export as images with the default settings." ID="da8c46fd-53ed-42bc-951f-3880c6e2bf3b" Category="Quasar.ViewUtility">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="938ed2fa-e02f-4f1a-ad10-5c63394c7418" type="PythonNodeModels.PythonNode" nickname="ImageExportor" x="250" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script># dynamo version - 1.3.4
+# author - min.naung https://twentytwo.space
+
+# import modules
+import clr,sys,System
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+# import classes
+from System.Collections.Generic import List
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+# add ipy library path
+sys.path.append("C:\Program Files (x86)\IronPython 2.7\Lib")
+# os module import
+import os
+# current document
+doc = DocumentManager.Instance.CurrentDBDocument
+# current working dir
+output_path = os.path.dirname(doc.PathName)
+# if cwd is none (file have not save yet)
+# get desktop path instead
+if not os.path.exists(output_path):
+	output_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') 
+
+# doc name
+doc_name = os.path.basename(doc.PathName)
+# filenames with project name prefix
+filePath = os.path.join(output_path,doc_name)
+
+# input views
+views = IN[0]
+
+# create unwrap list
+if not isinstance(views,list):	
+	views = UnwrapElement([views])
+else:
+	views = UnwrapElement(views)
+
+# element's id list
+ids = [v.Id for v in views]
+
+# ids list to .net List
+viewIds = List[ElementId](ids)
+
+# transaction start
+TransactionManager.Instance.EnsureInTransaction(doc)
+
+# image export options constructor
+ieo = ImageExportOptions()
+# export range (exporting amount of view(s))  
+ieo.ExportRange = ExportRange.SetOfViews
+ieo.SetViewsAndSheets(viewIds)
+# filepath
+ieo.FilePath = filePath
+# File type for exported HLR and wireframe views
+ieo.HLRandWFViewsFileType = ImageFileType.PNG
+# image resolution
+ieo.ImageResolution = ImageResolution.DPI_300
+# fit direction
+ieo.FitDirection = FitDirectionType.Horizontal
+# pixelsize
+ieo.PixelSize = 1200
+# file type for exported shadow views
+ieo.ShadowViewsFileType = ImageFileType.PNG
+# zoom type
+ieo.ZoomType = ZoomFitType.FitToPage
+
+# export image
+doc.ExportImage(ieo)
+
+# transaction done
+TransactionManager.Instance.TransactionTaskDone()
+
+# get exported images paths
+images_fullpath = [filePath + ieo.GetFileName(doc,id) + "."+ieo.HLRandWFViewsFileType.ToString() for id in ids]
+
+# output images fullpath
+OUT = images_fullpath
+
+
+
+
+
+
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="31603ca6-b301-4c64-9695-97a2a94cbaea" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="-176.949985288417" y="-12.553884091408" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// single view or a list of views to export&#xD;&#xA;ViewToExport" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="3738b39b-c4cb-419f-8694-245b50764487" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="486.863848269871" y="-3.58682402611649" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="// image file path(s)&#xD;&#xA;ImageFiles" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="938ed2fa-e02f-4f1a-ad10-5c63394c7418" start_index="0" end="3738b39b-c4cb-419f-8694-245b50764487" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="31603ca6-b301-4c64-9695-97a2a94cbaea" start_index="0" end="938ed2fa-e02f-4f1a-ad10-5c63394c7418" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>

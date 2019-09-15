@@ -5,30 +5,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QuasarExtension"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="400" Width="430" Height="180">
+             d:DesignHeight="200" d:DesignWidth="400" Width="430" Height="180" WindowStartupLocation="CenterScreen"
+        Title="Quasar Package">
     <Grid Name="MainGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <TextBlock Name="textblock1" Background="#2d2d2d" HorizontalAlignment="Stretch" FontFamily="Gill Sans MT"
                   TextAlignment="Center" Padding="10" FontWeight="Medium" FontSize="18" Foreground="Ivory">   
             Quasar View Extension<LineBreak/>
             <LineBreak/>
-            Quasar View Extension includes in Quasar Package v2<LineBreak/>
+            Manage and organize the dynamo graphs,<LineBreak/>
             developed and maintained by 
             <Hyperlink Name="myname"
-                NavigateUri="https://twentytwo.space/contact/" 
+                NavigateUri="http://twentytwo.space/author/mgjean/" 
                 RequestNavigate="NavigateURL" Foreground="DeepSkyBlue"
                 MouseEnter="MyNameMouseEnter"
                 MouseLeave="MyNameMouseLeave"
                 TextDecorations="None">
                 min.naung</Hyperlink> .<LineBreak/>
             <LineBreak/>
+            <TextBlock>Source Code : </TextBlock>
             <Hyperlink Name="link1"
-            NavigateUri="https://github.com/mgjean/quasar" 
+            NavigateUri="https://mgjean.github.io/quasar/" 
             RequestNavigate="NavigateURL" 
             Foreground="DeepSkyBlue" 
             MouseEnter="HyperlinkMouseEnter"
             MouseLeave="HyperlinkMouseLeave"
             TextDecorations="None">
-                https://github.com/mgjean/quasar</Hyperlink>
+                https://github.io/quasar/</Hyperlink>
         </TextBlock>
     </Grid>
 </Window>

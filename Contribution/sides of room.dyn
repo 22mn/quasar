@@ -263,69 +263,69 @@
     },
     "NodeViews": [
       {
+        "ShowGeometry": true,
+        "Name": "Categories",
         "Id": "172a5786143e41a0a9b175e97cf3f7c0",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Categories",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 46.399999999999977,
         "Y": 170.4
       },
       {
+        "ShowGeometry": true,
+        "Name": "All Elements of Category",
         "Id": "dbfbc4ec23e340458bbe249652bef998",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "All Elements of Category",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 283.20000000000005,
         "Y": 166.39999999999995
       },
       {
+        "ShowGeometry": false,
+        "Name": "Sides of Room",
         "Id": "a68433cadf894291831da1e85e3d2d3f",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Sides of Room",
-        "ShowGeometry": false,
         "Excluded": true,
-        "X": 765.91332817744728,
+        "X": 764.81788181198658,
         "Y": -159.54617858604081
       },
       {
+        "ShowGeometry": true,
+        "Name": "RoomCollector",
         "Id": "dc63b2617f7e445c9c897b4305c8ac3c",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "RoomCollector",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 473.02354117066989,
         "Y": -42.844669593550435
       },
       {
+        "ShowGeometry": true,
+        "Name": "Sides of Room",
         "Id": "0ccef5f84fb34399863a2187eb2493a8",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Sides of Room",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 861.71832243621225,
         "Y": 179.40170192552964
       },
       {
+        "ShowGeometry": true,
+        "Name": "BoundingBox.ToCuboid",
         "Id": "2737bd7b42734f0fb8b02969e144b429",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "BoundingBox.ToCuboid",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 1085.4443111651722,
         "Y": 169.3729797586783
       }
     ],
     "Annotations": [],
-    "X": -736.47416727070174,
-    "Y": -78.93424468938548,
-    "Zoom": 0.94876882703760523
+    "X": -193.74401700925625,
+    "Y": 255.95387718172969,
+    "Zoom": 0.51222211672934681
   }
 }

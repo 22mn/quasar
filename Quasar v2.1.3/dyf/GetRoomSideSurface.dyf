@@ -1,0 +1,64 @@
+<Workspace Version="1.3.4.6666" X="33.0787590106897" Y="113.855248336471" zoom="0.803321593462598" ScaleFactor="1" Name="GetRoomSideSurface" Description="Collect revit room sides as dynamo surfaces." ID="84d9cc1c-dee4-42a2-bea2-9136e4e6f3cc" Category="Quasar.RoomUtility">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="663675ec-9a65-4fbd-872c-f884268773f6" type="PythonNodeModels.PythonNode" nickname="Python Script" x="250" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script># dynamo version - 1.3.4
+# author - min.naung https://twentytwo.space
+
+import clr
+clr.AddReference("RevitAPI");
+clr.AddReference("RevitNodes")
+
+import Autodesk, Revit;
+clr.ImportExtensions(Revit.Elements);
+clr.ImportExtensions(Revit.GeometryConversion);
+from Autodesk.Revit.DB import *
+
+rooms = UnwrapElement(IN[0]);
+result =[];
+
+
+for room in rooms:
+	# geo of room
+	geo = room.get_Geometry(Options())
+	# get enum
+	enum = geo.GetEnumerator()
+	# skip one
+	next = enum.MoveNext()
+	# current geo
+	solid = enum.Current
+	# get faces
+	faces = solid.Faces
+	count = 0;
+	sub = []
+	# each face
+	for face in faces:
+		count +=1;
+		# omit first two (top,btn)
+		if count&gt;2:
+			# face to dyn obj
+			sub.append(face.ToProtoType()[0])
+			# curves
+			#sub.append(face.GetEdgesAsCurveLoops()[0])
+	result.append(sub)
+OUT = result
+
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="a0bb4c06-3ac1-4c7d-acb0-ba87177f7f41" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="0" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// room elements&#xD;&#xA;_Rooms" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="8622b21b-df3a-4f39-b37c-efa636c5fe68" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="435.857887537015" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="// dynamo surfaces for each room&#xD;&#xA;SideSurface" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="663675ec-9a65-4fbd-872c-f884268773f6" start_index="0" end="8622b21b-df3a-4f39-b37c-efa636c5fe68" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="a0bb4c06-3ac1-4c7d-acb0-ba87177f7f41" start_index="0" end="663675ec-9a65-4fbd-872c-f884268773f6" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+</Workspace>

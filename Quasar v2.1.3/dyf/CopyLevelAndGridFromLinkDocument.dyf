@@ -1,0 +1,155 @@
+<Workspace Version="1.3.2.2480" X="11.1999999999999" Y="205.6" zoom="1" ScaleFactor="1" Name="CopyLevelAndGridFromLinkDocument" Description="Select link document to copy levels and grids." ID="8e3818e8-fbc3-4dac-912c-266e12e18042" Category="Quasar.LinkDocumentUtility">
+  <NamespaceResolutionMap />
+  <Elements>
+    <PythonNodeModels.PythonNode guid="94193c98-fc25-4cb1-838e-6a575746473f" type="PythonNodeModels.PythonNode" nickname="CopyGridsLevelsFromLinkDocument" x="250" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script># dynamo version - 1.3.2
+# author - min.naung/mgjean https://twentytwo.space/contact
+
+import clr, System
+
+clr.AddReference("System.Windows.Forms")
+clr.AddReference("System.Drawing")
+clr.AddReference("RevitAPI")
+clr.AddReference("RevitServices")
+
+from System.Collections.Generic import List
+from System.Windows.Forms import (Application, Button, ComboBox, CheckBox, Form as _Form,
+CheckedListBox,Padding,FormBorderStyle, SelectionMode,Label, MessageBox,MessageBoxButtons, MessageBoxIcon)
+from System.Drawing import (Font as _Font, Icon as _Icon, Point as _Point, Size as _Size,FontStyle)
+
+
+from Autodesk.Revit.DB import *
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+
+doc = DocumentManager.Instance.CurrentDBDocument
+
+linkInstances = FilteredElementCollector(doc).OfClass(RevitLinkInstance)
+
+linkName = [i.Name.split(" : ")[0] for i in linkInstances]
+
+linkDict = {i.Name.split(" : ")[0] : i.GetLinkDocument() for i in linkInstances};
+
+res = []
+
+class CheckedBoxListSelector(_Form):
+	"""Checked Box List Selector"""
+
+	def __init__(self):
+		#self.Icon = _Icon(r"%s\extra\icon.ico" %ipath)
+		self.Size = _Size(300,370)
+		self.Text = "Quasar®"
+
+		# fonts
+		self.gsmt_11r = _Font("Georgia", 10)
+		self.gsmt_10r = _Font("Georgia",9)
+
+		# label
+		self.label = Label()
+		self.label.Text = "Select Link Document:"
+		self.label.Font = self.gsmt_11r
+		self.label.Location = _Point(30,10)
+		self.label.Size = _Size(220,28)
+		self.Controls.Add(self.label)
+
+		# checklist box
+		self.lstbox = CheckedListBox()
+		self.lstbox.Items.AddRange(tuple(linkName))
+		self.lstbox.Font = self.gsmt_10r
+		# padding
+		self.lstbox.Padding = Padding(30)
+		# select one click
+		self.lstbox.CheckOnClick = True
+
+		self.FormBorderStyle = FormBorderStyle.FixedDialog
+		self.MaximizeBox = False;
+		self.ManimizeBox = False;
+		self.lstbox.Location = _Point(30,40)
+		self.lstbox.Size = _Size(220,250)
+
+		# auto horizontal scrollbar
+		self.lstbox.HorizontalScrollbar = True
+		self.Controls.Add(self.lstbox)
+
+		# ok btn
+		self.btn = Button()
+		self.btn.Text = "OK"
+		self.btn.Font = self.gsmt_10r
+		self.btn.Size = _Size(80,25)
+		self.btn.Location = _Point(95,290)
+		self.Controls.Add(self.btn)
+
+		# events
+		self.btn.Click += self.click_ok
+		self.lstbox.ItemCheck += self.item_check
+
+		# pop up from center
+		self.CenterToScreen()
+		
+	def item_check(self, sender, event):
+		for i in range(len(self.lstbox.Items)):
+			if not i == event.Index:
+				self.lstbox.SetItemChecked(i, False)
+
+	def click_ok(self, sender, event):
+		global res
+		if len(self.lstbox.Items) &lt; 1:
+			self.Close()
+		if len(self.lstbox.CheckedItems) &lt; 1:
+			return MessageBox.Show("No element selected!", "Quasar® Info Box", MessageBoxButtons.OK, MessageBoxIcon.Asterisk)
+					
+		res = self.lstbox.CheckedItems;
+		return self.Close()
+
+if IN[0]:
+
+	Application.Run(CheckedBoxListSelector())
+	doc = DocumentManager.Instance.CurrentDBDocument
+
+	linkdoc = [linkDict[i] for i in res][0]
+
+	# collect grid from link document
+	collector = FilteredElementCollector(linkdoc).OfClass(Grid).ToElements()
+	levels = FilteredElementCollector(linkdoc).OfClass(Level).ToElements()
+	collector = list(collector)
+	collector.extend(levels)
+
+	# dot-net elementId list
+	ids = List[ElementId]([i.Id for i in collector])
+	# transaction start
+	TransactionManager.Instance.EnsureInTransaction(doc)
+	#copy template from link-doc to current-doc
+	transfer_views = ElementTransformUtils.CopyElements(linkdoc,ids,doc,Transform.Identity,CopyPasteOptions())
+
+
+	# transaction done			
+	TransactionManager.Instance.TransactionTaskDone()
+	# output
+	OUT = collector
+else:
+	OUT = "Run"
+
+
+
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Graph.Nodes.CustomNodes.Output guid="8de251c7-7431-4b46-9c7e-fd7a3ae956b4" type="Dynamo.Graph.Nodes.CustomNodes.Output" nickname="Output" x="562.6" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+      <Symbol value="// levels and grids&#xD;&#xA;Elements" />
+    </Dynamo.Graph.Nodes.CustomNodes.Output>
+    <Dynamo.Graph.Nodes.CustomNodes.Symbol guid="834bd8d2-882b-46e9-bfaf-0a3831175e04" type="Dynamo.Graph.Nodes.CustomNodes.Symbol" nickname="Input" x="6.40000000000009" y="-4.00000000000006" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <Symbol value="// run forest run&#xD;&#xA;Run : bool" />
+    </Dynamo.Graph.Nodes.CustomNodes.Symbol>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="94193c98-fc25-4cb1-838e-6a575746473f" start_index="0" end="8de251c7-7431-4b46-9c7e-fd7a3ae956b4" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="834bd8d2-882b-46e9-bfaf-0a3831175e04" start_index="0" end="94193c98-fc25-4cb1-838e-6a575746473f" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>

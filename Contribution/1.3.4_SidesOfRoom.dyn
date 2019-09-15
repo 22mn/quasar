@@ -1,0 +1,31 @@
+<Workspace Version="1.3.4.6666" X="-330.234563825625" Y="83.6778605391209" zoom="0.842893770232265" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
+  <NamespaceResolutionMap />
+  <Elements>
+    <DSRevitNodesUI.Categories guid="2dff204b-fa1e-4f20-838b-65c5d20806fe" type="DSRevitNodesUI.Categories" nickname="Categories" x="266.851784848366" y="73.5555447720464" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" index="403:Rooms" />
+    <DSRevitNodesUI.ElementsOfCategory guid="1274b92c-2c00-43ce-b049-efaa18f37fde" type="DSRevitNodesUI.ElementsOfCategory" nickname="All Elements of Category" x="459.829834784013" y="53.2441635152404" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false">
+      <PortInfo index="0" default="False" />
+    </DSRevitNodesUI.ElementsOfCategory>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="86b68bef-b7b5-43c3-a3c3-20bc735c4f1d" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="GetRoomSideSurface" x="747.13857733741" y="57.0952317527111" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <ID value="84d9cc1c-dee4-42a2-bea2-9136e4e6f3cc" />
+      <Name value="GetRoomSideSurface" />
+      <Description value="Collect revit room sides as dynamo surfaces." />
+      <Inputs>
+        <Input value="_Rooms" />
+      </Inputs>
+      <Outputs>
+        <Output value="SideSurface" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+  </Elements>
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="2dff204b-fa1e-4f20-838b-65c5d20806fe" start_index="0" end="1274b92c-2c00-43ce-b049-efaa18f37fde" end_index="0" portType="0" />
+    <Dynamo.Graph.Connectors.ConnectorModel start="1274b92c-2c00-43ce-b049-efaa18f37fde" start_index="0" end="86b68bef-b7b5-43c3-a3c3-20bc735c4f1d" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-457.907538501066" eyeY="22430.6096599878" eyeZ="15348.1284648792" lookX="452.907538501066" lookY="-22419.6096599878" lookZ="-15356.1284648792" upX="0.0201809842379087" upY="0.728968627421411" upZ="-0.684249565663386" />
+  </Cameras>
+</Workspace>

@@ -1,8 +1,29 @@
 <Workspace Version="1.3.4.6666" X="-68.106786997132" Y="264.687420059092" zoom="0.888789228297156" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
-  <NamespaceResolutionMap />
+  <NamespaceResolutionMap>
+    <ClassMap partialName="Directory" resolvedName="DSCore.IO.Directory" assemblyName="DSCoreNodes.dll" />
+    <ClassMap partialName="Strings" resolvedName="Lists.Strings" assemblyName="LunchBox.dll" />
+  </NamespaceResolutionMap>
   <Elements>
-    <PythonNodeModels.PythonNode guid="cf85d49f-c03a-4ec2-91d1-eb1bd8280f31" type="PythonNodeModels.PythonNode" nickname="Python Script" x="352.68657795071" y="-84.8290642871838" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true" inputcount="0">
-      <Script># dynamo version - 1.3.0 
+    <CoreNodeModels.Input.Directory guid="9de238c2-6881-4825-9cb2-d6389bf1b94f" type="CoreNodeModels.Input.Directory" nickname="Directory Path" x="136.441038799055" y="-99.8289342951904" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <System.String>C:\Users\mrmin\OneDrive\Desktop\fads</System.String>
+      <HintPath>C:\Users\mrmin\OneDrive\Desktop\fads</HintPath>
+    </CoreNodeModels.Input.Directory>
+    <Dynamo.Graph.Nodes.CustomNodes.Function guid="c3fb1eba-6460-44c7-8fb7-8feede09af39" type="Dynamo.Graph.Nodes.CustomNodes.Function" nickname="ExportRevitLinks" x="433.695660540455" y="-110.031889981771" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true">
+      <PortInfo index="0" default="False" />
+      <ID value="6e24ceed-ac89-4a9b-a1d0-3b0b6825bc7a" />
+      <Name value="ExportRevitLinks" />
+      <Description value="Export all loaded revit link documents to a given directory." />
+      <Inputs>
+        <Input value="OutputDirectory" />
+      </Inputs>
+      <Outputs>
+        <Output value="FilePaths" />
+      </Outputs>
+    </Dynamo.Graph.Nodes.CustomNodes.Function>
+    <PythonNodeModels.PythonNode guid="3d6426ac-27eb-4d9f-ae4a-02f7ae90b805" type="PythonNodeModels.PythonNode" nickname="Python Script" x="348.398385317379" y="145.514431225928" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="true" isPinned="false" inputcount="1">
+      <PortInfo index="0" default="False" />
+      <Script># dynamo version - 1.3.4 
+# author - min.naung https://twentytwo.space
 
 import clr,sys
 clr.AddReference("RevitAPI")
@@ -54,6 +75,10 @@ for i in link_docs:
 		# check if collected
 		if lpath not in filepaths:
 			filepaths.append(lpath);
+
+# user input path
+if IN[0] != None and os.path.exists(IN[0]):
+	destFolder = IN[0]
 			
 # new filepaths and remove existing (override)
 newfiles = []
@@ -69,14 +94,15 @@ for path in filepaths:
 	# copy file 
 	shutil.copy(path, destFolder);
 
-
 OUT = newfiles
 
 
 </Script>
     </PythonNodeModels.PythonNode>
   </Elements>
-  <Connectors />
+  <Connectors>
+    <Dynamo.Graph.Connectors.ConnectorModel start="9de238c2-6881-4825-9cb2-d6389bf1b94f" start_index="0" end="c3fb1eba-6460-44c7-8fb7-8feede09af39" end_index="0" portType="0" />
+  </Connectors>
   <Notes />
   <Annotations />
   <Presets />

@@ -1,0 +1,164 @@
+{
+  "Uuid": "6870c156-3008-4030-bd79-d60619e037b1",
+  "IsCustomNode": true,
+  "Category": "Quasar.CustomTools",
+  "Description": "Create checkboxes  with input list and select items.",
+  "Name": "CustomCheckboxSelection",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "AList",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": " a list input"
+      },
+      "Id": "760111763f1a430785c4a75ee0bda3fa",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "66cb01cc2cb54404be279a734a58b122",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "// selected items\r\nSelection",
+      "Id": "7750a938056742e3a9a34dffb7b7c189",
+      "Inputs": [
+        {
+          "Id": "5b7b3efb540c4c6793568d496d56ef54",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr,sys\r\nsys.path.append(r\"C:\\Program Files (x86)\\IronPython 2.7\\Lib\")\r\n\r\nimport os, System\r\nclr.AddReference(\"System.Windows.Forms\")\r\nfrom System.Windows.Forms import Application\r\n\r\n\r\nversion = [\"2.0\",\"1.3\",\"1.2\",\"1.1\",\"1.0\",\"0.9\",\"0.8\",\"0.7\"]\r\n\r\nappdata = os.getenv(\"AppData\");\r\nqpath = r\"\\Dynamo\\Dynamo Revit\\%s\\packages\\Quasar\\extra\"\r\n\r\nfor i in version:\r\n\tif os.path.exists(os.path.join(appdata+qpath %i)):\r\n\t\textra = os.path.join(appdata+qpath %i)\r\n\t\tsys.path.append(extra);\r\n\r\nfrom quasar.winformsui import CheckedBoxListSelector\r\n\r\na = CheckedBoxListSelector(IN[0]);\r\nApplication.Run(a);\r\nOUT = a.class1Result\r\n",
+      "VariableInputPorts": true,
+      "Id": "a37d1ce34d754a7080c38a126a0f0a3f",
+      "Inputs": [
+        {
+          "Id": "a8954045c65443a088346f64a6424680",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "52bd8517b3b34b2ca329c39bf75c50fc",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "66cb01cc2cb54404be279a734a58b122",
+      "End": "a8954045c65443a088346f64a6424680",
+      "Id": "4ea8501279f1479eb5d7530c744bdd3b"
+    },
+    {
+      "Start": "52bd8517b3b34b2ca329c39bf75c50fc",
+      "End": "5b7b3efb540c4c6793568d496d56ef54",
+      "Id": "f9016ca3ad3f4ae1850a53bbd25515c0"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.2.6826",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "760111763f1a430785c4a75ee0bda3fa",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "7750a938056742e3a9a34dffb7b7c189",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.8,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "a37d1ce34d754a7080c38a126a0f0a3f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 255.19999999999993,
+        "Y": 8.7999999999999545
+      }
+    ],
+    "Annotations": [],
+    "X": 84.8000000000001,
+    "Y": 85.6000000000001,
+    "Zoom": 1.0
+  }
+}
