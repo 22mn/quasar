@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ViewExtensionDefinition>
-  <AssemblyPath>..\bin\QuasarExtension.dll</AssemblyPath>
-  <TypeName>QuasarExtension.QuasarExtension</TypeName>
-</ViewExtensionDefinition>
