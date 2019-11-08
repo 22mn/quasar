@@ -1,0 +1,27 @@
+Part - A
+  ActiveView*
+  CeilingViewByRoom*
+  CopyPasteFilter*
+  CreateDuctByModelCurve*
+  CreateBeamByModelCurve*
+  CreateWallSweep*
+  ElevationByRoom
+  ThreeDViewByRoom*
+  ViewSelector
+  TransferViewTemplateAndFilterUI
+
+Part - B
+  GridNamingGenerator*
+  TransferLegend
+  CustomDropDown
+  HideUnhideElement*
+  LinkLevelGrid*
+  ElementSelector
+  AllElementOfWorkset
+ 
+
+Part - C
+  ElementActiveViewByCategory*
+  RoomTagToRoom*
+  RoomCollector*
+
