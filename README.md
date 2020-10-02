@@ -1,6 +1,6 @@
 # Quasar (Package Deprecated)
 
-> - Quasar package have been already deprecated from package manager. But ... here is a new one : https://twentytwo.space/2020/10/01/quasar2-dynamo-package/
+> - Quasar package have been already deprecated from package manager. But ... [here is a new one](https://twentytwo.space/2020/10/01/quasar2-dynamo-package/) 
 
 ## Revit-Dynamo Package 
 > - Quasar includes 50+ nodes, simple usability and substantial enhancement to productivity.
