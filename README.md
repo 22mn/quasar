@@ -1,6 +1,6 @@
-# Quasar
+# Quasar (Package Deprecated) 
 ## Revit-Dynamo Package 
-
+> - Quasar package have been already deprecated from package manager.
 > - Quasar includes 50+ nodes, simple usability and substantial enhancement to productivity.
 > - Code samples are provided in [this](https://github.com/mgjean/quasar/tree/master/samples) directory.
 > - For nodes usage, modification & understanding [__The Quasar Offical Website__](https://twentytwo.space/quasar-package-guide/)
